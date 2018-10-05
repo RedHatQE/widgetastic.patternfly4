@@ -2,14 +2,6 @@ import pytest
 from widgetastic.widget import View
 from widgetastic_patternfly4 import Dropdown, DropdownItemDisabled, DropdownItemNotFound, Kebab
 
-from conftest import CustomBrowser
-
-
-@pytest.fixture
-def browser(selenium):
-    selenium.get("http://patternfly-react.netlify.com/components/dropdown")
-    return CustomBrowser(selenium)
-
 
 @pytest.fixture
 def view(browser):

@@ -67,9 +67,17 @@ class Navigation(Widget):
         self.logger.info("Selecting %r in navigation", levels)
         if list(levels) == self.currently_selected:
             return
-        for level in levels:
-            li = self.browser.element(self.ITEMS_MATCHING.format(quote(level)))
+        current_item = self
+        for i, level in enumerate(levels):
+            li = self.browser.element(self.ITEM_MATCHING.format(quote(level)), parent=current_item)
             self.browser.click(li)
+            try:
+                current_item = self.browser.element(self.SUB_ITEMS_ROOT, parent=li)
+            except NoSuchElementException:
+                if i == len(levels) - 1:
+                    pass
+                else:
+                    raise
 
     def __repr__(self):
         return '{}({!r})'.format(type(self).__name__, self.ROOT)

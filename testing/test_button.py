@@ -1,14 +1,5 @@
-import pytest
 from widgetastic.widget import View
 from widgetastic_patternfly4 import Button
-
-from conftest import CustomBrowser
-
-
-@pytest.fixture
-def browser(selenium):
-    selenium.get("http://patternfly-react.netlify.com/components/button")
-    return CustomBrowser(selenium)
 
 
 def test_button_click(browser):

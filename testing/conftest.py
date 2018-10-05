@@ -5,12 +5,6 @@ from selenium import webdriver
 from widgetastic.browser import Browser
 
 
-class CustomBrowser(Browser):
-    @property
-    def product_version(self):
-        return "1.0.0"
-
-
 @pytest.fixture(scope="session")
 def browser_name():
     return os.environ["BROWSER"]
@@ -31,3 +25,10 @@ def selenium(browser_name):
         driver = webdriver.Firefox(options=firefox_options)
     yield driver
     driver.quit()
+
+
+@pytest.fixture(scope="module")
+def browser(selenium, request):
+    name = request.module.__name__.lstrip("test_")
+    selenium.get("http://patternfly-react.surge.sh/patternfly-4/components/{}".format(name))
+    return Browser(selenium)
