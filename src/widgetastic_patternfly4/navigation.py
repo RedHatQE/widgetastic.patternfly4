@@ -1,4 +1,5 @@
-import six
+from collections import OrderedDict
+
 from widgetastic.exceptions import NoSuchElementException
 from widgetastic.utils import ParametrizedLocator
 from widgetastic.xpath import quote
@@ -45,13 +46,13 @@ class Navigation(Widget):
 
     def nav_item_tree(self, start=None):
         start = start or []
-        result = {}
+        result = OrderedDict()
         for item in self.nav_links(*start):
             sub_items = self.nav_item_tree(start=start + [item])
             result[item] = sub_items or None
         if result and all(value is None for value in result.values()):
             # If there are no child nodes, then just make it a list
-            result = list(six.iterkeys(result))
+            result = list(result.keys())
         return result
 
     @property
