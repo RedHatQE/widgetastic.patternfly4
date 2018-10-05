@@ -1,10 +1,7 @@
-import codecs
 import os
-import sys
 
 import pytest
 from selenium import webdriver
-
 from widgetastic.browser import Browser
 
 
@@ -34,15 +31,3 @@ def selenium(browser_name):
         driver = webdriver.Firefox(options=firefox_options)
     yield driver
     driver.quit()
-
-
-@pytest.fixture(scope="function")
-def browser(selenium, httpserver):
-    this_module = sys.modules[__name__]
-    path = os.path.dirname(this_module.__file__)
-    testfilename = path + "/testing_page.html"
-    httpserver.serve_content(
-        codecs.open(testfilename, mode="r", encoding="utf-8").read(),
-        headers=[("Content-Type", "text/html")])
-    selenium.get(httpserver.url)
-    return CustomBrowser(selenium)
