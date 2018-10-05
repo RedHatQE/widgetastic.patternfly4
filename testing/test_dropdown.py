@@ -1,7 +1,6 @@
 import pytest
 from widgetastic.widget import View
-from widgetastic_patternfly4 import (Dropdown, DropdownDisabled, DropdownItemDisabled,
-                                     DropdownItemNotFound, Kebab)
+from widgetastic_patternfly4 import Dropdown, DropdownItemDisabled, DropdownItemNotFound, Kebab
 
 from conftest import CustomBrowser
 

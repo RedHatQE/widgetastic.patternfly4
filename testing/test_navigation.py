@@ -7,14 +7,15 @@ NAVS = [
     ("Primary Nav Default Example", ["Current link", "Link 2", "Link 3", "Link 4"],
         ["Current link"]),
     ("Primary Nav Expandable Example", {"Link 1 (current and expanded example)": ["Current link",
-                                        "Subnav link 2","Subnav link 3"],
+                                        "Subnav link 2", "Subnav link 3"],
                                         "Link 2 (expanded, but not current example)":
                                         ["Subnav link 1", "Subnav link 2"], "Link 3":
                                         ["Subnav link 1", "Subnav link 2"]},
         ["Link 1 (current and expanded example)", "Current link"]),
     ("Primary Nav Mixed Example", {"Link 1 (not expandable)": None,
-                                   "Link 2 (expanded, but not current example)": ["Subnav link 1",
-                                   "Subnav link 2"], "Link 4 (current, but not expanded example)":
+                                   "Link 2 (expanded, but not current example)":
+                                   ["Subnav link 1", "Subnav link 2"],
+                                   "Link 4 (current, but not expanded example)":
                                    ["Subnav link 1", "Subnav link 2", "Subnav link 3"]},
         ["Link 4 (current, but not expanded example)", "Subnav link 2"])
 ]
