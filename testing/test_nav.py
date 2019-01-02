@@ -8,7 +8,8 @@ NAVS = [
     ("Primary Nav Expandable Example", {"Link 1":
                                         ["Subnav Link 1", "Subnav Link 2", "Subnav Link 3"],
                                         "Link 2":
-                                        ["Subnav Link 1", "Subnav Link 2", "Subnav Link 3"]},
+                                        ["Custom onClick", "Subnav Link 1", "Subnav Link 2",
+                                         "Subnav Link 3"]},
         ["Link 1", "Subnav Link 1"]),
     ("Primary Nav Mixed Example", {"Link 1 (not expandable)": None,
                                    "Link 2 - expandable":
