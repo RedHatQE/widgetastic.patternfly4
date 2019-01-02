@@ -27,8 +27,9 @@ class Dropdown(Widget):
     ROOT = ParametrizedLocator('.//div[contains(@class, "pf-c-dropdown") and '
                                'child::button[normalize-space(.)={@text|quote}]]')
     BUTTON_LOCATOR = "./button"
-    ITEMS_LOCATOR = "./div/*[self::a or self::button]"
-    ITEM_LOCATOR = "./div/*[self::a or self::button][normalize-space(.)={}]"
+    ITEMS_LOCATOR = ".//ul[@class='pf-c-dropdown__menu']/li"
+    ITEM_LOCATOR = (".//*[self::a or self::button][contains(@class, 'pf-c-dropdown__menu-item')"
+                    " and normalize-space(.)={}]")
 
     def __init__(self, parent, text, logger=None):
         Widget.__init__(self, parent, logger=logger)
@@ -73,7 +74,10 @@ class Dropdown(Widget):
     @property
     def items(self):
         """Returns a list of all dropdown items as strings."""
-        return [self.browser.text(el) for el in self.browser.elements(self.ITEMS_LOCATOR)]
+        self.open()
+        result = [self.browser.text(el) for el in self.browser.elements(self.ITEMS_LOCATOR)]
+        self.close()
+        return result
 
     def has_item(self, item):
         """Returns whether the items exists.
@@ -89,7 +93,10 @@ class Dropdown(Widget):
     def item_element(self, item):
         """Returns a WebElement for given item name."""
         try:
-            return self.browser.element(self.ITEM_LOCATOR.format(quote(item)))
+            self.open()
+            result = self.browser.element(self.ITEM_LOCATOR.format(quote(item)))
+            self.close()
+            return result
         except NoSuchElementException:
             try:
                 items = self.items

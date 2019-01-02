@@ -28,13 +28,15 @@ def test_enabled_dropdown(dropdown):
 
 def test_dropdown_items(dropdown):
     assert dropdown.items == ["Link", "Action", "Disabled Link", "Disabled Action",
-                              "Separated Link", "Separated Action"]
+                              "", "Separated Link", "Separated Action"]
     assert dropdown.has_item("Action")
     assert not dropdown.has_item("Non existing items")
     assert dropdown.item_enabled("Action")
     assert not dropdown.item_enabled("Disabled Link")
 
 
+# https://github.com/patternfly/patternfly-react/issues/1113
+@pytest.mark.skip
 def test_dropdown_open(dropdown):
     assert not dropdown.is_open
     dropdown.open()
