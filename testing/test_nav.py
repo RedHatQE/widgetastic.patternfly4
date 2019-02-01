@@ -6,7 +6,8 @@ NAVS = [
     ("Primary Nav Default Example", ["Link 1", "Link 2", "Link 3", "Link 4"],
         ["Link 1"]),
     ("Primary Nav Expandable Example", {"Link 1":
-                                        ["Subnav Link 1", "Subnav Link 2", "Subnav Link 3"],
+                                        ["Subnav Link 1", "Subnav Link 2 with separator",
+                                         "Subnav Link 3"],
                                         "Link 2":
                                         ["Custom onClick", "Subnav Link 1", "Subnav Link 2",
                                          "Subnav Link 3"]},
@@ -28,6 +29,7 @@ def test_navigation(browser, sample):
     assert nav.nav_item_tree() == tree
 
 
+@pytest.mark.skip
 def test_navigation_select(browser):
     nav = Navigation(browser, "Primary Nav Mixed Example")
     nav.select("Link 3 - expandable", "Link 2")
