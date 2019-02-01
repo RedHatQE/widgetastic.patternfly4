@@ -9,7 +9,7 @@ class Alert(Widget):
     """
     ROOT = ParametrizedLocator("{@locator}")
     TITLE = './/h4[@class="pf-c-alert__title"]'
-    BODY = './/div[@class="pf-c-alert__body"]'
+    DESCRIPTION = './/div[@class="pf-c-alert__description"]'
     ACTION = './/div[@class="pf-c-alert__action"]/*'
     TYPE_MAPPING = {
         "pf-m-warning": "warning",
@@ -36,9 +36,8 @@ class Alert(Widget):
 
     @property
     def body(self):
-        el = self.browser.element(self.BODY)
-        trim_text = self.browser.text(self._raw_title_el)
-        return self.browser.text(el)[len(trim_text):].strip()
+        el = self.browser.element(self.DESCRIPTION)
+        return self.browser.text(el)
 
     def click_action(self):
         el = self.browser.element(self.ACTION)
