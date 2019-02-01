@@ -1,3 +1,5 @@
+from contextlib import contextmanager
+
 from widgetastic.exceptions import NoSuchElementException, UnexpectedAlertPresentException
 from widgetastic.utils import ParametrizedLocator
 from widgetastic.xpath import quote
@@ -35,12 +37,17 @@ class Dropdown(Widget):
         Widget.__init__(self, parent, logger=logger)
         self.text = text
 
+    @contextmanager
+    def opened(self):
+        self.open()
+        yield
+        self.close()
+
     @property
     def is_enabled(self):
         """Returns if the dropdown itself is enabled and therefore interactive."""
         return "disabled" not in self.browser.classes(self.BUTTON_LOCATOR)
 
-    @property
     def _verify_enabled(self):
         if not self.is_enabled:
             raise DropdownDisabled('{} "{}" is not enabled'.format(
@@ -51,7 +58,7 @@ class Dropdown(Widget):
         return "pf-m-expanded" in self.browser.classes(self)
 
     def open(self):
-        self._verify_enabled
+        self._verify_enabled()
         if not self.is_open:
             self.browser.click(self.BUTTON_LOCATOR)
 
@@ -62,7 +69,7 @@ class Dropdown(Widget):
             ignore_nonpresent: Will ignore exceptions due to disabled or missing dropdown
         """
         try:
-            self._verify_enabled
+            self._verify_enabled()
             if self.is_open:
                 self.browser.click(self)
         except (NoSuchElementException, DropdownDisabled):
@@ -74,9 +81,8 @@ class Dropdown(Widget):
     @property
     def items(self):
         """Returns a list of all dropdown items as strings."""
-        self.open()
-        result = [self.browser.text(el) for el in self.browser.elements(self.ITEMS_LOCATOR)]
-        self.close()
+        with self.opened():
+            result = [self.browser.text(el) for el in self.browser.elements(self.ITEMS_LOCATOR)]
         return result
 
     def has_item(self, item):
@@ -90,12 +96,13 @@ class Dropdown(Widget):
         """
         return item in self.items
 
-    def item_element(self, item):
+    def item_element(self, item, close=True):
         """Returns a WebElement for given item name."""
         try:
             self.open()
             result = self.browser.element(self.ITEM_LOCATOR.format(quote(item)))
-            self.close()
+            if close:
+                self.close()
             return result
         except NoSuchElementException:
             try:
@@ -108,7 +115,7 @@ class Dropdown(Widget):
                 items_string = "The dropdown is probably not present"
             raise DropdownItemNotFound("Item {!r} not found. {}".format(item, items_string))
 
-    def item_enabled(self, item):
+    def item_enabled(self, item, close=True):
         """Returns whether the given item is enabled.
 
         Args:
@@ -117,9 +124,12 @@ class Dropdown(Widget):
         Returns:
             Boolean - True if enabled, False if not.
         """
-        self._verify_enabled
-        el = self.item_element(item)
-        return "pf-m-disabled" not in self.browser.classes(el)
+        self._verify_enabled()
+        el = self.item_element(item, close=False)
+        is_el_enabled = "pf-m-disabled" not in self.browser.classes(el)
+        if close:
+            self.close()
+        return is_el_enabled
 
     def item_select(self, item, handle_alert=None):
         """Opens the dropdown and selects the desired item.
@@ -133,8 +143,7 @@ class Dropdown(Widget):
         """
         self.logger.info("Selecting %r", item)
         try:
-            self.open()
-            if not self.item_enabled(item):
+            if not self.item_enabled(item, close=False):
                 raise DropdownItemDisabled(
                     'Item "{}" of {} "{}" is disabled\n'
                     'The following items are available: {}'
@@ -142,7 +151,10 @@ class Dropdown(Widget):
                             type(self).__name__.lower(),
                             getattr(self, "text", None) or self.locator,
                             ";".join(self.items)))
-            self.browser.click(self.item_element(item), ignore_ajax=handle_alert is not None)
+            self.browser.click(
+                self.item_element(item, close=False),
+                ignore_ajax=handle_alert is not None
+            )
             if handle_alert is not None:
                 self.browser.handle_alert(cancel=not handle_alert, wait=10.0)
                 self.browser.plugin.ensure_page_safe()

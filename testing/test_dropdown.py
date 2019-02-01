@@ -35,8 +35,6 @@ def test_dropdown_items(dropdown):
     assert not dropdown.item_enabled("Disabled Link")
 
 
-# https://github.com/patternfly/patternfly-react/issues/1113
-@pytest.mark.skip
 def test_dropdown_open(dropdown):
     assert not dropdown.is_open
     dropdown.open()

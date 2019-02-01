@@ -33,10 +33,9 @@ jobs:
           tags: true
 before_install:
   - pip install -U setuptools pip
-  - pip install flake8 pytest pytest-cov coveralls webdrivermanager
+  - pip install flake8 pytest webdrivermanager
   - webdrivermanager $BROWSER
 install: python setup.py install
 script:
   - flake8 src testing --max-line-length=100
-  - py.test -v --cov widgetastic_patternfly4 --cov-report term-missing
-after_success: coveralls
+  - py.test -v
