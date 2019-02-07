@@ -59,14 +59,16 @@ class Navigation(Widget):
     def currently_selected(self):
         return [self.browser.text(el) for el in self.browser.elements(self.CURRENTLY_SELECTED)]
 
-    def select(self, *levels):
+    def select(self, *levels, **kwargs):
         """Select an item in the navigation.
 
         Args:
             *levels: Items to be clicked in the navigation.
+            force: Force navigation to happen, defaults to False.
         """
         self.logger.info("Selecting %r in navigation", levels)
-        if list(levels) == self.currently_selected:
+        force = kwargs.get('force', False)
+        if not force and list(levels) == self.currently_selected:
             return
         current_item = self
         for i, level in enumerate(levels, 1):
