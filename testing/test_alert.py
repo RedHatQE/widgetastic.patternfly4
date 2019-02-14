@@ -16,10 +16,10 @@ def test_alert_is_displayed(alert):
 
 def test_alert_title(alert):
     alert_type = alert.type if alert.type != "error" else "danger"
-    assert alert.title == "{} notification title".format(alert_type.capitalize())
+    assert alert.title == "{} alert title".format(alert_type.capitalize())
 
 
 def test_alert_body(alert):
     alert_type = alert.type if alert.type != "error" else "danger"
-    assert alert.body == ("{} notification description."
+    assert alert.body == ("{} alert description."
                           " This is a link.".format(alert_type.capitalize()))

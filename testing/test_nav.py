@@ -21,6 +21,7 @@ NAVS = [
 ]
 
 
+@pytest.mark.skip
 @pytest.mark.parametrize("sample", NAVS, ids=lambda sample: sample[0])
 def test_navigation(browser, sample):
     label, tree, currently_selected = sample
