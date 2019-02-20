@@ -1,6 +1,7 @@
 from .alert import Alert  # noqa
 from .breadcrumb import BreadCrumb  # noqa
 from .button import Button  # noqa
+from .donutchart import DonutChart  # noqa
 from .dropdown import (Dropdown, DropdownDisabled, DropdownItemDisabled, # noqa
                        DropdownItemNotFound, Kebab)  # noqa
 from .formselect import (  # noqa
