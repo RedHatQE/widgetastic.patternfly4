@@ -12,16 +12,24 @@ class Navigation(Widget):
     https://pf-next.com/components/Nav/examples/
     """
 
-    ROOT = ParametrizedLocator('.//nav[@class="pf-c-nav" and @aria-label={@label|quote}]')
+    LOCATOR_START = './/nav[@class="pf-c-nav"{}]'
+    ROOT = ParametrizedLocator("{@locator}")
     CURRENTLY_SELECTED = ('.//a[contains(@class, "pf-m-current") or '
                           'parent::li[contains(@class, "pf-m-current")]]')
     ITEMS = "./ul/li/a"
     SUB_ITEMS_ROOT = "./section"
     ITEM_MATCHING = "./ul/li[.//a[normalize-space(.)={}]]"
 
-    def __init__(self, parent, label, logger=None):
+    def __init__(self, parent, label=None, id=None, locator=None, logger=None):
         Widget.__init__(self, parent, logger=logger)
-        self.label = label
+        label_part = " and @label={}".format(quote(label)) if label else ""
+        id_part = " and @id={}".format(quote(id)) if id else ""
+        if locator is not None:
+            self.locator = locator
+        elif label_part or id_part:
+            self.locator = self.LOCATOR_START.format(label_part + id_part)
+        else:
+            raise TypeError('You need to specify either, id, label or locator for Navigation')
 
     def read(self):
         return self.currently_selected
