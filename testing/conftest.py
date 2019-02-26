@@ -29,6 +29,7 @@ def selenium(browser_name):
 
 @pytest.fixture(scope="module")
 def browser(selenium, request):
-    name = request.module.__name__.lstrip("test_")
+    name = request.module.__name__.split("_")[1]
+    selenium.maximize_window()
     selenium.get("http://patternfly-react.surge.sh/patternfly-4/components/{}".format(name))
     return Browser(selenium)
