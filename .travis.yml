@@ -39,6 +39,6 @@ before_install:
 install: python setup.py install
 script:
   - flake8 src testing --max-line-length=100
-  - pytest -v --cov=src
+  - pytest -v --no-cov-on-fail --cov=widgetastic_patternfly4
 after_success:
   - codecov
