@@ -5,7 +5,7 @@ from widgetastic.widget import Table, TableColumn, TableRow, Widget
 
 
 class HeaderColumn(TableColumn):
-    """Represents a cell in the row."""
+    """Represents a cell in the header row."""
 
     def __locator__(self):
         return self.browser.element(
@@ -26,9 +26,6 @@ class HeaderColumn(TableColumn):
             raise ValueError("order should be either 'ascending' or 'descending'")
         while self.sorting_order != order:
             self.click()
-
-    def fill(self, *args, **kwargs):
-        return super(TableColumn, self).fill(*args, **kwargs)
 
 
 class HeaderRow(TableRow):
@@ -55,14 +52,23 @@ class HeaderRow(TableRow):
     def read(self):
         return self.parent.headers
 
-    def fill(self, *args, **kwargs):
-        return super(TableRow, self).fill(*args, **kwargs)
-
 
 class PatternflyTable(Table):
+
+    HEADERS = './thead/tr/th|./tr/th|./thead/tr/td' + '|' + Table.HEADER_IN_ROWS
 
     header_row = HeaderRow()
 
     def sort_by(self, column, order):
         header = self.header_row[column]
         header.sort(order)
+
+    def _toggle_select_all(self, value, column):
+        header = self.header_row[column]
+        header.fill(value)
+
+    def select_all(self, column=0):
+        self._toggle_select_all(True, column)
+
+    def deselect_all(self, column=0):
+        self._toggle_select_all(False, column)
