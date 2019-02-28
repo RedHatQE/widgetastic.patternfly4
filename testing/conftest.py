@@ -3,6 +3,7 @@ import os
 import pytest
 from selenium import webdriver
 from widgetastic.browser import Browser
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
 
 @pytest.fixture(scope="session")
@@ -23,6 +24,8 @@ def selenium(browser_name):
         firefox_options = webdriver.FirefoxOptions()
         firefox_options.headless = True
         driver = webdriver.Firefox(options=firefox_options)
+    elif browser_name == "remote":
+        driver = webdriver.Remote(desired_capabilities=DesiredCapabilities.CHROME)
     yield driver
     driver.quit()
 

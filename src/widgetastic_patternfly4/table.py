@@ -54,8 +54,12 @@ class HeaderRow(TableRow):
 
 
 class PatternflyTable(Table):
+    """Represents the Patternfly table.
 
-    HEADERS = './thead/tr/th|./tr/th|./thead/tr/td' + '|' + Table.HEADER_IN_ROWS
+    http://patternfly-react.surge.sh/patternfly-4/components/table
+    """
+
+    HEADERS = "./thead/tr/th|./tr/th|./thead/tr/td" + "|" + Table.HEADER_IN_ROWS
 
     header_row = HeaderRow()
 
