@@ -22,7 +22,13 @@ class Navigation(Widget):
 
     def __init__(self, parent, label=None, id=None, locator=None, logger=None):
         Widget.__init__(self, parent, logger=logger)
-        label_part = " and @label={}".format(quote(label)) if label else ""
+
+        quoted_label = quote(label) if label else ""
+        if label:
+            label_part = " and @label={} or @aria-label={}".format(quoted_label, quoted_label)
+        else:
+            label_part = ""
+
         id_part = " and @id={}".format(quote(id)) if id else ""
         if locator is not None:
             self.locator = locator
