@@ -16,6 +16,8 @@ Nav - http://patternfly-react.surge.sh/patternfly-4/components/nav
 
 Table - http://patternfly-react.surge.sh/patternfly-4/components/table
 
+Tabs - http://patternfly-react.surge.sh/patternfly-4/components/tabs
+
 
 ### Testing
 
