@@ -39,6 +39,8 @@ class TabsTestView(View):
 def test_primary_tabs(browser):
     view = TabsTestView(browser)
     assert view.primary.tab1.is_displayed
+    # selecting the tab just in case, as other tests could have selected smth different
+    view.primary.tab1.select()
     assert view.primary.tab2.is_displayed
     assert view.primary.tab1.is_active()
     assert not view.primary.tab2.is_active()
@@ -52,6 +54,8 @@ def test_primary_tabs(browser):
 def test_secondary_tabs(browser):
     view = TabsTestView(browser)
     assert view.secondary.tab1.is_displayed
+    # selecting the tab just in case, as other tests could have selected smth different
+    view.primary.tab1.select()
     assert view.secondary.tab1.is_active()
     assert view.secondary.tab1.secondary1.is_displayed
     assert view.secondary.tab1.secondary2.is_displayed
@@ -66,6 +70,8 @@ def test_secondary_tabs(browser):
 
 def test_auto_selected(browser):
     view = TabsTestView(browser)
+    # selecting the tab just in case, as other tests could have selected smth different
+    view.primary.tab1.select()
     assert not view.primary.tab2.is_active()
     view.primary.tab2.content.read()
     assert view.primary.tab2.is_active()
