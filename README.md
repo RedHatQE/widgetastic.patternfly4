@@ -8,6 +8,8 @@ Library of Patternfly v4 (aka Next) components for [Widgetastic](https://github.
 
 Alert - http://patternfly-react.surge.sh/patternfly-4/components/alert
 
+Breadcrumb - http://patternfly-react.surge.sh/patternfly-4/components/breadcrumb
+
 Button - http://patternfly-react.surge.sh/patternfly-4/components/button
 
 Dropdown - http://patternfly-react.surge.sh/patternfly-4/components/dropdown
