@@ -15,11 +15,13 @@ class Tab(View):
 
     # Locator of the Tab selector
     TAB_LOCATOR = ParametrizedLocator(
-        './/div[contains(@class, "pf-c-tabs")]/ul/li[button[text()={@tab_name|quote}]]')
+        './/div[contains(@class, "pf-c-tabs")]/ul'
+        '/li[button[normalize-space(.)={@tab_name|quote}]]'
+    )
 
     ROOT = ParametrizedLocator(
         './/section[@aria-labelledby=string('
-        'preceding-sibling::div/ul/li/button[text()={@tab_name|quote}]/@id)]'
+        'preceding-sibling::div/ul/li/button[normalize-space(.)={@tab_name|quote}]/@id)]'
     )
 
     @property
