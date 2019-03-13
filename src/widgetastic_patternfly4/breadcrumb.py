@@ -18,7 +18,7 @@ class BreadCrumb(Widget):
 
     @property
     def _path_elements(self):
-        return self.browser.elements(self.ELEMENTS, parent=self)
+        return self.browser.elements(self.ELEMENTS)
 
     @property
     def locations(self):
