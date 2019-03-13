@@ -1,5 +1,5 @@
 import pytest
-from widgetastic_patternfly4 import PatternflyTable
+from widgetastic_patternfly4 import ExpandableTable, PatternflyTable
 from widgetastic.widget import Checkbox
 
 
@@ -7,7 +7,7 @@ SORT = [
     ("Repositories", "ascending", ["a", "one", "p"]),
     ("Repositories", "descending", ["p", "one", "a"]),
     ("Pull requests", "ascending", ["a", "b", "k"]),
-    ("Pull requests", "descending", ["k", "b", "a"])
+    ("Pull requests", "descending", ["k", "b", "a"]),
 ]
 
 
@@ -21,17 +21,29 @@ def test_sortable_table(browser, sample):
 
 
 @pytest.mark.parametrize(
-    "sample",
-    [("select_all", True), ("deselect_all", False)],
-    ids=("select", "deselect")
+    "sample", [("select_all", True), ("deselect_all", False)], ids=("select", "deselect")
 )
 def test_selectable_table(browser, sample):
     method, expected_result = sample
     table = PatternflyTable(
         browser,
         ".//table[./caption[normalize-space(.)='Selectable Table']]",
-        column_widgets={0: Checkbox(locator=".//input")}
+        column_widgets={0: Checkbox(locator=".//input")},
     )
     getattr(table, method)()
     for row in table:
         assert expected_result == row[0].widget.selected
+
+
+def test_expandable_table(browser, sample):
+    method, expected_result = sample
+    table = ExpandableTable(browser, ".//table[./caption[normalize-space(.)='Collapsible Table']]")
+    parent1_row = table[1]
+    parent1_row.collapse()
+    assert not parent1_row.is_expanded
+    assert not parent1_row.content.is_displayed
+    parent1_row.expand()
+    assert parent1_row.is_expanded
+    assert parent1_row.content.is_displayed
+    assert parent1_row.content.read()
+    assert table.read()

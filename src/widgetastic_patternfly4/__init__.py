@@ -14,5 +14,5 @@ from .navigation import Navigation  # noqa
 from .pagination import Pagination  # noqa
 from .select import Select, SelectItemDisabled, SelectItemNotFound  # noqa
 from .switch import Switch, SwitchDisabled  # noqa
-from .table import PatternflyTable  # noqa
+from .table import ExpandableTable, PatternflyTable  # noqa
 from .tabs import Tab  # noqa
