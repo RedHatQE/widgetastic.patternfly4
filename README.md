@@ -14,6 +14,8 @@ Dropdown - http://patternfly-react.surge.sh/patternfly-4/components/dropdown
 
 Nav - http://patternfly-react.surge.sh/patternfly-4/components/nav
 
+Pagination - http://patternfly-react.surge.sh/patternfly-4/components/pagination
+
 Table - http://patternfly-react.surge.sh/patternfly-4/components/table
 
 Tabs - http://patternfly-react.surge.sh/patternfly-4/components/tabs

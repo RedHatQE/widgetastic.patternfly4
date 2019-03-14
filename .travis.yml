@@ -33,8 +33,9 @@ jobs:
           tags: true
 before_install:
   - pip install -U setuptools pip
-  - pip install -U flake8 pytest webdrivermanager
+  - pip install -U flake8 pytest
   - pip install -U pytest-cov codecov
+  - pip install git+https://github.com/quarckster/webdriverdownloader.git@import_fix
   - webdrivermanager $BROWSER
 install: python setup.py install
 script:
