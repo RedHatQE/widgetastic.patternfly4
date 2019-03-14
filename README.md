@@ -14,6 +14,8 @@ Button - http://patternfly-react.surge.sh/patternfly-4/components/button
 
 Dropdown - http://patternfly-react.surge.sh/patternfly-4/components/dropdown
 
+FormSelect - http://patternfly-react.surge.sh/patternfly-4/components/formselect
+
 Nav - http://patternfly-react.surge.sh/patternfly-4/components/nav
 
 Pagination - http://patternfly-react.surge.sh/patternfly-4/components/pagination
