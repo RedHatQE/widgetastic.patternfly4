@@ -76,12 +76,14 @@ class FormSelect(GenericLocatorWidget):
             raise FormSelectDisabled('{} is not enabled'.format(repr(self)))
         if value not in self.all_options:
             raise FormSelectOptionNotFound(
-                'Option {} not found in {}. Available options: {}'
+                'Option "{}" not found in {}. Available options: {}'
                 .format(value, repr(self), self.all_options)
             )
         elif value not in self.all_enabled_options:
             raise FormSelectOptionDisabled(
-                'Option {} is disabled in {}. Enabled options are: {}')
+                'Option "{}" is disabled in {}. Enabled options are: {}'
+                .format(value, repr(self), self.all_enabled_options)
+            )
         self._select_element.select_by_visible_text(value)
 
     def read(self):
