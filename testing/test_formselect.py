@@ -11,17 +11,25 @@ from widgetastic_patternfly4 import (
 
 class FormSelectTestView(View):
     input = FormSelect(
-        locator='//h1[text()="FormSelect Input"]/following-sibling::section//select')
+        locator='.//h3[normalize-space(.)="FormSelect Input"]/following-sibling::section//select')
     input_grouping = FormSelect(
         locator=(
-            '//h1[text()="FormSelect Input with grouping"]'
+            './/h3[normalize-space(.)="FormSelect Input with grouping"]'
             '/following-sibling::section//select'
         )
     )
     input_invalid = FormSelect(
-        locator='//h1[text()="FormSelect Input Invalid"]/following-sibling::section//select')
+        locator=(
+            './/h3[normalize-space(.)="FormSelect Input Invalid"]/'
+            'following-sibling::section//select'
+        )
+    )
     input_disabled = FormSelect(
-        locator='//h1[text()="FormSelect Input Disabled"]/following-sibling::section//select')
+        locator=(
+            './/h3[normalize-space(.)="FormSelect Input Disabled"]/'
+            'following-sibling::section//select'
+        )
+    )
 
 
 @pytest.fixture
