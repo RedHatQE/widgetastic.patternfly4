@@ -5,7 +5,7 @@ from widgetastic_patternfly4 import Navigation
 NAVS = [
     (".//nav[@id='nav-primary-simple']", ["Link 1", "Link 2", "Link 3 with separator", "Link 4"],
         ["Link 1"]),
-    (".//h1[normalize-space(.)='Expandable Nav']/following-sibling::section//nav", {
+    (".//h3[normalize-space(.)='Expandable Nav']/following-sibling::section//nav", {
         "Link 1":
         ["Subnav Link 1", "Subnav Link 2 with separator",
          "Subnav Link 3"],
@@ -14,7 +14,7 @@ NAVS = [
          "Subnav Link 3"]
     },
         ["Link 1", "Subnav Link 1"]),
-    (".//h1[normalize-space(.)='Nav Mixed']/following-sibling::section//nav", {
+    (".//h3[normalize-space(.)='Nav Mixed']/following-sibling::section//nav", {
         "Link 1 (not expandable)": None,
         "Link 2 - expandable":
         ["Link 1", "Link 2", "Link 3"],
@@ -34,7 +34,7 @@ def test_navigation(browser, sample):
 
 
 def test_navigation_select(browser):
-    loc = ".//h1[normalize-space(.)='Nav Mixed']/following-sibling::section//nav"
+    loc = ".//h3[normalize-space(.)='Nav Mixed']/following-sibling::section//nav"
     nav = Navigation(browser, locator=loc)
     nav.select("Link 3 - expandable", "Link 2")
     assert nav.currently_selected == ["Link 3 - expandable", "Link 2"]
