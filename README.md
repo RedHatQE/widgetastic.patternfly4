@@ -24,6 +24,8 @@ Pagination - http://patternfly-react.surge.sh/patternfly-4/components/pagination
 
 Select - http://patternfly-react.surge.sh/patternfly-4/components/select
 
+Switch - http://patternfly-react.surge.sh/patternfly-4/components/switch
+
 Table - http://patternfly-react.surge.sh/patternfly-4/components/table
 
 Tabs - http://patternfly-react.surge.sh/patternfly-4/components/tabs
