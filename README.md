@@ -12,6 +12,8 @@ Breadcrumb - http://patternfly-react.surge.sh/patternfly-4/components/breadcrumb
 
 Button - http://patternfly-react.surge.sh/patternfly-4/components/button
 
+Context Selector - http://patternfly-react.surge.sh/patternfly-4/components/contextselector
+
 Donut Chart - https://patternfly-react.surge.sh/patternfly-4/components/donutchart
 
 Dropdown - http://patternfly-react.surge.sh/patternfly-4/components/dropdown
