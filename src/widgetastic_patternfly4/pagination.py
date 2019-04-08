@@ -101,13 +101,14 @@ class Pagination(View):
 
     def __iter__(self):
         self.first_page()
-        self._page_counter = 1
+        self._page_counter = 0
         return self
 
     def __next__(self):
         if self._page_counter < self.total_pages:
-            self.next_page()
             self._page_counter += 1
+            if self._page_counter > 1:
+                self.next_page()
             return self._page_counter
         else:
             raise StopIteration
