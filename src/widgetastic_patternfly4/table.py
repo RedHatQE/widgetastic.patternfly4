@@ -175,13 +175,3 @@ class ExpandableTable(PatternflyTable):
 
     def _create_row(self, parent, index, logger=None):
         return self.Row(parent, index, self.content_view, logger)
-
-    @property
-    def _is_header_in_body(self):
-        """Override this to always return true.
-
-        Since we are resolving rows by the 'tbody' tag, widgetastic.Table._process_table
-        creates the rows with a position starting at 1 (because a <thead> tag is present
-        when enumerating through the <table> tag's children)
-        """
-        return True

@@ -35,9 +35,8 @@ def test_selectable_table(browser, sample):
         assert expected_result == row[0].widget.selected
 
 
-def test_expandable_table(browser, sample):
-    method, expected_result = sample
-    table = ExpandableTable(browser, ".//table[./caption[normalize-space(.)='Collapsible Table']]")
+def test_expandable_table(browser):
+    table = ExpandableTable(browser, ".//table[./caption[normalize-space(.)='Collapsible table']]")
     parent1_row = table[1]
     parent1_row.collapse()
     assert not parent1_row.is_expanded
