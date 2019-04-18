@@ -1,5 +1,5 @@
 import pytest
-from widgetastic_patternfly4 import ExpandableTable, PatternflyTable
+from widgetastic_patternfly4 import ExpandableTable, PatternflyTable, RowNotExpandable
 from widgetastic.widget import Checkbox
 
 
@@ -36,13 +36,69 @@ def test_selectable_table(browser, sample):
 
 
 def test_expandable_table(browser):
+    expected_read = [
+        {
+            "Header cell": "one",
+            "Branches": "two",
+            "Pull requests": "three",
+            "Workspaces": "four",
+            "Last Commit": "five",
+        },
+        {
+            "Header cell": "parent - 1",
+            "Branches": "two",
+            "Pull requests": "three",
+            "Workspaces": "four",
+            "Last Commit": "five",
+        },
+        {
+            "Header cell": "parent - 2",
+            "Branches": "two",
+            "Pull requests": "three",
+            "Workspaces": "four",
+            "Last Commit": "five",
+        },
+        {
+            "Header cell": "parent - 3",
+            "Branches": "two",
+            "Pull requests": "three",
+            "Workspaces": "four",
+            "Last Commit": "five",
+        },
+    ]
+
+    row1_expected_content = "child - 1"
+    row2_expected_content = "child - 2"
+    row3_expected_content = "child - 3"
+
     table = ExpandableTable(browser, ".//table[./caption[normalize-space(.)='Collapsible table']]")
+
+    assert table.read() == expected_read
+
+    # First row is not an expandable row
+    assert not table[0].is_expandable
+    with pytest.raises(RowNotExpandable):
+        table[0].expand()
+
     parent1_row = table[1]
-    parent1_row.collapse()
+    parent2_row = table[2]
+    parent3_row = table[3]
+
+    parent1_row.collapse()  # The row starts out expanded on the demo page
     assert not parent1_row.is_expanded
     assert not parent1_row.content.is_displayed
+
     parent1_row.expand()
     assert parent1_row.is_expanded
     assert parent1_row.content.is_displayed
-    assert parent1_row.content.read()
-    assert table.read()
+    assert parent1_row.content.read() == row1_expected_content
+
+    parent2_row.expand()
+    assert parent2_row.is_expanded
+    assert parent2_row.content.is_displayed
+    assert parent2_row.content.read() == row2_expected_content
+
+    parent3_row.expand()
+    assert parent3_row.is_expanded
+    assert parent3_row.content.is_displayed
+    assert parent3_row.content.read() == row3_expected_content
