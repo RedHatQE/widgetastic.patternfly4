@@ -1,7 +1,5 @@
 import six
 
-from cached_property import cached_property
-
 from widgetastic.log import create_item_logger
 from widgetastic.widget import Table, TableColumn, TableRow, Text, Widget
 from widgetastic.widget.table import resolve_table_widget
