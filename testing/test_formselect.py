@@ -13,16 +13,16 @@ class FormSelectTestView(View):
     ROOT = ".//main[@role='main']"
 
     input = FormSelect(
-        locator='(.//select)[1]'
+        locator=".//h2[normalize-space(.)='Simple FormSelect']/following::div/div/select"
     )
     input_grouping = FormSelect(
-        locator='(.//select)[4]'
+        locator=".//h2[normalize-space(.)='FormSelect (Grouped)']/following::div/div/select"
     )
     input_invalid = FormSelect(
-        locator='(.//select)[2]'
+        locator=".//h2[normalize-space(.)='FormSelect (Invalid)']/following::div/div/select"
     )
     input_disabled = FormSelect(
-        locator='(.//select)[3]'
+        locator=".//h2[normalize-space(.)='FormSelect (Disabled)']/following::div/div/select"
     )
 
 
