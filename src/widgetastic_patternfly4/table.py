@@ -262,7 +262,7 @@ class ExpandableTable(PatternflyTable):
         elif not column_widgets:
             kwargs["column_widgets"] = {0: col_widget}
 
-        super().__init__(*args, **kwargs)
+        super(ExpandableTable, self).__init__(*args, **kwargs)
 
     @property
     def _is_header_in_body(self):
