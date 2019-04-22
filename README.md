@@ -1,5 +1,6 @@
 [![Build Status](https://travis-ci.org/quarckster/widgetastic.patternfly4.svg?branch=master)](https://travis-ci.org/quarckster/widgetastic.patternfly4)
 [![codecov](https://codecov.io/gh/quarckster/widgetastic.patternfly4/branch/master/graph/badge.svg)](https://codecov.io/gh/quarckster/widgetastic.patternfly4)
+[![PyPI version](https://badge.fury.io/py/widgetastic.patternfly4.svg)](https://badge.fury.io/py/widgetastic.patternfly4)
 
 Library of Patternfly v4 (aka Next) components for [Widgetastic](https://github.com/RedHatQE/widgetastic.core).
 
@@ -11,6 +12,8 @@ Alert - http://patternfly-react.surge.sh/patternfly-4/components/alert
 Breadcrumb - http://patternfly-react.surge.sh/patternfly-4/components/breadcrumb
 
 Button - http://patternfly-react.surge.sh/patternfly-4/components/button
+
+Context Selector - http://patternfly-react.surge.sh/patternfly-4/components/contextselector
 
 Donut Chart - https://patternfly-react.surge.sh/patternfly-4/components/donutchart
 

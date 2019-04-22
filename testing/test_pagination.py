@@ -61,7 +61,12 @@ def test_last_page(paginator):
 
 
 def test_per_page_options(paginator):
-    assert paginator.per_page_options == ["10", "20", "50", "100"]
+    assert paginator.per_page_options == [
+        "10 per page",
+        "20 per page",
+        "50 per page",
+        "100 per page"
+    ]
 
 
 @pytest.mark.parametrize("items_per_page", [10, 20, 50, 100])
