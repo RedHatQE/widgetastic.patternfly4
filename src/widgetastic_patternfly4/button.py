@@ -76,8 +76,8 @@ class Button(Widget, ClickableMixin):
     @property
     def disabled(self):
         return (
-            "pf-m-disabled" in self.browser.classes(self)
-            or self.browser.get_attribute("disabled", self) == "disabled"
+            "pf-m-disabled" in self.browser.classes(self) or
+            self.browser.get_attribute("disabled", self) == "disabled"
         )
 
     def __repr__(self):

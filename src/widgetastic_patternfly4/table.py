@@ -102,7 +102,7 @@ class PatternflyTable(Table):
     @property
     def _is_header_in_body(self):
         """Override this to return False.
-        
+
         Some PF4 tables have a 'header cell' in the row, which is a th in the row, this will
         cause Table._is_header_in_body to incorrectly return 'True'
         """

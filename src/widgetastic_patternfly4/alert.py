@@ -33,7 +33,7 @@ class Alert(Widget):
     @property
     def title(self):
         trim_text = self.browser.text(self.browser.element("./span", parent=self._raw_title_el))
-        return self.browser.text(self._raw_title_el)[len(trim_text) :].strip()
+        return self.browser.text(self._raw_title_el)[len(trim_text):].strip()
 
     @property
     def body(self):
@@ -51,7 +51,8 @@ class Alert(Widget):
                 return self.TYPE_MAPPING[class_]
         else:
             raise ValueError(
-                "Could not find a proper alert type. Available classes: {!r} Alert has: {!r}".format(
+                "Could not find a proper alert type."
+                " Available classes: {!r} Alert has: {!r}".format(
                     self.TYPE_MAPPING, self.browser.classes(self)
                 )
             )
