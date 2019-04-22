@@ -18,10 +18,12 @@ class Select(GenericLocatorWidget):
 
     http://patternfly-react.surge.sh/patternfly-4/components/select
     """
+
     BUTTON_LOCATOR = "./button"
     ITEMS_LOCATOR = ".//ul[@class='pf-c-select__menu']/li"
-    ITEM_LOCATOR = (".//button[contains(@class, 'pf-c-select__menu-item')"
-                    " and normalize-space(.)={}]")
+    ITEM_LOCATOR = (
+        ".//button[contains(@class, 'pf-c-select__menu-item')" " and normalize-space(.)={}]"
+    )
 
     @contextmanager
     def opened(self):
@@ -80,8 +82,9 @@ class Select(GenericLocatorWidget):
             return result
         except NoSuchElementException:
             raise SelectItemNotFound(
-                "Item {!r} not found in {}. Available items: {}"
-                .format(item, repr(self), self.items)
+                "Item {!r} not found in {}. Available items: {}".format(
+                    item, repr(self), self.items
+                )
             )
 
     def item_enabled(self, item, close=True):
@@ -113,8 +116,10 @@ class Select(GenericLocatorWidget):
             if not self.item_enabled(item, close=False):
                 raise SelectItemDisabled(
                     'Item "{}" of {} is disabled\n'
-                    'The following items are available and enabled: {}'
-                    .format(item, repr(self), self.enabled_items))
+                    "The following items are available and enabled: {}".format(
+                        item, repr(self), self.enabled_items
+                    )
+                )
             self.browser.click(self.item_element(item, close=False))
 
     def fill(self, value):

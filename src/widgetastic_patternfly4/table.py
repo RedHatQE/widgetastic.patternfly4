@@ -55,6 +55,7 @@ class PatternflyTableRow(TableRow):
     """
     Extends TableRow to support having a 'th' tag within the row
     """
+
     HEADER_IN_ROW = "./th[1]"
     TABLE_COLUMN_CLS = TableColumn
 
@@ -76,9 +77,7 @@ class PatternflyTableRow(TableRow):
             if index == 1:
                 # We assume the header entry always sits at position 1. Return a TableColumn for it.
                 # Pass position '0' since the Column __locator__ uses 'position + 1'
-                return self.TABLE_COLUMN_CLS(
-                    self, 0, logger=create_item_logger(self.logger, item)
-                )
+                return self.TABLE_COLUMN_CLS(self, 0, logger=create_item_logger(self.logger, item))
 
             if index > 1:
                 # Adjust the index for td objects that exist beyond the th so xpath is valid
@@ -93,7 +92,7 @@ class PatternflyTable(Table):
     http://patternfly-react.surge.sh/patternfly-4/components/table
     """
 
-    ROWS = './tbody/tr[./td]'
+    ROWS = "./tbody/tr[./td]"
     HEADERS = "./thead/tr/th|./tr/th|./thead/tr/td"
 
     Row = PatternflyTableRow

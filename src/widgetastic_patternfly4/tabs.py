@@ -10,26 +10,27 @@ class Tab(View):
 
     http://patternfly-react.surge.sh/patternfly-4/components/tabs
     """
+
     # The text on the tab. Can be omitted if it is the same as the tab class name capitalized
     TAB_NAME = None
 
     # Locator of the Tab selector
     TAB_LOCATOR = ParametrizedLocator(
         './/div[contains(@class, "pf-c-tabs")]/ul'
-        '/li[button[normalize-space(.)={@tab_name|quote}]]'
+        "/li[button[normalize-space(.)={@tab_name|quote}]]"
     )
 
     ROOT = ParametrizedLocator(
-        './/section[@aria-labelledby=string('
-        'preceding-sibling::div/ul/li/button[normalize-space(.)={@tab_name|quote}]/@id)]'
+        ".//section[@aria-labelledby=string("
+        "preceding-sibling::div/ul/li/button[normalize-space(.)={@tab_name|quote}]/@id)]"
     )
 
     @property
     def tab_name(self):
-        return self.TAB_NAME or type(self).__name__.replace('_', ' ').capitalize()
+        return self.TAB_NAME or type(self).__name__.replace("_", " ").capitalize()
 
     def is_active(self):
-        return 'pf-m-current' in self.parent_browser.classes(self.TAB_LOCATOR)
+        return "pf-m-current" in self.parent_browser.classes(self.TAB_LOCATOR)
 
     @property
     def is_displayed(self):
@@ -40,7 +41,7 @@ class Tab(View):
 
     def select(self):
         if not self.is_active():
-            self.logger.info('Opening the tab %s', self.tab_name)
+            self.logger.info("Opening the tab %s", self.tab_name)
             self.click()
 
     def child_widget_accessed(self, widget):
@@ -48,4 +49,4 @@ class Tab(View):
         self.select()
 
     def __repr__(self):
-        return '<Tab {!r}>'.format(self.tab_name)
+        return "<Tab {!r}>".format(self.tab_name)

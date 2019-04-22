@@ -90,7 +90,8 @@ class Pagination(View):
     def set_per_page(self, count):
         if not self._options.has_item(str(count)):
             raise ValueError(
-                "count '{}' is not a valid option in the pagination dropdown".format(count))
+                "count '{}' is not a valid option in the pagination dropdown".format(count)
+            )
 
         self._options.item_select(str(count))
 

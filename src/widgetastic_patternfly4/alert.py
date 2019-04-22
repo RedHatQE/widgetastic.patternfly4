@@ -7,6 +7,7 @@ class Alert(Widget):
 
     http://patternfly-react.surge.sh/patternfly-4/components/alert
     """
+
     ROOT = ParametrizedLocator("{@locator}")
     TITLE = './/h4[@class="pf-c-alert__title"]'
     DESCRIPTION = './/div[@class="pf-c-alert__description"]'
@@ -15,7 +16,7 @@ class Alert(Widget):
         "pf-m-warning": "warning",
         "pf-m-success": "success",
         "pf-m-danger": "error",
-        "pf-m-info": "info"
+        "pf-m-info": "info",
     }
 
     def __init__(self, parent, locator, logger=None):
@@ -32,7 +33,7 @@ class Alert(Widget):
     @property
     def title(self):
         trim_text = self.browser.text(self.browser.element("./span", parent=self._raw_title_el))
-        return self.browser.text(self._raw_title_el)[len(trim_text):].strip()
+        return self.browser.text(self._raw_title_el)[len(trim_text) :].strip()
 
     @property
     def body(self):
@@ -50,12 +51,14 @@ class Alert(Widget):
                 return self.TYPE_MAPPING[class_]
         else:
             raise ValueError(
-                'Could not find a proper alert type. Available classes: {!r} Alert has: {!r}'
-                .format(self.TYPE_MAPPING, self.browser.classes(self)))
+                "Could not find a proper alert type. Available classes: {!r} Alert has: {!r}".format(
+                    self.TYPE_MAPPING, self.browser.classes(self)
+                )
+            )
 
     def assert_no_error(self):
         if self.type == "error":
             raise AssertionError("assert_no_error: {}".format(self.body))
 
     def __repr__(self):
-        return '{}({!r})'.format(type(self).__name__, self.locator)
+        return "{}({!r})".format(type(self).__name__, self.locator)
