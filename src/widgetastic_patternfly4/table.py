@@ -51,15 +51,63 @@ class HeaderRow(TableRow):
         return self.parent.headers
 
 
+class PatternflyTableRow(TableRow):
+    """
+    Extends TableRow to support having a 'th' tag within the row
+    """
+    HEADER_IN_ROW = "./th[1]"
+    TABLE_COLUMN_CLS = TableColumn
+
+    @property
+    def has_row_header(self):
+        return len(self.browser.elements(self.HEADER_IN_ROW)) > 0
+
+    def __getitem__(self, item):
+        if isinstance(item, six.string_types):
+            index = self.table.header_index_mapping[self.table.ensure_normal(item)]
+        elif isinstance(item, int):
+            index = item
+        else:
+            raise TypeError("row[] accepts only integers and strings")
+
+        # We need to do adjustments if a <th> tag exists inside the row...
+        # Typically the layout is: <td>, <th>, <td>, <td>, <td>, and so on...
+        if self.has_row_header:
+            if index == 1:
+                # We assume the header entry always sits at position 1. Return a TableColumn for it.
+                # Pass position '0' since the Column __locator__ uses 'position + 1'
+                return self.TABLE_COLUMN_CLS(
+                    self, 0, logger=create_item_logger(self.logger, item)
+                )
+
+            if index > 1:
+                # Adjust the index for td objects that exist beyond the th so xpath is valid
+                index = index - 1
+        # After adjusting the index, call the original __getitem__ to get our TableColumn item
+        return super().__getitem__(index)
+
+
 class PatternflyTable(Table):
     """Represents the Patternfly table.
 
     http://patternfly-react.surge.sh/patternfly-4/components/table
     """
 
-    HEADERS = "./thead/tr/th|./tr/th|./thead/tr/td" + "|" + Table.HEADER_IN_ROWS
+    ROWS = './tbody/tr[./td]'
+    HEADERS = "./thead/tr/th|./tr/th|./thead/tr/td"
+
+    Row = PatternflyTableRow
 
     header_row = HeaderRow()
+
+    @property
+    def _is_header_in_body(self):
+        """Override this to return False.
+        
+        Some PF4 tables have a 'header cell' in the row, which is a th in the row, this will
+        cause Table._is_header_in_body to incorrectly return 'True'
+        """
+        return False
 
     def sort_by(self, column, order):
         header = self.header_row[column]
@@ -82,7 +130,8 @@ class ExpandableTableHeaderColumn(TableColumn):
     """
 
     def __locator__(self):
-        return "./tr[1]/th[{}]".format(self.position)
+        """Override the locator to look inside the first 'tr' within the tbody"""
+        return "./tr[1]/th[{}]".format(self.position + 1)
 
 
 class RowNotExpandable(Exception):
@@ -93,7 +142,7 @@ class RowNotExpandable(Exception):
         return "Row is not expandable: {}".format(repr(self.row))
 
 
-class ExpandableTableRow(TableRow):
+class ExpandableTableRow(PatternflyTableRow):
     """Represents a row in the table.
 
     If subclassing and also changing the Column class, do not forget to set the Column to the new
@@ -105,7 +154,10 @@ class ExpandableTableRow(TableRow):
 
     ROW = "./tr[1]"
     EXPANDABLE_CONTENT = "./tr[2]"
+
+    # Override these values inherited from PatternflyTableRow...
     HEADER_IN_ROW = "./tr[1]/th[1]"
+    TABLE_COLUMN_CLS = ExpandableTableHeaderColumn
 
     def __init__(self, parent, index, content_view=None, logger=None):
         Widget.__init__(self, parent, logger=logger)
@@ -130,33 +182,6 @@ class ExpandableTableRow(TableRow):
     @property
     def is_displayed(self):
         return self.browser.is_displayed(locator=self.ROW)
-
-    @property
-    def has_row_header(self):
-        return len(self.browser.elements(self.HEADER_IN_ROW)) > 0
-
-    def __getitem__(self, item):
-        if isinstance(item, six.string_types):
-            index = self.table.header_index_mapping[self.table.ensure_normal(item)]
-        elif isinstance(item, int):
-            index = item
-        else:
-            raise TypeError("row[] accepts only integers and strings")
-
-        # We need to do adjustments if a <th> tag exists inside the row...
-        # Typically the layout is: <td>, <th>, <td>, <td>, <td>, and so on...
-        if self.has_row_header:
-            if index == 1:
-                # We assume the header entry always sits at position 1. Return a HeaderColumn for it.
-                return ExpandableTableHeaderColumn(
-                    self, 1, logger=create_item_logger(self.logger, item)
-                )
-
-            if index > 1:
-                # Adjust the index for td objects that exist beyond the th so xpath is valid
-                index = index - 1
-        # After adjusting the index, call the original __getitem__ to get our TableColumn item
-        return super().__getitem__(index)
 
     @property
     def is_expandable(self):
