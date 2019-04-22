@@ -207,7 +207,7 @@ class ExpandableTableRow(PatternflyTableRow):
             self[0].widget.click()
 
     def read(self):
-        result = super().read()
+        result = super(ExpandableTableRow, self).read()
         # Remove the column with the "expand" button in it
         if 0 in result and not result[0]:
             del result[0]
