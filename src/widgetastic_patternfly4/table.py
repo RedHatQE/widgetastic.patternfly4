@@ -83,7 +83,7 @@ class PatternflyTableRow(TableRow):
                 # Adjust the index for td objects that exist beyond the th so xpath is valid
                 index = index - 1
         # After adjusting the index, call the original __getitem__ to get our TableColumn item
-        return super().__getitem__(index)
+        return super(PatternflyTableRow, self).__getitem__(index)
 
 
 class PatternflyTable(Table):
