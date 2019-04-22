@@ -10,25 +10,19 @@ from widgetastic_patternfly4 import (
 
 
 class FormSelectTestView(View):
+    ROOT = ".//main[@role='main']"
+
     input = FormSelect(
-        locator='.//h3[normalize-space(.)="FormSelect Input"]/following-sibling::section//select')
+        locator='(.//select)[1]'
+    )
     input_grouping = FormSelect(
-        locator=(
-            './/h3[normalize-space(.)="FormSelect Input with grouping"]'
-            '/following-sibling::section//select'
-        )
+        locator='(.//select)[4]'
     )
     input_invalid = FormSelect(
-        locator=(
-            './/h3[normalize-space(.)="FormSelect Input Invalid"]/'
-            'following-sibling::section//select'
-        )
+        locator='(.//select)[2]'
     )
     input_disabled = FormSelect(
-        locator=(
-            './/h3[normalize-space(.)="FormSelect Input Disabled"]/'
-            'following-sibling::section//select'
-        )
+        locator='(.//select)[3]'
     )
 
 
