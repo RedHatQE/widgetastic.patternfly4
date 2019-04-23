@@ -161,10 +161,10 @@ class ExpandableTableRow(PatternflyTableRow):
     def __init__(self, parent, index, content_view=None, logger=None):
         Widget.__init__(self, parent, logger=logger)
 
-        if self.parent.table_tree:
-            # If there's a table_tree that means _process_table was called in the parent.
-            # In this case we don't need to adjust index by +1 because anytree Node position
-            # will already be '+1' due to presence of 'thead' among the 'tbody' rows
+        if self.parent.has_rowcolspan:
+            # If has_rowcolspan is True in the table that means _process_table will be called
+            # in the parent. In this case we don't need to adjust index by +1 because anytree
+            # Node position will already be '+1' due to presence of 'thead' among the 'tbody' rows
             self.index = index
         else:
             self.index = index + 1 if self.parent._is_header_in_body else index
