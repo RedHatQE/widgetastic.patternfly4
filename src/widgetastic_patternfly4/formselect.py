@@ -21,20 +21,21 @@ class FormSelect(GenericLocatorWidget):
 
     http://patternfly-react.surge.sh/patternfly-4/components/formselect
     """
-    ALL_OPTIONS_LOCATOR = './/option'
-    PARENT_OPTION_GROUP = './parent::optgroup'
+
+    ALL_OPTIONS_LOCATOR = ".//option"
+    PARENT_OPTION_GROUP = "./parent::optgroup"
 
     @property
     def is_enabled(self):
         """Returns whether the FormSelect itself is enabled and therefore interactive."""
-        return self.browser.get_attribute('disabled', self) is None
+        return self.browser.get_attribute("disabled", self) is None
 
     @property
     def is_valid(self):
         """Returns whether the FormSelect has valid option selected - not highlighted with red
         color and special icon.
         """
-        return self.browser.get_attribute('aria-invalid', self) == 'false'
+        return self.browser.get_attribute("aria-invalid", self) == "false"
 
     @property
     def all_options(self):
@@ -51,11 +52,13 @@ class FormSelect(GenericLocatorWidget):
         all_option_elements = self.browser.elements(self.ALL_OPTIONS_LOCATOR)
         for el in all_option_elements:
             try:
-                group_disabled = self.browser.get_attribute(
-                    'disabled', self.PARENT_OPTION_GROUP, parent=el) is not None
+                group_disabled = (
+                    self.browser.get_attribute("disabled", self.PARENT_OPTION_GROUP, parent=el)
+                    is not None
+                )
             except NoSuchElementException:
                 group_disabled = False
-            element_disabled = self.browser.get_attribute('disabled', el) is not None
+            element_disabled = self.browser.get_attribute("disabled", el) is not None
             if not group_disabled and not element_disabled:
                 result.append(self.browser.text(el))
         return result
@@ -73,16 +76,18 @@ class FormSelect(GenericLocatorWidget):
             FormSelectOptionNotFound: if option not found
         """
         if not self.is_enabled:
-            raise FormSelectDisabled('{} is not enabled'.format(repr(self)))
+            raise FormSelectDisabled("{} is not enabled".format(repr(self)))
         if value not in self.all_options:
             raise FormSelectOptionNotFound(
-                'Option "{}" not found in {}. Available options: {}'
-                .format(value, repr(self), self.all_options)
+                'Option "{}" not found in {}. Available options: {}'.format(
+                    value, repr(self), self.all_options
+                )
             )
         elif value not in self.all_enabled_options:
             raise FormSelectOptionDisabled(
-                'Option "{}" is disabled in {}. Enabled options are: {}'
-                .format(value, repr(self), self.all_enabled_options)
+                'Option "{}" is disabled in {}. Enabled options are: {}'.format(
+                    value, repr(self), self.all_enabled_options
+                )
             )
         self._select_element.select_by_visible_text(value)
 

@@ -14,8 +14,9 @@ class Navigation(Widget):
 
     LOCATOR_START = './/nav[@class="pf-c-nav"{}]'
     ROOT = ParametrizedLocator("{@locator}")
-    CURRENTLY_SELECTED = ('.//a[contains(@class, "pf-m-current") or '
-                          'parent::li[contains(@class, "pf-m-current")]]')
+    CURRENTLY_SELECTED = (
+        './/a[contains(@class, "pf-m-current") or ' 'parent::li[contains(@class, "pf-m-current")]]'
+    )
     ITEMS = "./ul/li/a"
     SUB_ITEMS_ROOT = "./section"
     ITEM_MATCHING = "./ul/li[.//a[normalize-space(.)={}]]"
@@ -35,7 +36,7 @@ class Navigation(Widget):
         elif label_part or id_part:
             self.locator = self.LOCATOR_START.format(label_part + id_part)
         else:
-            raise TypeError('You need to specify either, id, label or locator for Navigation')
+            raise TypeError("You need to specify either, id, label or locator for Navigation")
 
     def read(self):
         return self.currently_selected
@@ -56,7 +57,8 @@ class Navigation(Widget):
                     raise
 
         return [
-            self.browser.text(el) for el in self.browser.elements(self.ITEMS, parent=current_item)]
+            self.browser.text(el) for el in self.browser.elements(self.ITEMS, parent=current_item)
+        ]
 
     def nav_item_tree(self, start=None):
         start = start or []
@@ -81,7 +83,7 @@ class Navigation(Widget):
             force: Force navigation to happen, defaults to False.
         """
         self.logger.info("Selecting %r in navigation", levels)
-        force = kwargs.get('force', False)
+        force = kwargs.get("force", False)
         if not force and list(levels) == self.currently_selected:
             return
         current_item = self
@@ -93,4 +95,4 @@ class Navigation(Widget):
             current_item = self.browser.element(self.SUB_ITEMS_ROOT, parent=li)
 
     def __repr__(self):
-        return '{}({!r})'.format(type(self).__name__, self.ROOT)
+        return "{}({!r})".format(type(self).__name__, self.ROOT)

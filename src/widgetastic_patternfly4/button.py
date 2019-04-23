@@ -19,9 +19,12 @@ class Button(Widget, ClickableMixin):
         assert button.active
         assert not button.disabled
     """
-    ROOT = ParametrizedLocator('.//*[(self::a or self::button or (self::input and '
-                               '(@type="button" or @type="submit"))) and '
-                               'contains(@class, "pf-c-button") {@locator_conditions}]')
+
+    ROOT = ParametrizedLocator(
+        ".//*[(self::a or self::button or (self::input and "
+        '(@type="button" or @type="submit"))) and '
+        'contains(@class, "pf-c-button") {@locator_conditions}]'
+    )
     CHECK_VISIBILITY = True
 
     # Classes usable in the constructor
@@ -54,14 +57,15 @@ class Button(Widget, ClickableMixin):
         else:
             # Join the kwargs, if any
             self.locator_conditions = " and ".join(
-                "@{}={}".format(attr, quote(value)) for attr, value in kwargs.items())
+                "@{}={}".format(attr, quote(value)) for attr, value in kwargs.items()
+            )
 
         if classes:
             if self.locator_conditions:
                 self.locator_conditions += " and "
             self.locator_conditions += " and ".join(
-                "contains(@class, {})".format(quote(klass))
-                for klass in classes)
+                "contains(@class, {})".format(quote(klass)) for klass in classes
+            )
         if self.locator_conditions:
             self.locator_conditions = "and ({})".format(self.locator_conditions)
 
@@ -71,8 +75,10 @@ class Button(Widget, ClickableMixin):
 
     @property
     def disabled(self):
-        return ("pf-m-disabled" in self.browser.classes(self) or
-                self.browser.get_attribute("disabled", self) == "disabled")
+        return (
+            "pf-m-disabled" in self.browser.classes(self) or
+            self.browser.get_attribute("disabled", self) == "disabled"
+        )
 
     def __repr__(self):
         return "{}{}".format(type(self).__name__, call_sig(self.args, self.kwargs))

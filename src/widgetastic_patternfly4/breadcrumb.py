@@ -6,8 +6,9 @@ class BreadCrumb(Widget):
 
     http://patternfly-react.surge.sh/patternfly-4/components/breadcrumb
     """
+
     ROOT = './/nav[contains(@class, "pf-c-breadcrumb")]/ol'
-    ELEMENTS = './/li'
+    ELEMENTS = ".//li"
 
     def __init__(self, parent, locator=None, logger=None):
         Widget.__init__(self, parent=parent, logger=logger)

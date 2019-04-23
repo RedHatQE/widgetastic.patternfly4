@@ -12,12 +12,12 @@ class Switch(GenericLocatorWidget):
     http://patternfly-react.surge.sh/patternfly-4/components/switch
     """
 
-    CHECKBOX_LOCATOR = './input'
+    CHECKBOX_LOCATOR = "./input"
     LABEL = './span[contains(@class, "pf-c-switch__label")]'
 
     @property
     def selected(self):
-        return self.browser.get_attribute('checked', self.CHECKBOX_LOCATOR) is not None
+        return self.browser.get_attribute("checked", self.CHECKBOX_LOCATOR) is not None
 
     @property
     def label(self):
@@ -28,7 +28,7 @@ class Switch(GenericLocatorWidget):
 
     @property
     def is_enabled(self):
-        return self.browser.get_attribute('disabled', self.CHECKBOX_LOCATOR) is None
+        return self.browser.get_attribute("disabled", self.CHECKBOX_LOCATOR) is None
 
     def fill(self, value):
         if not self.is_enabled:

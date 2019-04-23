@@ -27,12 +27,17 @@ class Dropdown(Widget):
         text: Text of the button, can be the inner text or the title attribute.
 
     """
-    ROOT = ParametrizedLocator('.//div[contains(@class, "pf-c-dropdown") and '
-                               'child::button[normalize-space(.)={@text|quote}]]')
+
+    ROOT = ParametrizedLocator(
+        './/div[contains(@class, "pf-c-dropdown") and '
+        "child::button[normalize-space(.)={@text|quote}]]"
+    )
     BUTTON_LOCATOR = "./button"
     ITEMS_LOCATOR = ".//ul[@class='pf-c-dropdown__menu']/li"
-    ITEM_LOCATOR = (".//*[self::a or self::button][contains(@class, 'pf-c-dropdown__menu-item')"
-                    " and normalize-space(.)={}]")
+    ITEM_LOCATOR = (
+        ".//*[self::a or self::button][contains(@class, 'pf-c-dropdown__menu-item')"
+        " and normalize-space(.)={}]"
+    )
 
     def __init__(self, parent, text, logger=None):
         Widget.__init__(self, parent, logger=logger)
@@ -51,8 +56,11 @@ class Dropdown(Widget):
 
     def _verify_enabled(self):
         if not self.is_enabled:
-            raise DropdownDisabled('{} "{}" is not enabled'.format(
-                type(self).__name__, getattr(self, "text", self.locator)))
+            raise DropdownDisabled(
+                '{} "{}" is not enabled'.format(
+                    type(self).__name__, getattr(self, "text", self.locator)
+                )
+            )
 
     @property
     def is_open(self):
@@ -147,14 +155,15 @@ class Dropdown(Widget):
             if not self.item_enabled(item, close=False):
                 raise DropdownItemDisabled(
                     'Item "{}" of {} "{}" is disabled\n'
-                    'The following items are available: {}'
-                    .format(item,
-                            type(self).__name__.lower(),
-                            getattr(self, "text", None) or self.locator,
-                            ";".join(self.items)))
+                    "The following items are available: {}".format(
+                        item,
+                        type(self).__name__.lower(),
+                        getattr(self, "text", None) or self.locator,
+                        ";".join(self.items),
+                    )
+                )
             self.browser.click(
-                self.item_element(item, close=False),
-                ignore_ajax=handle_alert is not None
+                self.item_element(item, close=False), ignore_ajax=handle_alert is not None
             )
             if handle_alert is not None:
                 self.browser.handle_alert(cancel=not handle_alert, wait=10.0)

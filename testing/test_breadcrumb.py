@@ -4,7 +4,7 @@ from widgetastic_patternfly4 import BreadCrumb
 
 def test_breadcrumb(browser):
     class TestView(View):
-        ROOT = ".//h1[text()='Breadcrumb']/following-sibling::section"
+        ROOT = ".//main[@role='main']"
         breadcrumb = BreadCrumb()
 
     view = TestView(browser)

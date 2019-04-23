@@ -1,7 +1,13 @@
 import re
 
 from widgetastic.widget import (
-    Widget, View, ParametrizedLocator, ParametrizedView, ClickableMixin, Text)
+    Widget,
+    View,
+    ParametrizedLocator,
+    ParametrizedView,
+    ClickableMixin,
+    Text,
+)
 from widgetastic.xpath import quote
 
 LEGEND_DETAIL = re.compile(r"(.*?) \(([\d]+)\)")
@@ -20,6 +26,7 @@ class DonutChart(View):
         Represents the Donut Chart
         from Patternfly 4 (https://patternfly-react.surge.sh/patternfly-4/components/donutchart)
     """
+
     ROOT = ParametrizedLocator("{@locator}")
     BASE_LOCATOR = ".//div[@id={}]"
 
@@ -36,8 +43,10 @@ class DonutChart(View):
     @View.nested
     class donut(View):  # noqa
         ROOT = ".//div[contains(@class, 'chart-container')]"
-        label = Text(locator="(.//*[name()='svg' and contains(@class, 'chart-label')]"
-                     "/*[name()='text']/*[name()='tspan'])[1]")
+        label = Text(
+            locator="(.//*[name()='svg' and contains(@class, 'chart-label')]"
+            "/*[name()='text']/*[name()='tspan'])[1]"
+        )
 
         @property
         def total(self):

@@ -95,7 +95,8 @@ class Pagination(View):
             value = count
         if not self._options.has_item(value):
             raise ValueError(
-                "count '{}' is not a valid option in the pagination dropdown".format(count))
+                "count '{}' is not a valid option in the pagination dropdown".format(count)
+            )
 
         self._options.item_select(value)
 

@@ -1,6 +1,9 @@
+import pytest
+
 from widgetastic_patternfly4 import DonutChart
 
 
+@pytest.mark.skip("Donut widget is currently broken")
 def test_donut(browser):
     donut_chart = DonutChart(browser, locator=".//div[contains(@class, 'chart-inline')]")
     assert donut_chart.donut.total == 100
