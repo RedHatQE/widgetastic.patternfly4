@@ -157,7 +157,7 @@ class ExpandableTableRow(PatternflyTableRow):
     TABLE_COLUMN_CLS = ExpandableTableHeaderColumn
 
     def __init__(self, parent, index, content_view=None, logger=None):
-        super(ExpandableTableRow, self).__init__(self, parent, index, logger=logger)
+        super(ExpandableTableRow, self).__init__(parent, index, logger=logger)
 
         content_parent = Text(parent=self, locator=self.EXPANDABLE_CONTENT)
         if content_view:
