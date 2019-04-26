@@ -55,7 +55,6 @@ class PatternflyTableRow(TableRow):
     """
     Extends TableRow to support having a 'th' tag within the row
     """
-
     HEADER_IN_ROW = "./th[1]"
     TABLE_COLUMN_CLS = TableColumn
 
@@ -150,7 +149,6 @@ class ExpandableTableRow(PatternflyTableRow):
     Args:
         index: Position of the row in the table.
     """
-
     ROW = "./tr[1]"
     EXPANDABLE_CONTENT = "./tr[2]"
 
@@ -159,24 +157,13 @@ class ExpandableTableRow(PatternflyTableRow):
     TABLE_COLUMN_CLS = ExpandableTableHeaderColumn
 
     def __init__(self, parent, index, content_view=None, logger=None):
-        Widget.__init__(self, parent, logger=logger)
-
-        if self.parent.has_rowcolspan:
-            # If has_rowcolspan is True in the table that means _process_table will be called
-            # in the parent. In this case we don't need to adjust index by +1 because anytree
-            # Node position will already be '+1' due to presence of 'thead' among the 'tbody' rows
-            self.index = index
-        else:
-            self.index = index + 1 if self.parent._is_header_in_body else index
+        super(ExpandableTableRow, self).__init__(parent, index, logger=logger)
 
         content_parent = Text(parent=self, locator=self.EXPANDABLE_CONTENT)
         if content_view:
             self.content = resolve_table_widget(content_parent, content_view)
         else:
             self.content = content_parent
-
-    def __locator__(self):
-        return self.parent.ROW_AT_INDEX.format(self.index)
 
     @property
     def is_displayed(self):
@@ -263,16 +250,6 @@ class ExpandableTable(PatternflyTable):
             kwargs["column_widgets"] = {0: col_widget}
 
         super(ExpandableTable, self).__init__(*args, **kwargs)
-
-    @property
-    def _is_header_in_body(self):
-        """Override this to always return true
-
-        Since we are resolving rows by the 'tbody' tag, widgetastic.Table._process_table
-        creates the rows with a position starting at 1 (because a <thead> tag is present
-        when enumerating through the <table> tag's children)
-        """
-        return True
 
     def _create_row(self, parent, index, logger=None):
         return self.Row(parent, index, self.content_view, logger)

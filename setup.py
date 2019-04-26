@@ -12,7 +12,7 @@ setup(
     packages=find_packages("src"),
     package_dir={"": "src"},
     install_requires=[
-        "widgetastic.core>=0.35",
+        "widgetastic.core>=0.37",
     ],
     setup_requires=[
         "setuptools_scm",
