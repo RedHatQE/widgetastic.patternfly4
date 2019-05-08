@@ -6,14 +6,27 @@ from widgetastic_patternfly4 import Dropdown, DropdownItemDisabled, DropdownItem
 @pytest.fixture
 def view(browser):
     class TestView(View):
-        dropdown = Dropdown("Dropdown")
-        kebab = Kebab(".//h4[@id='dropdown-with-kebab']/following::div"
-                      "/div[contains(@class, 'pf-c-dropdown')]")
+        kebab = Kebab(
+            ".//h4[@id='dropdown-with-kebab']/following::div"
+            "/div[contains(@class, 'pf-c-dropdown')]"
+        )
+        dropdown_txt_locator = Dropdown("Dropdown")
+        dropdown_custom_locator = Dropdown(
+            locator=(
+                ".//h2[normalize-space(.)='Simple dropdown']/../"
+                "/div[contains(@class, 'pf-c-dropdown')]"
+            )
+        )
+        dropdown_default_locator = Dropdown()
 
     return TestView(browser)
 
 
-@pytest.fixture(params=["dropdown", "kebab"])
+@pytest.fixture(
+    params=[
+        "dropdown_txt_locator", "dropdown_custom_locator", "dropdown_default_locator" "kebab"
+    ]
+)
 def dropdown(view, request):
     return getattr(view, request.param)
 
