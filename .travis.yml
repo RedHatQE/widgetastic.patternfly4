@@ -32,8 +32,8 @@ jobs:
         on:
           tags: true
 before_install:
-  - pip install -U setuptools pip
-  - pip install -U flake8 pytest webdrivermanager
+  - pip install -U setuptools pip wheel
+  - pip install -U flake8 pytest webdrivermanager selenium
   - pip install -U pytest-cov codecov
   - webdrivermanager $BROWSER
 install: python setup.py install
