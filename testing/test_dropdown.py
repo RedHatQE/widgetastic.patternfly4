@@ -13,7 +13,7 @@ def view(browser):
         dropdown_txt_locator = Dropdown("Dropdown")
         dropdown_custom_locator = Dropdown(
             locator=(
-                ".//h2[normalize-space(.)='Simple dropdown']/../"
+                ".//h4[@id='simple-dropdown']/following::div"
                 "/div[contains(@class, 'pf-c-dropdown')]"
             )
         )
