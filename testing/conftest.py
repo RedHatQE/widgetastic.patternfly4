@@ -34,5 +34,5 @@ def selenium(browser_name):
 def browser(selenium, request):
     name = request.module.__name__.split("_")[1]
     selenium.maximize_window()
-    selenium.get("http://patternfly-react.surge.sh/patternfly-4/components/{}".format(name))
+    selenium.get("https://www.patternfly.org/v4/documentation/react/components/{}".format(name))
     return Browser(selenium)

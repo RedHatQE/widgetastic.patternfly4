@@ -5,7 +5,7 @@ from widgetastic_patternfly4 import Tab
 class TabsTestView(View):
     @View.nested
     class primary(View):
-        ROOT = ".//h2[normalize-space(.)='Simple tabs']/following::div/div"
+        ROOT = ".//h4[@id='simple-tabs']/following::div"
 
         @View.nested
         class tab1(Tab):
@@ -19,7 +19,7 @@ class TabsTestView(View):
 
     @View.nested
     class secondary(View):
-        ROOT = ".//h2[normalize-space(.)='Secondary buttons tabs']/following::div/div"
+        ROOT = ".//h4[@id='secondary-buttons-tabs']/following::div"
 
         @View.nested
         class tab1(Tab):

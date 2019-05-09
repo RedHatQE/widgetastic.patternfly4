@@ -7,7 +7,7 @@ from widgetastic_patternfly4 import Dropdown, DropdownItemDisabled, DropdownItem
 def view(browser):
     class TestView(View):
         dropdown = Dropdown("Dropdown")
-        kebab = Kebab(".//h2[normalize-space(.)='Dropdown with kebab']/../"
+        kebab = Kebab(".//h4[@id='dropdown-with-kebab']/following::div"
                       "/div[contains(@class, 'pf-c-dropdown')]")
 
     return TestView(browser)
