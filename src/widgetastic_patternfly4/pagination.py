@@ -1,17 +1,7 @@
 from widgetastic.utils import ParametrizedLocator
-from widgetastic.widget import GenericLocatorWidget, Text, TextInput, View, Widget
+from widgetastic.widget import GenericLocatorWidget, Text, TextInput, View
 
-from . import Dropdown as VanillaDropdown
-
-
-class Dropdown(VanillaDropdown):
-
-    ROOT = ParametrizedLocator("{@locator}")
-    BUTTON_LOCATOR = "./div/button"
-
-    def __init__(self, parent, locator, logger=None):
-        Widget.__init__(self, parent, logger=logger)
-        self.locator = locator
+from .dropdown import Dropdown
 
 
 class Pagination(View):
@@ -21,11 +11,11 @@ class Pagination(View):
     """
 
     ROOT = ParametrizedLocator("{@locator}")
-    _first = GenericLocatorWidget(".//button[@data-action='first']")
-    _previous = GenericLocatorWidget(".//button[@data-action='previous']")
-    _next = GenericLocatorWidget(".//button[@data-action='next']")
-    _last = GenericLocatorWidget(".//button[@data-action='last']")
-    _options = Dropdown(".//div[contains(@class, 'pf-c-dropdown')]")
+    _first = GenericLocatorWidget(".//button[contains(@data-action, 'first')]")
+    _previous = GenericLocatorWidget(".//button[contains(@data-action, 'previous')]")
+    _next = GenericLocatorWidget(".//button[contains(@data-action, 'next')]")
+    _last = GenericLocatorWidget(".//button[contains(@data-action, 'last')]")
+    _options = Dropdown()
     _items = Text(".//span[@class='pf-c-options-menu__toggle-text']")
     _current_page = TextInput(locator=".//input[@aria-label='Current page']")
     _total_pages = Text(".//div[@class='pf-c-pagination__nav-page-select']/span")
@@ -88,17 +78,18 @@ class Pagination(View):
         return self._options.items
 
     def set_per_page(self, count):
-        # support both digits (20 or "20") and exact string value ("20 per page")
-        if not isinstance(count, str) or count.isdigit():
-            value = '{} per page'.format(str(count))
+        # convert a possible int to string
+        value = str(count)
+        value_per_page = "{} per page".format(value)
+        items = self._options.items
+        if value_per_page in items:
+            self._options.item_select(value_per_page)
+        elif value in items:
+            self._options.item_select(value)
         else:
-            value = count
-        if not self._options.has_item(value):
             raise ValueError(
                 "count '{}' is not a valid option in the pagination dropdown".format(count)
             )
-
-        self._options.item_select(value)
 
     def __iter__(self):
         self.first_page()

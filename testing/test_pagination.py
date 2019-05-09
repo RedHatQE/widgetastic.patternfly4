@@ -69,20 +69,30 @@ def test_per_page_options(paginator):
     ]
 
 
-@pytest.mark.parametrize("items_per_page", [10, 20, 50, 100])
+@pytest.mark.parametrize("items_per_page", ["10 per page", "10", 10, 20, 50, 100])
 def test_iteration(paginator, items_per_page):
     assert paginator.is_first_disabled
     paginator.set_per_page(items_per_page)
-    expected_total_pages = 523 // items_per_page + 1
+
+    # Ensure we're always using an int for the math calculations
+    items_per_page_int = int(str(items_per_page).split()[0])
+
+    expected_total_pages = 523 // items_per_page_int + 1
     assert paginator.is_previous_disabled
     for page in paginator:
         assert paginator.current_page == page
         assert paginator.total_pages == expected_total_pages
-        if items_per_page * page > paginator.total_items:
+        if items_per_page_int * page > paginator.total_items:
             right_number = paginator.total_items
         else:
-            right_number = items_per_page * page
-        assert paginator.displayed_items == (1 + items_per_page * (page - 1), right_number)
+            right_number = items_per_page_int * page
+        assert paginator.displayed_items == (1 + items_per_page_int * (page - 1), right_number)
         assert paginator.total_items == 523
     assert paginator.is_next_disabled
     assert paginator.is_last_disabled
+
+
+def test_bad_paginator_page_value(paginator):
+    with pytest.raises(ValueError):
+        paginator.set_per_page(9999999)
+        paginator.set_per_page("999999")

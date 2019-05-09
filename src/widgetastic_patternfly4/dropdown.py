@@ -27,21 +27,33 @@ class Dropdown(Widget):
         text: Text of the button, can be the inner text or the title attribute.
 
     """
-
-    ROOT = ParametrizedLocator(
-        './/div[contains(@class, "pf-c-dropdown") and '
-        "child::button[normalize-space(.)={@text|quote}]]"
+    BUTTON_LOCATOR = (
+        ".//button[contains(@class, 'pf-c-options-menu__toggle-button') or "
+        "contains(@class, 'pf-c-dropdown__toggle')]"
     )
-    BUTTON_LOCATOR = "./button"
     ITEMS_LOCATOR = ".//ul[@class='pf-c-dropdown__menu']/li"
     ITEM_LOCATOR = (
         ".//*[self::a or self::button][contains(@class, 'pf-c-dropdown__menu-item')"
         " and normalize-space(.)={}]"
     )
 
-    def __init__(self, parent, text, logger=None):
+    def __init__(self, parent, text=None, locator=None, logger=None):
         Widget.__init__(self, parent, logger=logger)
         self.text = text
+        self.locator = locator
+
+    def __locator__(self):
+        if self.locator:
+            return self.locator
+        elif self.text:
+            return (
+                './/div[contains(@class, "pf-c-dropdown") and '
+                "child::button[normalize-space(.)={}]]"
+            ).format(quote(self.text))
+        else:
+            return (
+                './/div[contains(@class, "pf-c-dropdown")]'
+            )
 
     @contextmanager
     def opened(self):
