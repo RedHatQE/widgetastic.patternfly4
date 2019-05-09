@@ -78,14 +78,18 @@ class Pagination(View):
         return self._options.items
 
     def set_per_page(self, count):
-        # convert an int to string
+        # convert a possible int to string
         value = str(count)
-        if not self._options.has_item(value):
+        value_per_page = "{} per page".format(value)
+        items = self._options.items
+        if value_per_page in items:
+            self._options.item_select(value_per_page)
+        elif value in items:
+            self._options.item_select(value)
+        else:
             raise ValueError(
                 "count '{}' is not a valid option in the pagination dropdown".format(count)
             )
-
-        self._options.item_select(value)
 
     def __iter__(self):
         self.first_page()

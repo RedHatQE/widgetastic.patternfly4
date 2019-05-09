@@ -27,7 +27,10 @@ class Dropdown(Widget):
         text: Text of the button, can be the inner text or the title attribute.
 
     """
-    BUTTON_LOCATOR = ".//button[contains(@class, 'pf-c-options-menu__toggle-button')]"
+    BUTTON_LOCATOR = (
+        ".//button[contains(@class, 'pf-c-options-menu__toggle-button') or "
+        "contains(@class, 'pf-c-dropdown__toggle')]"
+    )
     ITEMS_LOCATOR = ".//ul[@class='pf-c-dropdown__menu']/li"
     ITEM_LOCATOR = (
         ".//*[self::a or self::button][contains(@class, 'pf-c-dropdown__menu-item')"
@@ -49,7 +52,7 @@ class Dropdown(Widget):
             ).format(quote(self.text))
         else:
             return (
-                './/div[contains(@class, "pf-c-dropdown") and child::button]'
+                './/div[contains(@class, "pf-c-dropdown")]'
             )
 
     @contextmanager
