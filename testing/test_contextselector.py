@@ -34,6 +34,8 @@ def test_contextselector_open(view):
 
 
 def test_contextselector_item_select(view):
+    if view.browser.browser_type == "firefox":
+        pytest.skip("This test is flaky in headless firefox")
     view.contextselector.fill('AWS')
     assert view.contextselector.read() == 'AWS'
     assert not view.contextselector.is_open
