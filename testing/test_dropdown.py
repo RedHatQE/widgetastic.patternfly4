@@ -24,7 +24,7 @@ def view(browser):
 
 @pytest.fixture(
     params=[
-        "dropdown_txt_locator", "dropdown_custom_locator", "dropdown_default_locator" "kebab"
+        "dropdown_txt_locator", "dropdown_custom_locator", "dropdown_default_locator", "kebab"
     ]
 )
 def dropdown(view, request):

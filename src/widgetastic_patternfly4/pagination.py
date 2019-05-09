@@ -11,10 +11,10 @@ class Pagination(View):
     """
 
     ROOT = ParametrizedLocator("{@locator}")
-    _first = GenericLocatorWidget(".//button[@data-action='first-page']")
-    _previous = GenericLocatorWidget(".//button[@data-action='previous-page']")
-    _next = GenericLocatorWidget(".//button[@data-action='next-page']")
-    _last = GenericLocatorWidget(".//button[@data-action='last-page']")
+    _first = GenericLocatorWidget(".//button[contains(@data-action, 'first')]")
+    _previous = GenericLocatorWidget(".//button[contains(@data-action, 'previous')]")
+    _next = GenericLocatorWidget(".//button[contains(@data-action, 'next')]")
+    _last = GenericLocatorWidget(".//button[contains(@data-action, 'last')]")
     _options = Dropdown()
     _items = Text(".//span[@class='pf-c-options-menu__toggle-text']")
     _current_page = TextInput(locator=".//input[@aria-label='Current page']")
