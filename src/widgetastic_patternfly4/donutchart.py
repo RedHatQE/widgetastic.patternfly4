@@ -6,7 +6,6 @@ from widgetastic.widget import (
     ParametrizedLocator,
     ParametrizedView,
     ClickableMixin,
-    Text,
 )
 from widgetastic.xpath import quote
 
@@ -42,25 +41,16 @@ class DonutChart(View):
 
     @View.nested
     class donut(View):  # noqa
-        ROOT = ".//div[contains(@class, 'chart-container')]"
-        label = Text(
-            locator="(.//*[name()='svg' and contains(@class, 'chart-label')]"
-            "/*[name()='text']/*[name()='tspan'])[1]"
-        )
+        ROOT = ".//div[*[name()='svg'][*[name()='text'] and not(*[name()='rect'])]]"
+        LABELS_LOCATOR = "./*[name()='svg']/*[name()='text']/*[name()='tspan']"
 
         @property
-        def total(self):
-            try:
-                return int(self.label.text)
-            except ValueError:
-                return None
+        def labels(self):
+            return [self.browser.text(elem) for elem in self.browser.elements(self.LABELS_LOCATOR)]
 
     @View.nested
     class legend(View):  # noqa
-        ROOT = (
-            ".//div[contains(@class, 'VictoryContainer') "
-            "and not(ancestor::div[contains(@class, 'chart-container')])]"
-        )
+        ROOT = "./div[contains(@class, 'VictoryContainer')]"
         ALL_ITEMS = "./*[name()='svg']/*[name()='text']/*[name()='tspan']"
 
         @ParametrizedView.nested
