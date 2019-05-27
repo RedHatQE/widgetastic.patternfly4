@@ -6,6 +6,7 @@ from widgetastic_patternfly4 import Select, SelectItemNotFound
 @pytest.fixture
 def view(browser):
     class TestView(View):
+        ROOT = ".//section[contains(@class, 'live-demo')]"
         select = Select(locator='.//div[contains(@class, "pf-c-select")]')
 
     return TestView(browser)
