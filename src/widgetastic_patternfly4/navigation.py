@@ -4,7 +4,14 @@ from widgetastic.exceptions import NoSuchElementException
 from widgetastic.utils import ParametrizedLocator
 from widgetastic.xpath import quote
 from widgetastic.widget import Widget
+from wait_for import wait_for
 
+
+def check_nav_loaded(fn):
+    def inner(self, *args, **kwargs):
+        assert self.loaded
+        fn(self, *args, **kwargs)
+    return inner
 
 class Navigation(Widget):
     """The Patternfly navigation.
@@ -12,7 +19,7 @@ class Navigation(Widget):
     https://pf-next.com/components/Nav/examples/
     """
 
-    LOCATOR_START = './/nav[@class="pf-c-nav"{}]'
+    LOCATOR_START = '//nav[@class="pf-c-nav"{}]'
     ROOT = ParametrizedLocator("{@locator}")
     CURRENTLY_SELECTED = (
         './/a[contains(@class, "pf-m-current") or ' 'parent::li[contains(@class, "pf-m-current")]]'
@@ -21,7 +28,24 @@ class Navigation(Widget):
     SUB_ITEMS_ROOT = "./section"
     ITEM_MATCHING = "./ul/li[.//a[normalize-space(.)={}]]"
 
+    @property
+    def loaded(self):
+        if self._loaded:
+            return True
+        else:
+            out = self.browser.element(self.ROOT).get_attribute('data-ouia-safe')
+            if out == 'false':
+                self.logger.info("Navigation not ready yet")
+                wait_for(
+                    lambda: self.browser.element(self.ROOT).get_attribute('data-ouia-safe')=='true',
+                    num_sec=10
+                )
+            elif not out:
+                self.logger.info("Navigation doesn't have 'data-ouia-safe' property")
+            return True
+
     def __init__(self, parent, label=None, id=None, locator=None, logger=None):
+        self._loaded = False
         Widget.__init__(self, parent, logger=logger)
 
         quoted_label = quote(label) if label else ""
@@ -38,10 +62,13 @@ class Navigation(Widget):
         else:
             raise TypeError("You need to specify either, id, label or locator for Navigation")
 
+    @check_nav_loaded
     def read(self):
         return self.currently_selected
 
+    @check_nav_loaded
     def nav_links(self, *levels):
+        import pdb;pdb.set_trace()
         if not levels:
             return [self.browser.text(el) for el in self.browser.elements(self.ITEMS)]
         current_item = self
@@ -60,6 +87,7 @@ class Navigation(Widget):
             self.browser.text(el) for el in self.browser.elements(self.ITEMS, parent=current_item)
         ]
 
+    @check_nav_loaded
     def nav_item_tree(self, start=None):
         start = start or []
         result = OrderedDict()
@@ -71,10 +99,12 @@ class Navigation(Widget):
             result = list(result.keys())
         return result
 
+    @check_nav_loaded
     @property
     def currently_selected(self):
         return [self.browser.text(el) for el in self.browser.elements(self.CURRENTLY_SELECTED)]
 
+    @check_nav_loaded
     def select(self, *levels, **kwargs):
         """Select an item in the navigation.
 
