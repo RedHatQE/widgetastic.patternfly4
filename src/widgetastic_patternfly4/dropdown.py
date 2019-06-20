@@ -186,3 +186,91 @@ class Dropdown(Widget):
 
     def __repr__(self):
         return "{}({!r})".format(type(self).__name__, getattr(self, "text", None) or self.locator)
+
+
+class GroupDropdown(Dropdown):
+    """Dropdown with grouped items in it."""
+    ITEMS_LOCATOR = ".//section[@class='pf-c-dropdown__group']/ul/li"
+    GROUPS_LOCATOR = ".//section[@class='pf-c-dropdown__group']/h1"
+    GROUP_LOCATOR = ".//section[@class='pf-c-dropdown__group'][h1[text()={}]]"
+
+    @property
+    def groups(self):
+        """Returns a list of all group names as strings."""
+        with self.opened():
+            result = [self.browser.text(el) for el in self.browser.elements(self.GROUPS_LOCATOR)]
+        return result
+
+    def item_element(self, item, group_name=None, close=True):
+        """Returns a WebElement for given item name."""
+        try:
+            self.open()
+            kwargs = {
+                'parent': self.browser.element(self.GROUP_LOCATOR.format(quote(group_name)))
+            } if group_name else {}
+            result = self.browser.element(self.ITEM_LOCATOR.format(quote(item)), **kwargs)
+            if close:
+                self.close()
+            return result
+        except NoSuchElementException:
+            try:
+                items = self.items
+            except NoSuchElementException:
+                items = []
+            if items:
+                items_string = "These items are present: {}".format("; ".join(items))
+            else:
+                items_string = "The dropdown is probably not present"
+            raise DropdownItemNotFound("Item {!r} not found. {}".format(item, items_string))
+
+    def item_enabled(self, item, group_name=None, close=True):
+        """Returns whether the given item is enabled.
+
+        Args:
+            item: Name of the item.
+
+        Returns:
+            Boolean - True if enabled, False if not.
+        """
+        self._verify_enabled()
+        el = self.item_element(item, group_name=group_name, close=False)
+        is_el_enabled = "pf-m-disabled" not in self.browser.classes(el)
+        if close:
+            self.close()
+        return is_el_enabled
+
+    def item_select(self, item, group_name=None, handle_alert=None):
+        """Opens the dropdown and selects the desired item.
+
+        Args:
+            item: Item to be selected
+            handle_alert: How to handle alerts. None - no handling, True - confirm, False - dismiss.
+
+        Raises:
+            DropdownItemDisabled
+        """
+        self.logger.info("Selecting %r", item)
+        try:
+            if not self.item_enabled(item, group_name=group_name, close=False):
+                raise DropdownItemDisabled(
+                    'Item "{}" of {} "{}" is disabled\n'
+                    "The following items are available: {}".format(
+                        item,
+                        type(self).__name__.lower(),
+                        getattr(self, "text", None) or self.locator,
+                        ";".join(self.items),
+                    )
+                )
+            self.browser.click(
+                self.item_element(item, group_name=group_name, close=False),
+                ignore_ajax=handle_alert is not None
+            )
+            if handle_alert is not None:
+                self.browser.handle_alert(cancel=not handle_alert, wait=10.0)
+                self.browser.plugin.ensure_page_safe()
+        finally:
+            try:
+                self.close(ignore_nonpresent=True)
+            except UnexpectedAlertPresentException:
+                self.logger.warning("There is an unexpected alert present.")
+                pass

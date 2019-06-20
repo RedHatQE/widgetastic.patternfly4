@@ -1,6 +1,11 @@
 import pytest
 from widgetastic.widget import View
-from widgetastic_patternfly4 import Dropdown, DropdownItemDisabled, DropdownItemNotFound
+from widgetastic_patternfly4 import (
+    Dropdown,
+    DropdownItemDisabled,
+    DropdownItemNotFound,
+    GroupDropdown,
+)
 
 
 @pytest.fixture
@@ -10,6 +15,12 @@ def view(browser):
         dropdown_txt_locator = Dropdown("Dropdown")
         dropdown_custom_locator = Dropdown(locator=".//div[contains(@class, 'pf-c-dropdown')]")
         dropdown_default_locator = Dropdown()
+        group_dropdown = GroupDropdown(
+            locator=(
+                "//h4[@id='dropdown-with-groups']/following-sibling::div[1]"
+                "/div[contains(@class, 'pf-c-dropdown')]"
+            )
+        )
 
     return TestView(browser)
 
@@ -21,6 +32,11 @@ def view(browser):
 )
 def dropdown(view, request):
     return getattr(view, request.param)
+
+
+@pytest.fixture()
+def group_dropdown(view):
+    return view.group_dropdown
 
 
 def test_dropdown_is_displayed(dropdown):
@@ -55,3 +71,17 @@ def test_dropdown_item_select(dropdown):
         dropdown.item_select("Disabled Link")
     with pytest.raises(DropdownItemNotFound):
         dropdown.item_select("Non existing items")
+
+
+def test_group_dropdown(group_dropdown):
+    assert group_dropdown.is_displayed
+    assert group_dropdown.is_enabled
+    assert group_dropdown.items == [
+        "Link", "Action", "Group 2 Link", "Group 2 Action", "Group 3 Link", "Group 3 Action"]
+    assert group_dropdown.has_item("Group 2 Link")
+    assert group_dropdown.item_enabled("Group 3 Action")
+    assert group_dropdown.groups == ["Group 2", "Group 3"]
+    group_dropdown.item_select("Link")
+    group_dropdown.item_select("Group 3 Link", group_name="Group 3")
+    with pytest.raises(DropdownItemNotFound):
+        group_dropdown.item_select("Group 3 Link", group_name="Group 2")
