@@ -1,15 +1,7 @@
-import pytest
-
-from widgetastic.browser import Browser
-
 from widgetastic_patternfly4 import DonutChart
 
 
-@pytest.fixture(scope="module")
-def browser(selenium):
-    selenium.maximize_window()
-    selenium.get("http://patternfly-react.surge.sh/patternfly-4/charts/chartdonut")
-    return Browser(selenium)
+CATEGORY = "charts"
 
 
 def test_donut(browser):
