@@ -19,7 +19,7 @@ class FormSelectOptionNotFound(Exception):
 class FormSelect(GenericLocatorWidget):
     """Represents the Patternfly FormSelect.
 
-    http://patternfly-react.surge.sh/patternfly-4/components/formselect
+    https://www.patternfly.org/v4/documentation/react/components/formselect
     """
 
     ALL_OPTIONS_LOCATOR = ".//option"

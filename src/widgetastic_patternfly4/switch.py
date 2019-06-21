@@ -9,7 +9,7 @@ class SwitchDisabled(Exception):
 class Switch(GenericLocatorWidget):
     """Represents the Patternfly Switch.
 
-    http://patternfly-react.surge.sh/patternfly-4/components/switch
+    https://www.patternfly.org/v4/documentation/react/components/switch
     """
 
     CHECKBOX_LOCATOR = "./input"

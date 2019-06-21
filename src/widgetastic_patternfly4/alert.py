@@ -5,7 +5,7 @@ from widgetastic.widget import Widget
 class Alert(Widget):
     """Represents alert block.
 
-    http://patternfly-react.surge.sh/patternfly-4/components/alert
+    https://www.patternfly.org/v4/documentation/react/components/alert
     """
 
     ROOT = ParametrizedLocator("{@locator}")

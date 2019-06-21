@@ -21,7 +21,7 @@ class DropdownItemNotFound(Exception):
 class Dropdown(Widget):
     """Represents the Patternfly dropdown.
 
-    http://patternfly-react.surge.sh/patternfly-4/components/dropdown
+    https://www.patternfly.org/v4/documentation/react/components/dropdown
 
     Args:
         text: Text of the button, can be the inner text or the title attribute.

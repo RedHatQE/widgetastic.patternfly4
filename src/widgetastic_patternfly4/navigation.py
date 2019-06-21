@@ -9,7 +9,7 @@ from widgetastic.widget import Widget
 class Navigation(Widget):
     """The Patternfly navigation.
 
-    https://pf-next.com/components/Nav/examples/
+    https://www.patternfly.org/v4/documentation/react/components/nav
     """
 
     LOCATOR_START = './/nav[@class="pf-c-nav"{}]'
