@@ -7,34 +7,34 @@ Library of Patternfly v4 (aka Next) components for [Widgetastic](https://github.
 
 ### Widgets list
 
-Alert - http://patternfly-react.surge.sh/patternfly-4/components/alert
+Alert - https://www.patternfly.org/v4/documentation/react/components/alert
 
-Breadcrumb - http://patternfly-react.surge.sh/patternfly-4/components/breadcrumb
+Breadcrumb - https://www.patternfly.org/v4/documentation/react/components/breadcrumb
 
-Button - http://patternfly-react.surge.sh/patternfly-4/components/button
+Button - https://www.patternfly.org/v4/documentation/react/components/button
 
-Context Selector - http://patternfly-react.surge.sh/patternfly-4/components/contextselector
+Context Selector - https://www.patternfly.org/v4/documentation/react/components/contextselector
 
-Donut Chart - https://patternfly-react.surge.sh/patternfly-4/components/donutchart
+Donut Chart - https://www.patternfly.org/v4/documentation/react/charts/chartdonut
 
-Dropdown - http://patternfly-react.surge.sh/patternfly-4/components/dropdown
+Dropdown - https://www.patternfly.org/v4/documentation/react/components/dropdown
 
-FormSelect - http://patternfly-react.surge.sh/patternfly-4/components/formselect
+FormSelect - https://www.patternfly.org/v4/documentation/react/components/formselect
 
-Nav - http://patternfly-react.surge.sh/patternfly-4/components/nav
+Nav - https://www.patternfly.org/v4/documentation/react/components/nav
 
-Pagination - http://patternfly-react.surge.sh/patternfly-4/components/pagination
+Pagination - https://www.patternfly.org/v4/documentation/react/components/pagination
 
-Select - http://patternfly-react.surge.sh/patternfly-4/components/select
+Select - https://www.patternfly.org/v4/documentation/react/components/select
 
-Switch - http://patternfly-react.surge.sh/patternfly-4/components/switch
+Switch - https://www.patternfly.org/v4/documentation/react/components/switch
 
-Table - http://patternfly-react.surge.sh/patternfly-4/components/table
+Table - https://www.patternfly.org/v4/documentation/react/components/table
 
-Tabs - http://patternfly-react.surge.sh/patternfly-4/components/tabs
+Tabs - https://www.patternfly.org/v4/documentation/react/components/tabs
 
 
 ### Testing
 
-The library has selenium tests that are performed against [Patternfly React docs](http://patternfly-react.surge.sh/patternfly-4/).
+The library has selenium tests that are performed against [Patternfly React docs](https://www.patternfly.org/v4/documentation/react/components/aboutmodal).
 It's also configured to run the tests every time when a new version of that page is released

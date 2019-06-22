@@ -34,5 +34,6 @@ def selenium(browser_name):
 def browser(selenium, request):
     name = request.module.__name__.split("_")[1]
     selenium.maximize_window()
-    selenium.get("https://www.patternfly.org/v4/documentation/react/components/{}".format(name))
+    category = request.module.CATEGORY if hasattr(request.module, 'CATEGORY') else "components"
+    selenium.get("https://www.patternfly.org/v4/documentation/react/{}/{}".format(category, name))
     return Browser(selenium)

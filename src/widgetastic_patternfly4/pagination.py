@@ -7,7 +7,7 @@ from .dropdown import Dropdown
 class Pagination(View):
     """Represents the Patternfly pagination.
 
-    http://patternfly-react.surge.sh/patternfly-4/components/pagination
+    https://www.patternfly.org/v4/documentation/react/components/pagination
     """
 
     ROOT = ParametrizedLocator("{@locator}")

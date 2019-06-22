@@ -16,7 +16,7 @@ class SelectItemNotFound(Exception):
 class Select(GenericLocatorWidget):
     """Represents the Patternfly Select.
 
-    http://patternfly-react.surge.sh/patternfly-4/components/select
+    https://www.patternfly.org/v4/documentation/react/components/select
     """
 
     BUTTON_LOCATOR = "./button"

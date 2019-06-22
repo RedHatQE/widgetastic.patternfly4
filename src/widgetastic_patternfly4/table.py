@@ -88,7 +88,7 @@ class PatternflyTableRow(TableRow):
 class PatternflyTable(Table):
     """Represents the Patternfly table.
 
-    http://patternfly-react.surge.sh/patternfly-4/components/table
+    https://www.patternfly.org/v4/documentation/react/components/table
     """
 
     ROWS = "./tbody/tr[./td]"

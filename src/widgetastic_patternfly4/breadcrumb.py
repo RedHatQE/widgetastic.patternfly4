@@ -4,7 +4,7 @@ from widgetastic.widget import Widget
 class BreadCrumb(Widget):
     """Represents the Patternfly BreadCrumb.
 
-    http://patternfly-react.surge.sh/patternfly-4/components/breadcrumb
+    https://www.patternfly.org/v4/documentation/react/components/breadcrumb
     """
 
     ROOT = './/nav[contains(@class, "pf-c-breadcrumb")]/ol'
