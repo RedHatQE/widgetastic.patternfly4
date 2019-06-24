@@ -192,7 +192,7 @@ class GroupDropdown(Dropdown):
     """Dropdown with grouped items in it."""
     ITEMS_LOCATOR = ".//section[@class='pf-c-dropdown__group']/ul/li"
     GROUPS_LOCATOR = ".//section[@class='pf-c-dropdown__group']/h1"
-    GROUP_LOCATOR = ".//section[@class='pf-c-dropdown__group'][h1[text()={}]]"
+    GROUP_LOCATOR = ".//section[@class='pf-c-dropdown__group'][h1[normalize-space(.)={}]]"
 
     @property
     def groups(self):
