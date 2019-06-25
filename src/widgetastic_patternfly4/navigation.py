@@ -10,8 +10,9 @@ from wait_for import wait_for
 def check_nav_loaded(fn):
     def inner(self, *args, **kwargs):
         assert self.loaded
-        fn(self, *args, **kwargs)
+        return fn(self, *args, **kwargs)
     return inner
+
 
 class Navigation(Widget):
     """The Patternfly navigation.
@@ -19,10 +20,10 @@ class Navigation(Widget):
     https://www.patternfly.org/v4/documentation/react/components/nav
     """
 
-    LOCATOR_START = '//nav[@class="pf-c-nav"{}]'
+    LOCATOR_START = './/nav[@class="pf-c-nav"{}]'
     ROOT = ParametrizedLocator("{@locator}")
     CURRENTLY_SELECTED = (
-        './/a[contains(@class, "pf-m-current") or ' 'parent::li[contains(@class, "pf-m-current")]]'
+        './/a[contains(@class, "pf-m-current") or parent::li[contains(@class, "pf-m-current")]]'
     )
     ITEMS = "./ul/li/a"
     SUB_ITEMS_ROOT = "./section"
@@ -33,11 +34,11 @@ class Navigation(Widget):
         if self._loaded:
             return True
         else:
-            out = self.browser.element(self.ROOT).get_attribute('data-ouia-safe')
-            if out == 'false':
+            out = self.browser.element(".").get_attribute("data-ouia-safe")
+            if out == "false":
                 self.logger.info("Navigation not ready yet")
                 wait_for(
-                    lambda: self.browser.element(self.ROOT).get_attribute('data-ouia-safe')=='true',
+                    lambda: self.browser.element(".").get_attribute("data-ouia-safe") == "true",
                     num_sec=10
                 )
             elif not out:
@@ -68,7 +69,6 @@ class Navigation(Widget):
 
     @check_nav_loaded
     def nav_links(self, *levels):
-        import pdb;pdb.set_trace()
         if not levels:
             return [self.browser.text(el) for el in self.browser.elements(self.ITEMS)]
         current_item = self
@@ -99,8 +99,8 @@ class Navigation(Widget):
             result = list(result.keys())
         return result
 
-    @check_nav_loaded
     @property
+    @check_nav_loaded
     def currently_selected(self):
         return [self.browser.text(el) for el in self.browser.elements(self.CURRENTLY_SELECTED)]
 
