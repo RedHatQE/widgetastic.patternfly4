@@ -27,6 +27,7 @@ class Dropdown(Widget):
         text: Text of the button, can be the inner text or the title attribute.
 
     """
+    ROOT = ParametrizedLocator("{@locator}")
     BUTTON_LOCATOR = (
         ".//button[contains(@class, 'pf-c-options-menu__toggle-button') or "
         "contains(@class, 'pf-c-dropdown__toggle')]"
@@ -39,21 +40,17 @@ class Dropdown(Widget):
 
     def __init__(self, parent, text=None, locator=None, logger=None):
         Widget.__init__(self, parent, logger=logger)
-        self.text = text
-        self.locator = locator
-
-    def __locator__(self):
-        if self.locator:
-            return self.locator
-        elif self.text:
-            return (
+        if locator and text:
+            raise ValueError("Either text or locator should be provided")
+        if text:
+            self.locator = (
                 './/div[contains(@class, "pf-c-dropdown") and '
                 "child::button[normalize-space(.)={}]]"
-            ).format(quote(self.text))
+            ).format(quote(text))
+        elif locator:
+            self.locator = locator
         else:
-            return (
-                './/div[contains(@class, "pf-c-dropdown")]'
-            )
+            self.locator = './/div[contains(@class, "pf-c-dropdown")][1]'
 
     @contextmanager
     def opened(self):
@@ -189,13 +186,3 @@ class Dropdown(Widget):
 
     def __repr__(self):
         return "{}({!r})".format(type(self).__name__, getattr(self, "text", None) or self.locator)
-
-
-class Kebab(Dropdown):
-    """The so-called "kebab" widget of Patternfly."""
-
-    ROOT = ParametrizedLocator("{@locator}")
-
-    def __init__(self, parent, locator, logger=None):
-        Widget.__init__(self, parent, logger=logger)
-        self.locator = locator

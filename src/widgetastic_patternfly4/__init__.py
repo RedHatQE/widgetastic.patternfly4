@@ -2,7 +2,7 @@ from .alert import Alert
 from .breadcrumb import BreadCrumb
 from .button import Button
 from .donutchart import DonutChart
-from .dropdown import Dropdown, DropdownDisabled, DropdownItemDisabled, DropdownItemNotFound, Kebab
+from .dropdown import Dropdown, DropdownDisabled, DropdownItemDisabled, DropdownItemNotFound
 from .formselect import (
     FormSelect,
     FormSelectDisabled,
@@ -27,7 +27,6 @@ __all__ = [
     "DropdownDisabled",
     "DropdownItemDisabled",
     "DropdownItemNotFound",
-    "Kebab",
     "FormSelect",
     "FormSelectDisabled",
     "FormSelectOptionDisabled",

@@ -1,22 +1,14 @@
 import pytest
 from widgetastic.widget import View
-from widgetastic_patternfly4 import Dropdown, DropdownItemDisabled, DropdownItemNotFound, Kebab
+from widgetastic_patternfly4 import Dropdown, DropdownItemDisabled, DropdownItemNotFound
 
 
 @pytest.fixture
 def view(browser):
     class TestView(View):
-        kebab = Kebab(
-            ".//h4[@id='dropdown-with-kebab']/following::div"
-            "/div[contains(@class, 'pf-c-dropdown')]"
-        )
+        ROOT = ".//h4[@id='simple-dropdown']/following-sibling::div[1]"
         dropdown_txt_locator = Dropdown("Dropdown")
-        dropdown_custom_locator = Dropdown(
-            locator=(
-                ".//h4[@id='simple-dropdown']/following::div"
-                "/div[contains(@class, 'pf-c-dropdown')]"
-            )
-        )
+        dropdown_custom_locator = Dropdown(locator=".//div[contains(@class, 'pf-c-dropdown')]")
         dropdown_default_locator = Dropdown()
 
     return TestView(browser)
@@ -24,7 +16,7 @@ def view(browser):
 
 @pytest.fixture(
     params=[
-        "dropdown_txt_locator", "dropdown_custom_locator", "dropdown_default_locator", "kebab"
+        "dropdown_txt_locator", "dropdown_custom_locator", "dropdown_default_locator"
     ]
 )
 def dropdown(view, request):
