@@ -11,7 +11,7 @@ def browser_name():
     return os.environ["BROWSER"]
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="module")
 def selenium(browser_name):
     if browser_name == "chrome":
         chrome_options = webdriver.ChromeOptions()
@@ -25,7 +25,7 @@ def selenium(browser_name):
         firefox_options.headless = True
         driver = webdriver.Firefox(options=firefox_options)
     elif browser_name == "remote":
-        driver = webdriver.Remote(desired_capabilities=DesiredCapabilities.CHROME)
+        driver = webdriver.Remote(desired_capabilities=DesiredCapabilities.FIREFOX)
     yield driver
     driver.quit()
 
