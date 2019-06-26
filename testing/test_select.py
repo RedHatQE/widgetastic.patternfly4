@@ -1,40 +1,41 @@
 import pytest
-from widgetastic.widget import View
 from widgetastic_patternfly4 import Select, SelectItemNotFound
 
 
 @pytest.fixture
-def view(browser):
-    class TestView(View):
-        ROOT = ".//section[contains(@class, 'live-demo')]"
-        select = Select(locator='.//div[contains(@class, "pf-c-select")]')
-
-    return TestView(browser)
-
-
-def test_select_is_displayed(view):
-    assert view.select.is_displayed
+def select(browser):
+    return Select(
+        browser,
+        locator=(
+            './/h4[@id="single-select-input"]/following-sibling::div[1]/'
+            '/div[contains(@class, "pf-c-select")]'
+        )
+    )
 
 
-def test_select_items(view):
-    assert set(view.select.items) == {'Choose...', 'Mr', 'Miss', 'Mrs', 'Ms', 'Dr', 'Other'}
-    assert view.select.has_item('Mr')
-    assert not view.select.has_item('Non existing item')
-    assert view.select.item_enabled('Miss')
+def test_select_is_displayed(select):
+    assert select.is_displayed
 
 
-def test_select_open(view):
-    assert not view.select.is_open
-    view.select.open()
-    assert view.select.is_open
-    view.select.close()
-    assert not view.select.is_open
+def test_select_items(select):
+    assert set(select.items) == {'Choose...', 'Mr', 'Miss', 'Mrs', 'Ms', 'Dr', 'Other'}
+    assert select.has_item('Mr')
+    assert not select.has_item('Non existing item')
+    assert select.item_enabled('Miss')
 
 
-def test_select_item_select(view):
-    view.select.fill('Mr')
-    assert view.select.read() == 'Mr'
-    assert not view.select.is_open
+def test_select_open(select):
+    assert not select.is_open
+    select.open()
+    assert select.is_open
+    select.close()
+    assert not select.is_open
+
+
+def test_select_item_select(select):
+    select.fill('Mr')
+    assert select.read() == 'Mr'
+    assert not select.is_open
     with pytest.raises(SelectItemNotFound):
-        view.select.fill('Non existing item')
-    assert not view.select.is_open
+        select.fill('Non existing item')
+    assert not select.is_open

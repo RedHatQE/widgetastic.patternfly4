@@ -5,7 +5,7 @@ from widgetastic_patternfly4 import Navigation
 NAVS = [
     (".//nav[@id='nav-primary-simple']", ["Link 1", "Link 2", "Link 3", "Link 4"],
         ["Link 1"]),
-    (".//h4[@id='expandable-nav']/following::div/nav", {
+    (".//h4[@id='expandable-nav']/following-sibling::div[1]//nav", {
         "Link 1":
         ["Subnav Link 1", "Subnav Link 2",
          "Subnav Link 3"],
@@ -14,7 +14,7 @@ NAVS = [
          "Subnav Link 3"]
     },
         ["Link 1", "Subnav Link 1"]),
-    (".//h4[@id='nav-mixed']/following::div/nav", {
+    (".//h4[@id='nav-mixed']/following-sibling::div[1]//nav", {
         "Link 1 (not expandable)": None,
         "Link 2 - expandable":
         ["Link 1", "Link 2", "Link 3"],
