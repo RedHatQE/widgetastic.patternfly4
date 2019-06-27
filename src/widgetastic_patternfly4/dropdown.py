@@ -114,11 +114,11 @@ class Dropdown(Widget):
         """
         return item in self.items
 
-    def item_element(self, item, close=True):
+    def item_element(self, item, close=True, **kwargs):
         """Returns a WebElement for given item name."""
         try:
             self.open()
-            result = self.browser.element(self.ITEM_LOCATOR.format(quote(item)))
+            result = self.browser.element(self.ITEM_LOCATOR.format(quote(item)), **kwargs)
             if close:
                 self.close()
             return result
@@ -133,7 +133,7 @@ class Dropdown(Widget):
                 items_string = "The dropdown is probably not present"
             raise DropdownItemNotFound("Item {!r} not found. {}".format(item, items_string))
 
-    def item_enabled(self, item, close=True):
+    def item_enabled(self, item, close=True, **kwargs):
         """Returns whether the given item is enabled.
 
         Args:
@@ -143,13 +143,13 @@ class Dropdown(Widget):
             Boolean - True if enabled, False if not.
         """
         self._verify_enabled()
-        el = self.item_element(item, close=False)
+        el = self.item_element(item, close=False, **kwargs)
         is_el_enabled = "pf-m-disabled" not in self.browser.classes(el)
         if close:
             self.close()
         return is_el_enabled
 
-    def item_select(self, item, handle_alert=None):
+    def item_select(self, item, handle_alert=None, **kwargs):
         """Opens the dropdown and selects the desired item.
 
         Args:
@@ -161,7 +161,7 @@ class Dropdown(Widget):
         """
         self.logger.info("Selecting %r", item)
         try:
-            if not self.item_enabled(item, close=False):
+            if not self.item_enabled(item, close=False, **kwargs):
                 raise DropdownItemDisabled(
                     'Item "{}" of {} "{}" is disabled\n'
                     "The following items are available: {}".format(
@@ -172,7 +172,7 @@ class Dropdown(Widget):
                     )
                 )
             self.browser.click(
-                self.item_element(item, close=False), ignore_ajax=handle_alert is not None
+                self.item_element(item, close=False, **kwargs), ignore_ajax=handle_alert is not None
             )
             if handle_alert is not None:
                 self.browser.handle_alert(cancel=not handle_alert, wait=10.0)
@@ -186,3 +186,43 @@ class Dropdown(Widget):
 
     def __repr__(self):
         return "{}({!r})".format(type(self).__name__, getattr(self, "text", None) or self.locator)
+
+
+class GroupDropdown(Dropdown):
+    """Dropdown with grouped items in it."""
+    ITEMS_LOCATOR = ".//section[@class='pf-c-dropdown__group']/ul/li"
+    GROUPS_LOCATOR = ".//section[@class='pf-c-dropdown__group']/h1"
+    GROUP_LOCATOR = ".//section[@class='pf-c-dropdown__group'][h1[normalize-space(.)={}]]"
+
+    @property
+    def groups(self):
+        """Returns a list of all group names as strings."""
+        with self.opened():
+            result = [self.browser.text(el) for el in self.browser.elements(self.GROUPS_LOCATOR)]
+        return result
+
+    def item_element(self, item, group_name=None, close=True):
+        """Returns a WebElement for given item name."""
+        self.open()
+        try:
+            kwargs = {
+                'parent': self.browser.element(self.GROUP_LOCATOR.format(quote(group_name)))
+            } if group_name else {}
+        except NoSuchElementException:
+            raise DropdownItemNotFound(
+                'Following group "{}" not found. Available are: {}'.format(group_name, self.groups))
+        return super().item_element(item, close=close, **kwargs)
+
+    def item_select(self, item, group_name=None, handle_alert=None):
+        """Opens the dropdown and selects the desired item. Implemented only for proper kwargs
+        suggestions.
+
+        Args:
+            item: Item to be selected
+            group_name: name of a group to search in. If not provided - all groups will be checked.
+            handle_alert: How to handle alerts. None - no handling, True - confirm, False - dismiss.
+
+        Raises:
+            DropdownItemDisabled
+        """
+        return super().item_select(item, handle_alert=handle_alert, group_name=group_name)
