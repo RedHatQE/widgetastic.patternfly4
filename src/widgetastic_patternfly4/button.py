@@ -16,15 +16,13 @@ class Button(Widget, ClickableMixin):
         Button("contains", "Text of button (unless it is an input ...)")
         Button(title="Show xyz")  # And such
         Button("Add", classes=[Button.PRIMARY])
+        Button(locator=".//xpath")
         assert button.active
         assert not button.disabled
     """
 
-    ROOT = ParametrizedLocator(
-        ".//*[(self::a or self::button or (self::input and "
-        '(@type="button" or @type="submit"))) and '
-        'contains(@class, "pf-c-button") {@locator_conditions}]'
-    )
+    ROOT = ParametrizedLocator("{@locator}")
+
     CHECK_VISIBILITY = True
 
     # Classes usable in the constructor
@@ -39,35 +37,51 @@ class Button(Widget, ClickableMixin):
     # Shape
     BLOCK = "pf-m-block"
 
-    def __init__(self, parent, *text, **kwargs):
-        logger = kwargs.pop("logger", None)
-        Widget.__init__(self, parent, logger=logger)
-        self.args = text
-        self.kwargs = kwargs
+    def _generate_locator(self, *text, **kwargs):
         classes = kwargs.pop("classes", [])
         if text:
             if kwargs:  # classes should have been the only kwarg combined with text args
                 raise TypeError("If you pass button text then only pass classes in addition")
             if len(text) == 1:
-                self.locator_conditions = "normalize-space(.)={}".format(quote(text[0]))
+                locator_conditions = "normalize-space(.)={}".format(quote(text[0]))
             elif len(text) == 2 and text[0].lower() == "contains":
-                self.locator_conditions = "contains(normalize-space(.), {})".format(quote(text[1]))
+                locator_conditions = "contains(normalize-space(.), {})".format(quote(text[1]))
             else:
-                raise TypeError("An illegal combination of text params")
+                raise TypeError("An illegal combination of args/kwargs")
         else:
             # Join the kwargs, if any
-            self.locator_conditions = " and ".join(
+            locator_conditions = " and ".join(
                 "@{}={}".format(attr, quote(value)) for attr, value in kwargs.items()
             )
 
         if classes:
-            if self.locator_conditions:
-                self.locator_conditions += " and "
-            self.locator_conditions += " and ".join(
+            if locator_conditions:
+                locator_conditions += " and "
+            locator_conditions += " and ".join(
                 "contains(@class, {})".format(quote(klass)) for klass in classes
             )
-        if self.locator_conditions:
-            self.locator_conditions = "and ({})".format(self.locator_conditions)
+        if locator_conditions:
+            locator_conditions = "and ({})".format(locator_conditions)
+
+        return (
+            ".//*[(self::a or self::button or (self::input and "
+            "(@type='button' or @type='submit'))) and "
+            f"contains(@class, 'pf-c-button') {locator_conditions}]"
+        )
+
+    def __init__(self, parent, *text, **kwargs):
+        logger = kwargs.pop("logger", None)
+        Widget.__init__(self, parent, logger=logger)
+        self.args = text
+        self.kwargs = kwargs
+        locator = kwargs.pop("locator", None)
+        if locator:
+            self.locator = locator
+        else:
+            self.locator = self._generate_locator(*text, **kwargs)
+
+    def read(self):
+        return self.browser.text(self)
 
     @property
     def active(self):
@@ -75,10 +89,8 @@ class Button(Widget, ClickableMixin):
 
     @property
     def disabled(self):
-        return (
-            "pf-m-disabled" in self.browser.classes(self) or
-            self.browser.get_attribute("disabled", self) == "disabled"
-        )
+        check1 = "pf-m-disabled" in self.browser.classes(self)
+        return check1 or self.browser.get_attribute("disabled", self) == "disabled"
 
     def __repr__(self):
         return "{}{}".format(type(self).__name__, call_sig(self.args, self.kwargs))

@@ -1,4 +1,5 @@
 from .alert import Alert
+from .chipgroup import Chip, ChipGroup, ChipGroupToolbar
 from .breadcrumb import BreadCrumb
 from .button import Button
 from .donutchart import DonutChart
@@ -28,6 +29,9 @@ __all__ = [
     "Alert",
     "BreadCrumb",
     "Button",
+    "Chip",
+    "ChipGroup",
+    "ChipGroupToolbar",
     "DonutChart",
     "Dropdown",
     "DropdownDisabled",
