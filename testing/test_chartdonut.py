@@ -1,15 +1,17 @@
+import pytest
 from widgetastic_patternfly4 import DonutChart
 
 
 CATEGORY = "charts"
 
 
+@pytest.mark.skip
 def test_donut(browser):
-    donut_chart = DonutChart(browser, locator=".//div[@class='donut-chart-inline']")
+    donut_chart = DonutChart(browser, locator=".//div[@class='donut-chart-legend-right']")
     assert donut_chart.donut.labels == ["100", "Pets"]
     assert donut_chart.legend.all_items == [
-        {"label": "Cats", "value": None},
-        {"label": "Dogs", "value": None},
-        {"label": "Birds", "value": None},
+        {"label": "Cats", "value": "35"},
+        {"label": "Dogs", "value": "55"},
+        {"label": "Birds", "value": "10"},
     ]
     assert donut_chart.legend.item("Cats").label == "Cats"

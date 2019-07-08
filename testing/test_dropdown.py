@@ -11,14 +11,14 @@ from widgetastic_patternfly4 import (
 @pytest.fixture
 def view(browser):
     class TestView(View):
-        ROOT = ".//h4[@id='simple-dropdown']/following-sibling::div[1]"
+        ROOT = ".//h2[normalize-space(.)='Simple dropdown']/following-sibling::div[1]"
         dropdown_txt_locator = Dropdown("Dropdown")
         dropdown_custom_locator = Dropdown(locator=".//div[contains(@class, 'pf-c-dropdown')]")
         dropdown_default_locator = Dropdown()
         group_dropdown = GroupDropdown(
             locator=(
-                "//h4[@id='dropdown-with-groups']/following-sibling::div[1]"
-                "/div[contains(@class, 'pf-c-dropdown')]"
+                "//h2[normalize-space(.)='Dropdown with groups']/following-sibling::div[1]"
+                "//div[contains(@class, 'pf-c-dropdown')]"
             )
         )
 

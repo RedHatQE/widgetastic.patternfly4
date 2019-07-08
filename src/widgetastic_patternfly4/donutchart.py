@@ -51,13 +51,13 @@ class DonutChart(View):
     @View.nested
     class legend(View):  # noqa
         ROOT = "./div[contains(@class, 'VictoryContainer')]"
-        ALL_ITEMS = "./*[name()='svg']/*[name()='text']/*[name()='tspan']"
+        ALL_ITEMS = "./*[name()='svg']/*[name()='g']/*[name()='text']/*[name()='tspan']"
 
         @ParametrizedView.nested
         class item(ParametrizedView, ClickableMixin):  # noqa
             PARAMETERS = ("label_text",)
             ROOT = ParametrizedLocator(
-                ".//*[name()='svg']/*[name()='text']"
+                ".//*[name()='svg']/*[name()='text']/*[name()='g']"
                 "/*[name()='tspan' and contains(., '{label_text}')]"
             )
 

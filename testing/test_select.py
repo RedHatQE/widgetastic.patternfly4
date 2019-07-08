@@ -7,7 +7,7 @@ def select(browser):
     return Select(
         browser,
         locator=(
-            './/h4[@id="single-select-input"]/following-sibling::div[1]/'
+            './/h2[normalize-space(.)="Single select input"]/following-sibling::div[1]/'
             '/div[contains(@class, "pf-c-select")]'
         )
     )

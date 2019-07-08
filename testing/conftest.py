@@ -35,6 +35,6 @@ def browser(selenium, request):
     name = request.module.__name__.split("_")[1]
     selenium.maximize_window()
     category = getattr(request.module, "CATEGORY", "components")
-    url = "https://www.patternfly.org/v4/documentation/react/{}/{}/?shadow=false"
+    url = "https://patternfly-react.surge.sh/patternfly-4/{}/{}/?shadow=false"
     selenium.get(url.format(category, name))
     return Browser(selenium)
