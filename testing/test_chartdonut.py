@@ -1,11 +1,9 @@
-import pytest
 from widgetastic_patternfly4 import DonutChart
 
 
 CATEGORY = "charts"
 
 
-@pytest.mark.skip
 def test_donut(browser):
     donut_chart = DonutChart(browser, locator=".//div[@class='donut-chart-legend-right']")
     assert donut_chart.donut.labels == ["100", "Pets"]

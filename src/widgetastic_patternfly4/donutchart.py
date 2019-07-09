@@ -9,7 +9,7 @@ from widgetastic.widget import (
 )
 from widgetastic.xpath import quote
 
-LEGEND_DETAIL = re.compile(r"(.*?) \(([\d]+)\)")
+LEGEND_DETAIL = re.compile(r"(.*?): ([\d]+)")
 
 
 def _get_legend_item(text):
@@ -57,7 +57,7 @@ class DonutChart(View):
         class item(ParametrizedView, ClickableMixin):  # noqa
             PARAMETERS = ("label_text",)
             ROOT = ParametrizedLocator(
-                ".//*[name()='svg']/*[name()='text']/*[name()='g']"
+                ".//*[name()='svg']/*[name()='g']/*[name()='text']"
                 "/*[name()='tspan' and contains(., '{label_text}')]"
             )
 
