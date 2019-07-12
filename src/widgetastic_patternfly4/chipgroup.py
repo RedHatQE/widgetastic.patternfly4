@@ -5,7 +5,7 @@ from cached_property import cached_property
 from widgetastic.xpath import quote
 
 
-class ReadOnlyChip(Exception):
+class ChipReadOnlyError(Exception):
     def __init__(self, chip):
         super().__init__()
         self.chip = chip

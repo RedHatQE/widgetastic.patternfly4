@@ -1,6 +1,6 @@
 import pytest
 from widgetastic.widget import View
-from widgetastic_patternfly4 import Chip, ChipGroup, ChipGroupToolbar
+from widgetastic_patternfly4 import Chip, ChipGroup, ChipGroupToolbar, ChipReadOnlyError
 from wait_for import wait_for
 
 
@@ -75,7 +75,7 @@ def test_chipgroup_chips(view):
     assert view.read_only_chip.is_displayed
     assert view.read_only_chip.read_only
     assert view.read_only_chip.read() == "Read-only Chip"
-    with pytest.raises(ValueError):
+    with pytest.raises(ChipReadOnlyError):
         view.read_only_chip.remove()
 
 
