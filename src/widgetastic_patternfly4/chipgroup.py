@@ -5,6 +5,12 @@ from cached_property import cached_property
 from widgetastic.xpath import quote
 
 
+class ReadOnlyChip(Exception):
+    def __init__(self, chip):
+        super().__init__()
+        self.chip = chip
+
+
 class Chip(View):
     ROOT = ParametrizedLocator("{@locator}")
 
@@ -30,8 +36,8 @@ class Chip(View):
         """
         if self.badge:
             # If this chip has a badge, strip the badge off the end to return only the text
-            return self._text.read().rstrip(self.badge)
-        return self._text.read()
+            return self._text.text.rstrip(self.badge)
+        return self._text.text
 
     @cached_property
     def badge(self):
@@ -40,7 +46,7 @@ class Chip(View):
 
         A chip's badge will never change, so we can cache this property
         """
-        return self._badge.read() if self._badge.is_displayed else None
+        return self._badge.text if self._badge.is_displayed else None
 
     @property
     def is_displayed(self):
@@ -66,7 +72,7 @@ class Chip(View):
             self.button.click()
             wait_for(_gone, num_sec=3, message="wait for chip to dissappear", delay=0.1)
         else:
-            raise ValueError("Chip is read-only")
+            raise ReadOnlyChip(self, "Chip is read-only")
 
 
 class OverflowChip(Chip):
@@ -95,7 +101,7 @@ class OverflowChip(Chip):
         """
         Override the text property so this is not a cached property, since button text can change
         """
-        return self._text.read()
+        return self._text.text
 
     def _show_less_shown(self):
         return self.text.replace(" ", "").lower() == "showless"
@@ -214,7 +220,7 @@ class ChipGroupToolbarCategory(View):
 
     @property
     def label(self):
-        return self._label.read()
+        return self._label.text
 
 
 class ChipGroupToolbar(View):
