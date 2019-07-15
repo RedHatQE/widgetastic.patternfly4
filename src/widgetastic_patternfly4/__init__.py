@@ -1,5 +1,11 @@
 from .alert import Alert
-from .chipgroup import Chip, ChipGroup, ChipGroupToolbar, ChipReadOnlyError
+from .chipgroup import (
+    Chip,
+    ChipReadOnlyError,
+    ChipGroupToolbar,
+    ChipGroupToolbarCategory,
+    StandAloneChipGroup
+)
 from .breadcrumb import BreadCrumb
 from .button import Button
 from .donutchart import DonutChart
@@ -30,9 +36,10 @@ __all__ = [
     "BreadCrumb",
     "Button",
     "Chip",
-    "ChipGroup",
-    "ChipGroupToolbar",
     "ChipReadOnlyError",
+    "ChipGroupToolbar",
+    "ChipGroupToolbarCategory",
+    "StandAloneChipGroup",
     "DonutChart",
     "Dropdown",
     "DropdownDisabled",

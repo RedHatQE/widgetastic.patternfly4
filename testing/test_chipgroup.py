@@ -1,31 +1,31 @@
 import pytest
-from widgetastic.widget import View
-from widgetastic_patternfly4 import Chip, ChipGroup, ChipGroupToolbar, ChipReadOnlyError
+from widgetastic.widget import ParametrizedView, View
+from widgetastic_patternfly4 import Chip, StandAloneChipGroup, ChipGroupToolbar, ChipReadOnlyError
 from wait_for import wait_for
 
 
 @pytest.fixture(scope="module")
-def view(browser):
-    _LOCATOR = ".//div[@class='pf-c-chip'][descendant::span[contains(., '{}')]]"
+def chips_view(browser):
+    class TestView(View):
+        ROOT = ".//main[@role='main']//h2[(.)='Chip']/following-sibling::div[1]/div"
+        chips = ParametrizedView.nested(Chip)
 
+    return TestView(browser)
+
+
+@pytest.fixture(scope="module")
+def root_view(browser):
     class TestView(View):
         ROOT = ".//main[@role='main']"
 
-        plain_chip = Chip(_LOCATOR.format("Chip 1"))
-        long_chip = Chip(_LOCATOR.format("Really long Chip that goes on and on"))
-        chip_with_badge = Chip(_LOCATOR.format("Chip7"))
-        read_only_chip = Chip(
-            ".//div[contains(@class, 'pf-c-chip') and contains(@class, 'pf-m-read-only')]"
-        )
-
         chip_group_toolbar = ChipGroupToolbar()
-        chip_group_multiselect = ChipGroup(
+        chip_group_multiselect = StandAloneChipGroup(
             locator=(
                 ".//h2[(.)='Chip group multi-select']/"
                 "following-sibling::div[1]/div/ul[contains(@class, 'pf-c-chip-group')]"
             )
         )
-        badge_chip_group = ChipGroup(
+        badge_chip_group = StandAloneChipGroup(
             locator=(
                 ".//h2[(.)='Badge chip group']/"
                 "following-sibling::div[1]/div/ul[contains(@class, 'pf-c-chip-group')]"
@@ -44,42 +44,49 @@ def view(browser):
     return view
 
 
-def test_chipgroup_chips(view):
-    assert view.plain_chip.text == "Chip 1"
-    assert not view.plain_chip.badge
-    assert view.plain_chip.is_displayed
-    assert not view.plain_chip.read_only
-    assert view.plain_chip.read() == "Chip 1"
-    view.plain_chip.remove()
-    assert not view.plain_chip.is_displayed
+def test_chipgroup_chips(chips_view):
+    view = chips_view
+    plain_chip = view.chips("Chip 1")
+    long_chip = view.chips("Really long Chip that goes on and on")
+    chip_with_badge = view.chips("Chip")
+    read_only_chip = view.chips("Read-only Chip")
 
-    assert view.long_chip.text == "Really long Chip that goes on and on"
-    assert not view.long_chip.badge
-    assert view.long_chip.is_displayed
-    assert not view.long_chip.read_only
-    assert view.long_chip.read() == "Really long Chip that goes on and on"
-    view.long_chip.remove()
-    assert not view.long_chip.is_displayed
+    assert plain_chip.text == "Chip 1"
+    assert not plain_chip.badge
+    assert plain_chip.is_displayed
+    assert not plain_chip.read_only
+    assert plain_chip.read() == "Chip 1"
+    plain_chip.remove()
+    assert not plain_chip.is_displayed
 
-    assert view.chip_with_badge.text == "Chip"
-    assert view.chip_with_badge.badge == "7"
-    assert view.chip_with_badge.is_displayed
-    assert not view.chip_with_badge.read_only
-    assert view.chip_with_badge.read() == "Chip"
-    view.chip_with_badge.remove()
-    assert not view.chip_with_badge.is_displayed
+    assert long_chip.text == "Really long Chip that goes on and on"
+    assert not long_chip.badge
+    assert long_chip.is_displayed
+    assert not long_chip.read_only
+    assert long_chip.read() == "Really long Chip that goes on and on"
+    long_chip.remove()
+    assert not long_chip.is_displayed
 
-    assert view.read_only_chip.text == "Read-only Chip"
-    assert not view.read_only_chip.badge
-    assert not view.read_only_chip.button.is_displayed
-    assert view.read_only_chip.is_displayed
-    assert view.read_only_chip.read_only
-    assert view.read_only_chip.read() == "Read-only Chip"
+    assert chip_with_badge.text == "Chip"
+    assert chip_with_badge.badge == "7"
+    assert chip_with_badge.is_displayed
+    assert not chip_with_badge.read_only
+    assert chip_with_badge.read() == "Chip"
+    chip_with_badge.remove()
+    assert not chip_with_badge.is_displayed
+
+    assert read_only_chip.text == "Read-only Chip"
+    assert not read_only_chip.badge
+    assert not read_only_chip.button.is_displayed
+    assert read_only_chip.is_displayed
+    assert read_only_chip.read_only
+    assert read_only_chip.read() == "Read-only Chip"
     with pytest.raises(ChipReadOnlyError):
-        view.read_only_chip.remove()
+        read_only_chip.remove()
 
 
-def test_chipgroup_multiselect(view):
+def test_chipgroup_multiselect(root_view):
+    view = root_view
     chip_group = view.chip_group_multiselect
 
     assert chip_group.is_displayed
@@ -105,7 +112,8 @@ def test_chipgroup_multiselect(view):
     assert not chip_group.is_displayed
 
 
-def test_chipgroup_badge(view):
+def test_chipgroup_badge(root_view):
+    view = root_view
     chip_group = view.badge_chip_group
 
     assert chip_group.is_displayed
@@ -131,7 +139,8 @@ def test_chipgroup_badge(view):
     assert not chip_group.is_displayed
 
 
-def test_chipgroup_toolbar(view):
+def test_chipgroup_toolbar(root_view):
+    view = root_view
     assert view.chip_group_toolbar.is_displayed
 
     groups = [group.label for group in view.chip_group_toolbar.get_groups()]

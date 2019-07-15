@@ -1,45 +1,36 @@
 from .button import Button
-from widgetastic.widget import ParametrizedLocator, Text, View
+from widgetastic.widget import ParametrizedLocator, Text, View, ParametrizedView
 from wait_for import wait_for
-from cached_property import cached_property
-from widgetastic.xpath import quote
 
 
 class ChipReadOnlyError(Exception):
-    def __init__(self, chip):
-        super().__init__()
+    def __init__(self, chip, message):
+        super().__init__(message)
         self.chip = chip
 
 
-class Chip(View):
-    ROOT = ParametrizedLocator("{@locator}")
+CHIP_ROOT = (
+    ".//*[(self::div or self::li) and contains(@class, 'pf-c-chip')"
+    " and not(contains(@class, 'pf-m-overflow'))]"
+)
+CHIP_TEXT = ".//span[contains(@class, 'pf-c-chip__text')]"
+CHIP_BADGE = ".//span[contains(@class, 'pf-c-badge')]"
 
-    CHIP_LOCATOR = ".//li[contains(@class, 'pf-c-chip') and not(contains(@class, 'pf-m-overflow'))]"
+GROUP_ROOT = ".//ul[contains(@class, 'pf-c-chip-group')]"
+STANDALONE_GROUP_LABEL = "./preceding-sibling::*[contains(@class, 'pf-c-chip-group__label')]"
+TOOLBAR_GROUP_LABEL = "./li/*[contains(@class, 'pf-c-chip-group__label')]"
 
-    _text = Text(".//span[contains(@class, 'pf-c-chip__text')]")
-    _badge = Text(
-        ".//span[contains(@class, 'pf-c-chip__text')]/span[contains(@class, 'pf-c-badge')]"
-    )
+
+class _BaseChip(View):
+    """
+    Holds attributes shared by both Chip and OverflowChip
+    """
+
+    _text = Text(CHIP_TEXT)
+    _badge = Text(f"{CHIP_TEXT}/{CHIP_BADGE}")
     button = Button(**{"aria-label": "close"})
 
-    def __init__(self, parent, locator=None, logger=None):
-        super().__init__(parent, logger=logger)
-        self.locator = locator or self.CHIP_LOCATOR
-
-    @cached_property
-    def text(self):
-        """
-        Return the text displayed on the chip
-
-        A chip's text will never change, so we can cache this property
-        Note that text is defined differently below in OverflowChip
-        """
-        if self.badge:
-            # If this chip has a badge, strip the badge off the end to return only the text
-            return self._text.text.rstrip(self.badge)
-        return self._text.text
-
-    @cached_property
+    @property
     def badge(self):
         """
         Return the text of the badge displayed on the chip, if it has a badge
@@ -49,20 +40,46 @@ class Chip(View):
         return self._badge.text if self._badge.is_displayed else None
 
     @property
+    def text(self):
+        """
+        Return the text displayed on the chip
+        """
+        if self.badge:
+            # If this chip has a badge, strip the badge off the end to return only the text
+            return self._text.text.rstrip(self.badge)
+        return self._text.text
+
+    @property
     def is_displayed(self):
         return self._text.is_displayed
 
-    @cached_property
-    def read_only(self):
-        """
-        Return whether or not this chip is read-only
-
-        This will never change for a chip, so we can cache this property
-        """
-        return not self.button.is_displayed
-
     def read(self):
         return self.text
+
+
+class Chip(ParametrizedView, _BaseChip):
+    PARAMETERS = ("text",)
+    ROOT = ParametrizedLocator(
+        f"{CHIP_ROOT}[{CHIP_TEXT}[starts-with(normalize-space(.), {{text|quote}})]]"
+    )
+
+    @staticmethod
+    def _get_text_ignoring_badge(element):
+        el = element
+        badge_elements = el.find_elements_by_xpath(CHIP_BADGE)
+        if badge_elements:
+            return el.text.rstrip(badge_elements[0].text)
+        return el.text
+
+    @classmethod
+    def all(cls, browser):
+        return [
+            (cls._get_text_ignoring_badge(el),)
+            for el in browser.elements(f"{CHIP_ROOT}/{CHIP_TEXT}")
+        ]
+
+    def __init__(self, *args, **kwargs):
+        ParametrizedView.__init__(self, *args, **kwargs)
 
     def remove(self):
         def _gone():
@@ -72,15 +89,24 @@ class Chip(View):
             self.button.click()
             wait_for(_gone, num_sec=3, message="wait for chip to dissappear", delay=0.1)
         else:
-            raise ReadOnlyChip(self, "Chip is read-only")
+            raise ChipReadOnlyError(self, "Chip is read-only")
+
+    @property
+    def read_only(self):
+        """
+        Return whether or not this chip is read-only
+
+        This will never change for a chip, so we can cache this property
+        """
+        return not self.button.is_displayed
 
 
-class OverflowChip(Chip):
+class OverflowChip(_BaseChip):
     """
     The 'Show More'/'Show Less' button is essentially a special kind of chip
     """
 
-    CHIP_LOCATOR = (
+    ROOT = (
         ".//*[(self::li or self::div) and "
         "contains(@class, 'pf-c-chip') and contains(@class, 'pf-m-overflow')]"
     )
@@ -88,20 +114,6 @@ class OverflowChip(Chip):
     @property
     def is_displayed(self):
         return self.button.is_displayed
-
-    @property
-    def read_only(self):
-        """
-        Override to always return False here, since the button on this chip is always clickable
-        """
-        return False
-
-    @property
-    def text(self):
-        """
-        Override the text property so this is not a cached property, since button text can change
-        """
-        return self._text.text
 
     def _show_less_shown(self):
         return self.text.replace(" ", "").lower() == "showless"
@@ -130,27 +142,25 @@ class OverflowChip(Chip):
         )
 
 
-class ChipGroup(View):
+class StandAloneChipGroup(View):
+    """
+    Represents a chip group that is "on its own", i.e. not a part of a chip group toolbar
+    """
+
     ROOT = ParametrizedLocator("{@locator}")
 
-    CHIPS_LOCATOR = Chip.CHIP_LOCATOR
-    GROUP_LOCATOR = ".//ul[contains(@class, 'pf-c-chip-group')]"
-    LABEL_LOCATOR = "./preceding-sibling::*[contains(@class, 'pf-c-chip-group__label')]"
-
     overflow = OverflowChip()
+    chips = ParametrizedView.nested(Chip)
 
     def __init__(self, parent, locator=None, logger=None):
         super().__init__(parent, logger=logger)
-        self.locator = locator or self.GROUP_LOCATOR
+        self.locator = locator or GROUP_ROOT
 
     @property
     def label(self):
-        if isinstance(self.parent, ChipGroupToolbarCategory):
-            return self.parent.label
-
         # It's unlikely we'll have a labelled chip group that is not in a toolbar
         # ... but just in case
-        elements = self.browser.elements(self.LABEL_LOCATOR)
+        elements = self.browser.elements(STANDALONE_GROUP_LABEL)
         return elements[0].text if elements else None
 
     def show_more(self):
@@ -164,25 +174,19 @@ class ChipGroup(View):
         return self.overflow.is_displayed
 
     def get_chips(self, show_more=True):
+        """
+        A helper to expand the chip group before reading its chips
+        """
         if self.multiselect and show_more:
             self.show_more()
-        chip_elements = self.browser.elements(self.CHIPS_LOCATOR)
-
-        chips = []
-        for el in chip_elements:
-            # Track the chip by text instead of position, because its position in the row can
-            # change
-            chip_text = quote(self.browser.text(el))
-            chips.append(Chip(parent=self, locator=f"{self.CHIPS_LOCATOR}[(.)={chip_text}]"))
-
-        return chips
+        return self.chips
 
     def __iter__(self):
         for chip in self.get_chips():
             yield chip
 
     def remove_chip_by_name(self, name):
-        for chip in self.get_chips():
+        for chip in self:
             if chip.text.lower() == name.lower():
                 chip.remove()
                 break
@@ -190,37 +194,36 @@ class ChipGroup(View):
             raise ValueError(f"Could not find chip with name '{name}'")
 
     def remove_all_chips(self):
-        for chip in self.get_chips():
+        for chip in self:
             chip.remove()
 
     def read(self):
         return [chip.text for chip in self]
 
 
-class ChipGroupToolbarCategory(View):
-    ROOT = ParametrizedLocator("{@locator}")
-    GROUP_LOCATOR = "./ul[contains(@class, 'pf-c-chip-group') and contains(@class, 'pf-m-toolbar')]"
-    LABEL_LOCATOR = "./li/*[contains(@class, 'pf-c-chip-group__label')]"
+class ChipGroupToolbarCategory(ParametrizedView, StandAloneChipGroup):
+    """
+    Represents a chip group that is part of a toolbar, identifiable by a category label
+    """
 
-    _label = Text(LABEL_LOCATOR)
+    PARAMETERS = ("label",)
+    ROOT = ParametrizedLocator(
+        f"{GROUP_ROOT}[{TOOLBAR_GROUP_LABEL}[normalize-space(.)={{label|quote}}]]"
+    )
 
-    def _gen_locator(self, label, locator):
-        if locator:
-            loc = locator
-        else:
-            if label:
-                loc = f"{self.GROUP_LOCATOR}[{self.LABEL_LOCATOR}[(.)={label}]]"
-            else:
-                loc = self.GROUP_LOCATOR
-        return loc
+    chips = ParametrizedView.nested(Chip)
 
-    def __init__(self, parent, label=None, locator=None, logger=None):
-        super().__init__(parent, logger=logger)
-        self.locator = self._gen_locator(label, locator)
+    def __init__(self, *args, **kwargs):
+        ParametrizedView.__init__(self, *args, **kwargs)
 
     @property
     def label(self):
-        return self._label.text
+        elements = self.browser.elements(TOOLBAR_GROUP_LABEL)
+        return elements[0].text if elements else None
+
+    @classmethod
+    def all(cls, browser):
+        return [(el.text,) for el in browser.elements(f"{GROUP_ROOT}/{TOOLBAR_GROUP_LABEL}")]
 
 
 class ChipGroupToolbar(View):
@@ -236,32 +239,19 @@ class ChipGroupToolbar(View):
     overflow = OverflowChip(
         locator=("./div[contains(@class, 'pf-c-chip') and contains(@class, 'pf-m-overflow')]")
     )
+    groups = ParametrizedView.nested(ChipGroupToolbarCategory)
 
     def __init__(self, parent, locator=None, logger=None):
-        super().__init__(parent, logger=logger)
         self.locator = locator or self.TOOLBAR_LOCATOR
+        super().__init__(parent, logger=logger)
 
     def get_groups(self, show_more=True):
+        """
+        A helper to expand the chip group toolbar before reading its groups
+        """
         if self.overflow.is_displayed and show_more:
             self.overflow.show_more()
-
-        group_elements = self.browser.elements(ChipGroupToolbarCategory.GROUP_LOCATOR)
-        group_list = []
-        for idx, el in enumerate(group_elements):
-            # The parent of this chip group needs to be the category group, not 'self' which is the
-            # whole toolbar. We track the group by text instead of position, because its position
-            # in the row can change.
-            #
-            # Get the text of the group's label first
-            temp_toolbar_group = ChipGroupToolbarCategory(
-                locator=f"{ChipGroupToolbarCategory.GROUP_LOCATOR}[{idx + 1}]", parent=self
-            )
-            group_text = quote(temp_toolbar_group.label)
-            # Create a new toolbar widget, using a text locator
-            toolbar_group = ChipGroupToolbarCategory(label=group_text, parent=self)
-            # Finally create a chip group, whose parent is this toolbar group
-            group_list.append(ChipGroup(parent=toolbar_group))
-        return group_list
+        return self.groups
 
     def __iter__(self):
         for group in self.get_groups():
