@@ -91,7 +91,7 @@ def test_chipgroup_multiselect(root_view):
 
     assert chip_group.is_displayed
     assert chip_group.label is None
-    assert chip_group.multiselect
+    assert chip_group.is_multiselect
     chip_group.show_more()
     chip_group.show_less()
 
@@ -118,7 +118,7 @@ def test_chipgroup_badge(root_view):
 
     assert chip_group.is_displayed
     assert chip_group.label is None
-    assert chip_group.multiselect
+    assert chip_group.is_multiselect
     chip_group.show_more()
     chip_group.show_less()
 

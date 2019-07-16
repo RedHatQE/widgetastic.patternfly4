@@ -34,8 +34,6 @@ class _BaseChip(View):
     def badge(self):
         """
         Return the text of the badge displayed on the chip, if it has a badge
-
-        A chip's badge will never change, so we can cache this property
         """
         return self._badge.text if self._badge.is_displayed else None
 
@@ -64,17 +62,18 @@ class Chip(ParametrizedView, _BaseChip):
     )
 
     @staticmethod
-    def _get_text_ignoring_badge(element):
+    def _get_text_ignoring_badge(browser, element):
         el = element
-        badge_elements = el.find_elements_by_xpath(CHIP_BADGE)
+        badge_elements = browser.elements(CHIP_BADGE, parent=el)
         if badge_elements:
-            return el.text.rstrip(badge_elements[0].text)
-        return el.text
+            badge = browser.text(el)
+            return badge.rstrip(browser.text(badge_elements[0]))
+        return browser.text(el)
 
     @classmethod
     def all(cls, browser):
         return [
-            (cls._get_text_ignoring_badge(el),)
+            (cls._get_text_ignoring_badge(browser, el),)
             for el in browser.elements(f"{CHIP_ROOT}/{CHIP_TEXT}")
         ]
 
@@ -95,8 +94,6 @@ class Chip(ParametrizedView, _BaseChip):
     def read_only(self):
         """
         Return whether or not this chip is read-only
-
-        This will never change for a chip, so we can cache this property
         """
         return not self.button.is_displayed
 
@@ -161,7 +158,7 @@ class StandAloneChipGroup(View):
         # It's unlikely we'll have a labelled chip group that is not in a toolbar
         # ... but just in case
         elements = self.browser.elements(STANDALONE_GROUP_LABEL)
-        return elements[0].text if elements else None
+        return self.browser.text(elements[0]) if elements else None
 
     def show_more(self):
         self.overflow.show_more()
@@ -170,14 +167,14 @@ class StandAloneChipGroup(View):
         self.overflow.show_less()
 
     @property
-    def multiselect(self):
+    def is_multiselect(self):
         return self.overflow.is_displayed
 
     def get_chips(self, show_more=True):
         """
         A helper to expand the chip group before reading its chips
         """
-        if self.multiselect and show_more:
+        if self.is_multiselect and show_more:
             self.show_more()
         return self.chips
 
@@ -219,11 +216,13 @@ class ChipGroupToolbarCategory(ParametrizedView, StandAloneChipGroup):
     @property
     def label(self):
         elements = self.browser.elements(TOOLBAR_GROUP_LABEL)
-        return elements[0].text if elements else None
+        return self.browser.text(elements[0]) if elements else None
 
     @classmethod
     def all(cls, browser):
-        return [(el.text,) for el in browser.elements(f"{GROUP_ROOT}/{TOOLBAR_GROUP_LABEL}")]
+        return [
+            (browser.text(el),) for el in browser.elements(f"{GROUP_ROOT}/{TOOLBAR_GROUP_LABEL}")
+        ]
 
 
 class ChipGroupToolbar(View):
