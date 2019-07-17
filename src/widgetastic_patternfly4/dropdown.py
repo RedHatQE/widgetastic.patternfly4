@@ -32,7 +32,7 @@ class Dropdown(Widget):
         ".//button[contains(@class, 'pf-c-options-menu__toggle-button') or "
         "contains(@class, 'pf-c-dropdown__toggle')]"
     )
-    ITEMS_LOCATOR = ".//ul[@class='pf-c-dropdown__menu']/li"
+    ITEMS_LOCATOR = ".//ul[contains(@class, 'pf-c-dropdown__menu')]/li"
     ITEM_LOCATOR = (
         ".//*[self::a or self::button][contains(@class, 'pf-c-dropdown__menu-item')"
         " and normalize-space(.)={}]"
