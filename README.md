@@ -5,13 +5,15 @@
 Library of Patternfly v4 (aka Next) components for [Widgetastic](https://github.com/RedHatQE/widgetastic.core).
 
 
-### Widgets list
+### Components list
 
 Alert - https://www.patternfly.org/v4/documentation/react/components/alert
 
 Breadcrumb - https://www.patternfly.org/v4/documentation/react/components/breadcrumb
 
 Button - https://www.patternfly.org/v4/documentation/react/components/button
+
+Chip Group - https://www.patternfly.org/v4/documentation/react/components/chipgroup
 
 Context Selector - https://www.patternfly.org/v4/documentation/react/components/contextselector
 
@@ -36,5 +38,5 @@ Tabs - https://www.patternfly.org/v4/documentation/react/components/tabs
 
 ### Testing
 
-The library has selenium tests that are performed against [Patternfly React docs](https://www.patternfly.org/v4/documentation/react/components/aboutmodal).
+The library has selenium tests that are performed against [Patternfly React docs](https://patternfly-react.surge.sh/patternfly-4/).
 It's also configured to run the tests every time when a new version of that page is released
