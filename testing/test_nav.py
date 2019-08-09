@@ -33,7 +33,6 @@ def test_navigation(browser, sample):
     assert nav.nav_item_tree() == tree
 
 
-@pytest.mark.skip
 def test_navigation_select(browser):
     loc = ".//h2[normalize-space(.)='Nav mixed']/following-sibling::div[1]//nav"
     nav = Navigation(browser, locator=loc)

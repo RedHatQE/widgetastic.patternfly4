@@ -28,6 +28,9 @@ class Navigation(Widget):
     ITEMS = "./ul/li/a"
     SUB_ITEMS_ROOT = "./section"
     ITEM_MATCHING = "./ul/li[.//a[normalize-space(.)={}]]"
+    # Prioritize ``span`` over ``a`` when available, as FF won't click ``a`` properly if there's
+    # a ``span`` inside of it
+    ITEM_INNER_LINK = ".//*[(self::span or self::a)]"
 
     @property
     def loaded(self):
@@ -119,7 +122,8 @@ class Navigation(Widget):
         current_item = self
         for i, level in enumerate(levels, 1):
             li = self.browser.element(self.ITEM_MATCHING.format(quote(level)), parent=current_item)
-            self.browser.click(li)
+            clickable_link = self.browser.element(self.ITEM_INNER_LINK, parent=li)
+            self.browser.click(clickable_link)
             if i == len(levels):
                 return
             current_item = self.browser.element(self.SUB_ITEMS_ROOT, parent=li)
