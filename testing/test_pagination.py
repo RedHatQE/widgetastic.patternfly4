@@ -10,7 +10,6 @@ def paginator(browser):
     paginator.set_per_page(20)
 
 
-@pytest.mark.skip
 def test_first_page(paginator):
     paginator.last_page()
     assert paginator.current_page == 27
