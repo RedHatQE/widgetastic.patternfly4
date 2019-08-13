@@ -13,7 +13,10 @@ class Switch(GenericLocatorWidget):
     """
 
     CHECKBOX_LOCATOR = "./input"
-    LABEL = './span[contains(@class, "pf-c-switch__label")]'
+    LABEL = (
+        "./span[contains(@class, 'pf-m-on') and preceding-sibling::input[@checked] or "
+        "contains(@class, 'pf-m-off') and preceding-sibling::input[not(@checked)]]"
+    )
 
     @property
     def selected(self):
