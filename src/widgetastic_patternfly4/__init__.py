@@ -22,6 +22,7 @@ from .formselect import (
     FormSelectOptionDisabled,
     FormSelectOptionNotFound,
 )
+from .modal import Modal
 from .navigation import Navigation
 from .pagination import Pagination
 from .select import Select, SelectItemDisabled, SelectItemNotFound
@@ -50,6 +51,7 @@ __all__ = [
     "FormSelectDisabled",
     "FormSelectOptionDisabled",
     "FormSelectOptionNotFound",
+    "Modal",
     "Navigation",
     "Pagination",
     "Select",
