@@ -104,7 +104,3 @@ class Pagination(View):
             return self._page_counter
         else:
             raise StopIteration
-
-    def next(self):
-        # For sake Python 2 compatibility
-        return self.__next__()
