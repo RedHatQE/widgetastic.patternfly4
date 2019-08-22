@@ -24,8 +24,12 @@ def selenium(browser_name):
         firefox_options = webdriver.FirefoxOptions()
         firefox_options.headless = True
         driver = webdriver.Firefox(options=firefox_options)
-    elif browser_name == "remote":
+    elif browser_name == "remote_firefox":
         driver = webdriver.Remote(desired_capabilities=DesiredCapabilities.FIREFOX)
+    elif browser_name == "remote_chrome":
+        caps = DesiredCapabilities.CHROME.copy()
+        caps["chromeOptions"] = {"args": ["disable-dev-shm-usage", "no-sandbox"]}
+        driver = webdriver.Remote(desired_capabilities=caps)
     yield driver
     driver.quit()
 
@@ -33,8 +37,8 @@ def selenium(browser_name):
 @pytest.fixture(scope="module")
 def browser(selenium, request):
     name = request.module.__name__.split("_")[1]
-    selenium.maximize_window()
     category = getattr(request.module, "CATEGORY", "components")
     url = "https://patternfly-react.surge.sh/patternfly-4/{}/{}/?shadow=false"
+    selenium.maximize_window()
     selenium.get(url.format(category, name))
     return Browser(selenium)
