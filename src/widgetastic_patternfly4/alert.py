@@ -11,7 +11,7 @@ class Alert(Widget):
     ROOT = ParametrizedLocator("{@locator}")
     TITLE = './/h4[@class="pf-c-alert__title"]'
     DESCRIPTION = './/div[@class="pf-c-alert__description"]'
-    ACTION = './/div[@class="pf-c-alert__action"]/*'
+    ACTION = './/div[contains(@class="pf-c-alert__action")]/*'
     TYPE_MAPPING = {
         "pf-m-warning": "warning",
         "pf-m-success": "success",
