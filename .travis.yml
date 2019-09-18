@@ -30,7 +30,7 @@ jobs:
         on:
           tags: true
 before_install:
-  - docker run -d -p 4444:4444 quarck/selenium
+  - docker run -d -p 4444:4444 -v /dev/shm:/dev/shm quay.io/redhatqe/selenium-standalone
   - pip install -U setuptools pip wheel
   - pip install -U flake8 pytest pytest-cov codecov 
 install: python setup.py install
