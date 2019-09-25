@@ -13,10 +13,10 @@ from widgetastic.xpath import quote
 class DonutLegendItem(ParametrizedView, ClickableMixin):
     PARAMETERS = ("label_text",)
     ROOT = ParametrizedLocator(
-        ".//*[name()='svg']/*[name()='g']/*[name()='text']"
+        ".//*[name()='text']"
         "/*[name()='tspan' and contains(., '{label_text}')]"
     )
-    ALL_ITEMS = "./*[name()='svg']/*[name()='g']/*[name()='text']/*[name()='tspan']"
+    ALL_ITEMS = ".//*[name()='text']/*[name()='tspan']"
     LEGEND_ITEM_REGEX = re.compile(r"(.*?): ([\d]+)")
 
     @classmethod
@@ -41,7 +41,7 @@ class DonutLegendItem(ParametrizedView, ClickableMixin):
 
 
 class DonutLegend(View):
-    ROOT = "./div[contains(@class, 'VictoryContainer')]"
+    ROOT = ".//*[name()='g'][2]"
 
     item = ParametrizedView.nested(DonutLegendItem)
 
