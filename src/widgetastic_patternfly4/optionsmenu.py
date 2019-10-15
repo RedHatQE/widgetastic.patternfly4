@@ -3,7 +3,8 @@ from .dropdown import Dropdown
 
 class OptionsMenu(Dropdown):
     BUTTON_LOCATOR = (
-        ".//button[contains(@class, 'pf-c-options-menu__toggle-button')]"
+        ".//button[contains(@class, 'pf-c-options-menu__toggle') or "
+        "contains(@class, 'pf-c-options-menu__toggle-button')]"
     )
     ITEMS_LOCATOR = ".//ul[contains(@class, 'pf-c-options-menu__menu')]/li"
     ITEM_LOCATOR = (
