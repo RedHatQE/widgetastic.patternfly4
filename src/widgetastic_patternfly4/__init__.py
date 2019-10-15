@@ -24,6 +24,7 @@ from .formselect import (
 )
 from .modal import Modal
 from .navigation import Navigation
+from .optionsmenu import OptionsMenu
 from .pagination import Pagination
 from .select import Select, SelectItemDisabled, SelectItemNotFound
 from .contextselector import ContextSelector
@@ -53,6 +54,7 @@ __all__ = [
     "FormSelectOptionNotFound",
     "Modal",
     "Navigation",
+    "OptionsMenu",
     "Pagination",
     "Select",
     "SelectItemDisabled",

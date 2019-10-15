@@ -28,29 +28,28 @@ class Dropdown(Widget):
 
     """
     ROOT = ParametrizedLocator("{@locator}")
-    BUTTON_LOCATOR = (
-        ".//button[contains(@class, 'pf-c-options-menu__toggle-button') or "
-        "contains(@class, 'pf-c-dropdown__toggle')]"
-    )
+    BUTTON_LOCATOR = ".//button[contains(@class, 'pf-c-dropdown__toggle')]"
     ITEMS_LOCATOR = ".//ul[contains(@class, 'pf-c-dropdown__menu')]/li"
     ITEM_LOCATOR = (
         ".//*[self::a or self::button][contains(@class, 'pf-c-dropdown__menu-item')"
         " and normalize-space(.)={}]"
     )
+    TEXT_LOCATOR = (
+        './/div[contains(@class, "pf-c-dropdown") and '
+        "child::button[normalize-space(.)={}]]"
+    )
+    DEFAULT_LOCATOR = './/div[contains(@class, "pf-c-dropdown")][1]'
 
     def __init__(self, parent, text=None, locator=None, logger=None):
         Widget.__init__(self, parent, logger=logger)
         if locator and text:
             raise ValueError("Either text or locator should be provided")
         if text:
-            self.locator = (
-                './/div[contains(@class, "pf-c-dropdown") and '
-                "child::button[normalize-space(.)={}]]"
-            ).format(quote(text))
+            self.locator = self.TEXT_LOCATOR.format(quote(text))
         elif locator:
             self.locator = locator
         else:
-            self.locator = './/div[contains(@class, "pf-c-dropdown")][1]'
+            self.locator = self.DEFAULT_LOCATOR
 
     @contextmanager
     def opened(self):

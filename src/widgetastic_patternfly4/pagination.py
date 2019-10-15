@@ -1,7 +1,7 @@
 from widgetastic.utils import ParametrizedLocator
 from widgetastic.widget import GenericLocatorWidget, Text, TextInput, View
 
-from .dropdown import Dropdown
+from .optionsmenu import OptionsMenu
 
 
 class Pagination(View):
@@ -15,7 +15,7 @@ class Pagination(View):
     _previous = GenericLocatorWidget(".//button[contains(@data-action, 'previous')]")
     _next = GenericLocatorWidget(".//button[contains(@data-action, 'next')]")
     _last = GenericLocatorWidget(".//button[contains(@data-action, 'last')]")
-    _options = Dropdown()
+    _options = OptionsMenu()
     _items = Text(".//span[@class='pf-c-options-menu__toggle-text']")
     _current_page = TextInput(locator=".//input[@aria-label='Current page']")
     _total_pages = Text(".//div[@class='pf-c-pagination__nav-page-select']/span")
