@@ -13,6 +13,6 @@ class OptionsMenu(Dropdown):
     TEXT_LOCATOR = (
         './/div[contains(@class, "pf-c-options-menu") and '
         'descendant::span[contains(@class, "pf-c-options-menu__toggle-text") and '
-        'normalize-space(.)={}]]
+        'normalize-space(.)={}]]'
     )
     DEFAULT_LOCATOR = './/div[contains(@class, "pf-c-options-menu")][1]'
