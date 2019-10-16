@@ -55,6 +55,7 @@ class PatternflyTableRow(TableRow):
     """
     Extends TableRow to support having a 'th' tag within the row
     """
+
     HEADER_IN_ROW = "./th[1]"
     TABLE_COLUMN_CLS = TableColumn
 
@@ -149,6 +150,7 @@ class ExpandableTableRow(PatternflyTableRow):
     Args:
         index: Position of the row in the table.
     """
+
     ROW = "./tr[1]"
     EXPANDABLE_CONTENT = "./tr[2]"
 

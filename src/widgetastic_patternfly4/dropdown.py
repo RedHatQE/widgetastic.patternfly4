@@ -27,6 +27,7 @@ class Dropdown(Widget):
         text: Text of the button, can be the inner text or the title attribute.
 
     """
+
     ROOT = ParametrizedLocator("{@locator}")
     BUTTON_LOCATOR = ".//button[contains(@class, 'pf-c-dropdown__toggle')]"
     ITEMS_LOCATOR = ".//ul[contains(@class, 'pf-c-dropdown__menu')]/li"
@@ -35,8 +36,7 @@ class Dropdown(Widget):
         " and normalize-space(.)={}]"
     )
     TEXT_LOCATOR = (
-        './/div[contains(@class, "pf-c-dropdown") and '
-        "child::button[normalize-space(.)={}]]"
+        './/div[contains(@class, "pf-c-dropdown") and ' "child::button[normalize-space(.)={}]]"
     )
     DEFAULT_LOCATOR = './/div[contains(@class, "pf-c-dropdown")][1]'
 
@@ -189,6 +189,7 @@ class Dropdown(Widget):
 
 class GroupDropdown(Dropdown):
     """Dropdown with grouped items in it."""
+
     ITEMS_LOCATOR = ".//section[@class='pf-c-dropdown__group']/ul/li"
     GROUPS_LOCATOR = ".//section[@class='pf-c-dropdown__group']/h1"
     GROUP_LOCATOR = ".//section[@class='pf-c-dropdown__group'][h1[normalize-space(.)={}]]"
@@ -204,12 +205,15 @@ class GroupDropdown(Dropdown):
         """Returns a WebElement for given item name."""
         self.open()
         try:
-            kwargs = {
-                'parent': self.browser.element(self.GROUP_LOCATOR.format(quote(group_name)))
-            } if group_name else {}
+            kwargs = (
+                {"parent": self.browser.element(self.GROUP_LOCATOR.format(quote(group_name)))}
+                if group_name
+                else {}
+            )
         except NoSuchElementException:
             raise DropdownItemNotFound(
-                'Following group "{}" not found. Available are: {}'.format(group_name, self.groups))
+                'Following group "{}" not found. Available are: {}'.format(group_name, self.groups)
+            )
         return super().item_element(item, close=close, **kwargs)
 
     def item_select(self, item, group_name=None, handle_alert=None):

@@ -1,10 +1,17 @@
 import pytest
-from widgetastic_patternfly4 import Pagination
+from widgetastic_patternfly4 import Pagination, CompactPagination
 
 
-@pytest.fixture
-def paginator(browser):
-    paginator = Pagination(browser, locator=".//div[@id='pagination-options-menu-top']")
+@pytest.fixture(
+    params=[
+        (Pagination, {'locator': ".//div[@id='pagination-options-menu-top']"}),
+        (CompactPagination, {})
+    ],
+    ids=["Pagination", "CompactPagination"]
+)
+def paginator(browser, request):
+    paginator_cls, kwargs = request.param
+    paginator = paginator_cls(browser, **kwargs)
     yield paginator
     paginator.first_page()
     paginator.set_per_page(20)

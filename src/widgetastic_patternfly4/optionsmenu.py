@@ -8,12 +8,21 @@ class OptionsMenu(Dropdown):
     )
     ITEMS_LOCATOR = ".//ul[contains(@class, 'pf-c-options-menu__menu')]/li"
     ITEM_LOCATOR = (
-        ".//button[contains(@class, 'pf-c-options-menu__menu-item')"
-        " and normalize-space(.)={}]"
+        ".//button[contains(@class, 'pf-c-options-menu__menu-item')" " and normalize-space(.)={}]"
     )
     TEXT_LOCATOR = (
         './/div[contains(@class, "pf-c-options-menu") and '
         'descendant::span[contains(@class, "pf-c-options-menu__toggle-text") and '
-        'normalize-space(.)={}]]'
+        "normalize-space(.)={}]]"
     )
     DEFAULT_LOCATOR = './/div[contains(@class, "pf-c-options-menu")][1]'
+
+    SELECTED_ITEMS_LOCATOR = f"{ITEMS_LOCATOR}[//button[contains(@class, 'pf-m-selected')]]"
+
+    @property
+    def selected_items(self):
+        """Returns a list of all selected items in the options menu."""
+        with self.opened():
+            return [
+                self.browser.text(el) for el in self.browser.elements(self.SELECTED_ITEMS_LOCATOR)
+            ]

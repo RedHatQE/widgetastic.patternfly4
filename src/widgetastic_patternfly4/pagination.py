@@ -1,7 +1,13 @@
+import math
+
 from widgetastic.utils import ParametrizedLocator
 from widgetastic.widget import GenericLocatorWidget, Text, TextInput, View
 
 from .optionsmenu import OptionsMenu
+
+
+class PaginationNavDisabled(Exception):
+    pass
 
 
 class Pagination(View):
@@ -11,6 +17,10 @@ class Pagination(View):
     """
 
     ROOT = ParametrizedLocator("{@locator}")
+    DEFAULT_LOCATOR = (
+        ".//div[contains(@class, 'pf-c-pagination') and not " "contains(@class, 'pf-m-compact')]"
+    )
+
     _first = GenericLocatorWidget(".//button[contains(@data-action, 'first')]")
     _previous = GenericLocatorWidget(".//button[contains(@data-action, 'previous')]")
     _next = GenericLocatorWidget(".//button[contains(@data-action, 'next')]")
@@ -20,8 +30,10 @@ class Pagination(View):
     _current_page = TextInput(locator=".//input[@aria-label='Current page']")
     _total_pages = Text(".//div[@class='pf-c-pagination__nav-page-select']/span")
 
-    def __init__(self, parent, locator, logger=None):
+    def __init__(self, parent, locator=None, logger=None):
         View.__init__(self, parent=parent, logger=logger)
+        if not locator:
+            locator = self.DEFAULT_LOCATOR
         self.locator = locator
 
     @property
@@ -29,6 +41,8 @@ class Pagination(View):
         return "pf-m-disabled" in self.browser.classes(self._first)
 
     def first_page(self):
+        if self.is_first_disabled:
+            raise PaginationNavDisabled("first")
         self._first.click()
 
     @property
@@ -36,6 +50,8 @@ class Pagination(View):
         return "pf-m-disabled" in self.browser.classes(self._previous)
 
     def previous_page(self):
+        if self.is_previous_disabled:
+            raise PaginationNavDisabled("previous")
         self._previous.click()
 
     @property
@@ -43,6 +59,8 @@ class Pagination(View):
         return "pf-m-disabled" in self.browser.classes(self._next)
 
     def next_page(self):
+        if self.is_next_disabled:
+            raise PaginationNavDisabled("next")
         self._next.click()
 
     @property
@@ -50,6 +68,8 @@ class Pagination(View):
         return "pf-m-disabled" in self.browser.classes(self._last)
 
     def last_page(self):
+        if self.is_last_disabled:
+            raise PaginationNavDisabled("last")
         self._last.click()
 
     @property
@@ -77,6 +97,10 @@ class Pagination(View):
     def per_page_options(self):
         return self._options.items
 
+    @property
+    def current_per_page(self):
+        return int(self._options.selected_items[0].split()[0])
+
     def set_per_page(self, count):
         # convert a possible int to string
         value = str(count)
@@ -92,7 +116,8 @@ class Pagination(View):
             )
 
     def __iter__(self):
-        self.first_page()
+        if self.current_page != 1:
+            self.first_page()
         self._page_counter = 0
         return self
 
@@ -101,6 +126,67 @@ class Pagination(View):
             self._page_counter += 1
             if self._page_counter > 1:
                 self.next_page()
+            return self._page_counter
+        else:
+            raise StopIteration
+
+
+class CompactPagination(Pagination):
+    DEFAULT_LOCATOR = (
+        ".//div[contains(@class, 'pf-c-pagination') and " "contains(@class, 'pf-m-compact')]"
+    )
+
+    @property
+    def is_first_disabled(self):
+        """Compact paginator has no 'first' button."""
+        return self.is_previous_disabled
+
+    def first_page(self):
+        while not self.is_previous_disabled:
+            self.previous_page()
+
+    @property
+    def is_last_disabled(self):
+        """Compact paginator has no 'last' button."""
+        return self.is_next_disabled
+
+    def last_page(self):
+        while not self.is_next_disabled:
+            self.next_page()
+
+    @property
+    def current_page(self):
+        """
+        Calculate the current page we are on.
+
+        Compact pagination does not explicitly show this, so use some math.
+        """
+        # If the number of displayed items is less than the per page increment, we can assume
+        # we're on the last page
+        displayed_items_count = self.displayed_items[1] - self.displayed_items[0] + 1
+        if displayed_items_count < self.current_per_page:
+            return self.total_pages
+        # Otherwise, divide the num of the last displayed element by the per-page increment
+        return self.displayed_items[1] / self.current_per_page
+
+    @property
+    def total_pages(self):
+        """
+        Calculate total page count.
+
+        Compact pagination does not explicitily show the page count, so use some math.
+        """
+        return math.ceil(float(self.total_items) / self.current_per_page)
+
+    def __iter__(self):
+        self.first_page()
+        self._page_counter = 0
+        return self
+
+    def __next__(self):
+        while not self.is_next_disabled:
+            self._page_counter += 1
+            self.next_page()
             return self._page_counter
         else:
             raise StopIteration

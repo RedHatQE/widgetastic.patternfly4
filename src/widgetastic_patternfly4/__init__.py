@@ -4,7 +4,7 @@ from .chipgroup import (
     ChipReadOnlyError,
     ChipGroupToolbar,
     ChipGroupToolbarCategory,
-    StandAloneChipGroup
+    StandAloneChipGroup,
 )
 from .breadcrumb import BreadCrumb
 from .button import Button
@@ -25,7 +25,7 @@ from .formselect import (
 from .modal import Modal
 from .navigation import Navigation
 from .optionsmenu import OptionsMenu
-from .pagination import Pagination
+from .pagination import CompactPagination, Pagination
 from .select import Select, SelectItemDisabled, SelectItemNotFound
 from .contextselector import ContextSelector
 from .switch import Switch, SwitchDisabled
@@ -41,6 +41,7 @@ __all__ = [
     "ChipReadOnlyError",
     "ChipGroupToolbar",
     "ChipGroupToolbarCategory",
+    "CompactPagination",
     "StandAloneChipGroup",
     "DonutChart",
     "Dropdown",

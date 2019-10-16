@@ -11,6 +11,7 @@ def check_nav_loaded(fn):
     def inner(self, *args, **kwargs):
         assert self.loaded
         return fn(self, *args, **kwargs)
+
     return inner
 
 
@@ -39,7 +40,7 @@ class Navigation(Widget):
                 self.logger.info("Navigation not ready yet")
                 wait_for(
                     lambda: self.browser.element(".").get_attribute("data-ouia-safe") == "true",
-                    num_sec=10
+                    num_sec=10,
                 )
             elif not out:
                 self.logger.info("Navigation doesn't have 'data-ouia-safe' property")
