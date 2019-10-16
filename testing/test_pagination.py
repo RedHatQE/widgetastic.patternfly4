@@ -4,11 +4,11 @@ from widgetastic_patternfly4 import Pagination, CompactPagination
 
 @pytest.fixture(
     params=[
-        #(Pagination, {'locator': ".//div[@id='pagination-options-menu-top']"}),
+        (Pagination, {'locator': ".//div[@id='pagination-options-menu-top']"}),
         (CompactPagination, {})
     ],
     ids=[
-        #"Pagination", 
+        "Pagination", 
         "CompactPagination"
     ]
 )
