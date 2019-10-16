@@ -1,3 +1,4 @@
+from contextlib import contextmanager
 import math
 
 from widgetastic.utils import ParametrizedLocator
@@ -35,6 +36,7 @@ class Pagination(View):
         if not locator:
             locator = self.DEFAULT_LOCATOR
         self.locator = locator
+        self._cached_per_page_value = None
 
     @property
     def is_first_disabled(self):
@@ -99,7 +101,23 @@ class Pagination(View):
 
     @property
     def current_per_page(self):
+        if self._cached_per_page_value:
+            return self._cached_per_page_value
         return int(self._options.selected_items[0].split()[0])
+
+    @contextmanager
+    def cache_per_page_value(self):
+        """
+        A context manager that can be used to prevent looking up the 'current page' value.
+
+        This adds some efficiencies when iterating over pages or in cases where it is safe to
+        assume that the "per page" setting is not going to change and it's not necessary to
+        re-read it from the browser repeatedly.
+        """
+        self._cached_per_page_value = None
+        self._cached_per_page_value = self.current_per_page
+        yield
+        self._cached_per_page_value = None
 
     def set_per_page(self, count):
         # convert a possible int to string
@@ -160,14 +178,17 @@ class CompactPagination(Pagination):
         Calculate the current page we are on.
 
         Compact pagination does not explicitly show this, so use some math.
+
+        For example, if "per page" is set to '20', we know that a page displaying
+        items:
+            1-20 is on 20/20 = page 1
+            21-40 is on page 40/20 = page 2
+            41-60 is on page 60/20 = page 3
+
+        and so on.
         """
-        # If the number of displayed items is equal to the total number of items, we can assume
-        # we're on the last page
         _, last_num = self.displayed_items
-        if last_num == self.total_items:
-            return self.total_pages
-        # Otherwise, divide the num of the last displayed element by the per-page increment
-        return int(last_num / self.current_per_page)
+        return math.ceil(last_num / self.current_per_page)
 
     @property
     def total_pages(self):
@@ -176,7 +197,7 @@ class CompactPagination(Pagination):
 
         Compact pagination does not explicitily show the page count, so use some math.
         """
-        return math.ceil(float(self.total_items) / self.current_per_page)
+        return math.ceil(self.total_items / self.current_per_page)
 
     def __iter__(self):
         self.first_page()
