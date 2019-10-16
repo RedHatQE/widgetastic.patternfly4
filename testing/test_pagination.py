@@ -7,7 +7,10 @@ from widgetastic_patternfly4 import Pagination, CompactPagination
         (Pagination, {'locator': ".//div[@id='pagination-options-menu-top']"}),
         (CompactPagination, {})
     ],
-    ids=["Pagination", "CompactPagination"]
+    ids=[
+        "Pagination", 
+        "CompactPagination"
+    ]
 )
 def paginator(browser, request):
     paginator_cls, kwargs = request.param

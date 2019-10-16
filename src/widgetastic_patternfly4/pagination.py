@@ -18,7 +18,7 @@ class Pagination(View):
 
     ROOT = ParametrizedLocator("{@locator}")
     DEFAULT_LOCATOR = (
-        ".//div[contains(@class, 'pf-c-pagination') and not " "contains(@class, 'pf-m-compact')]"
+        ".//div[contains(@class, 'pf-c-pagination') and not(contains(@class, 'pf-m-compact'))]"
     )
 
     _first = GenericLocatorWidget(".//button[contains(@data-action, 'first')]")
@@ -38,7 +38,7 @@ class Pagination(View):
 
     @property
     def is_first_disabled(self):
-        return "pf-m-disabled" in self.browser.classes(self._first)
+        return not self.browser.element(self._first).is_enabled()
 
     def first_page(self):
         if self.is_first_disabled:
@@ -47,7 +47,7 @@ class Pagination(View):
 
     @property
     def is_previous_disabled(self):
-        return "pf-m-disabled" in self.browser.classes(self._previous)
+        return not self.browser.element(self._previous).is_enabled()
 
     def previous_page(self):
         if self.is_previous_disabled:
@@ -56,7 +56,7 @@ class Pagination(View):
 
     @property
     def is_next_disabled(self):
-        return "pf-m-disabled" in self.browser.classes(self._next)
+        return not self.browser.element(self._next).is_enabled()
 
     def next_page(self):
         if self.is_next_disabled:
@@ -65,7 +65,7 @@ class Pagination(View):
 
     @property
     def is_last_disabled(self):
-        return "pf-m-disabled" in self.browser.classes(self._last)
+        return not self.browser.element(self._last).is_enabled()
 
     def last_page(self):
         if self.is_last_disabled:
@@ -161,13 +161,13 @@ class CompactPagination(Pagination):
 
         Compact pagination does not explicitly show this, so use some math.
         """
-        # If the number of displayed items is less than the per page increment, we can assume
+        # If the number of displayed items is equal to the total number of items, we can assume
         # we're on the last page
-        displayed_items_count = self.displayed_items[1] - self.displayed_items[0] + 1
-        if displayed_items_count < self.current_per_page:
+        _, last_num = self.displayed_items
+        if last_num == self.total_items:
             return self.total_pages
         # Otherwise, divide the num of the last displayed element by the per-page increment
-        return self.displayed_items[1] / self.current_per_page
+        return last_num / self.current_per_page
 
     @property
     def total_pages(self):
