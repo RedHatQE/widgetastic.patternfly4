@@ -50,6 +50,7 @@ def test_options_menu_open(options_menu):
 
 def test_options_menu_item_select(options_menu):
     options_menu.item_select("Option 2")
+    assert options_menu.selected_items[0] == "Option 2"
     assert not options_menu.is_open
     with pytest.raises(DropdownItemNotFound):
         options_menu.item_select("Non existing items")

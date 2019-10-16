@@ -1,5 +1,5 @@
 import pytest
-from widgetastic_patternfly4 import Pagination, CompactPagination
+from widgetastic_patternfly4 import Pagination, PaginationNavDisabled, CompactPagination
 
 
 @pytest.fixture(
@@ -16,7 +16,11 @@ def paginator(browser, request):
     paginator_cls, kwargs = request.param
     paginator = paginator_cls(browser, **kwargs)
     yield paginator
-    paginator.first_page()
+    try:
+        paginator.first_page()
+    except PaginationNavDisabled:
+        # We are already at the first page...
+        pass
     paginator.set_per_page(20)
 
 
