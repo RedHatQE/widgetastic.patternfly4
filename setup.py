@@ -12,7 +12,7 @@ setup(
     packages=find_packages("src"),
     package_dir={"": "src"},
     install_requires=[
-        "selenium",
+        "selenium==3.141.0",
         "widgetastic.core>=0.37",
     ],
     setup_requires=[
