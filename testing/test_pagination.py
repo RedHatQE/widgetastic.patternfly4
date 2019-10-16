@@ -79,7 +79,7 @@ def test_per_page_options(paginator):
     ]
 
 
-@pytest.mark.parametrize("items_per_page", [10, 20, 50, 100])
+@pytest.mark.parametrize("items_per_page", [50, 100])
 def test_iteration(paginator, items_per_page):
     assert paginator.is_first_disabled
     paginator.set_per_page(items_per_page)
