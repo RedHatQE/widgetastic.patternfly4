@@ -167,7 +167,7 @@ class CompactPagination(Pagination):
         if last_num == self.total_items:
             return self.total_pages
         # Otherwise, divide the num of the last displayed element by the per-page increment
-        return last_num / self.current_per_page
+        return int(last_num / self.current_per_page)
 
     @property
     def total_pages(self):
@@ -180,13 +180,14 @@ class CompactPagination(Pagination):
 
     def __iter__(self):
         self.first_page()
-        self._page_counter = 0
+        self._page_counter = 1
         return self
 
     def __next__(self):
-        while not self.is_next_disabled:
+        if not self.is_next_disabled:
             self._page_counter += 1
-            self.next_page()
+            if self._page_counter > 1:
+                self.next_page()
             return self._page_counter
         else:
             raise StopIteration

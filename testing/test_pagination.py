@@ -4,11 +4,11 @@ from widgetastic_patternfly4 import Pagination, CompactPagination
 
 @pytest.fixture(
     params=[
-        (Pagination, {'locator': ".//div[@id='pagination-options-menu-top']"}),
+        #(Pagination, {'locator': ".//div[@id='pagination-options-menu-top']"}),
         (CompactPagination, {})
     ],
     ids=[
-        "Pagination", 
+        #"Pagination", 
         "CompactPagination"
     ]
 )
@@ -83,6 +83,7 @@ def test_per_page_options(paginator):
 def test_iteration(paginator, items_per_page):
     assert paginator.is_first_disabled
     paginator.set_per_page(items_per_page)
+    assert paginator.current_per_page == items_per_page
 
     # Ensure we're always using an int for the math calculations
     items_per_page_int = int(str(items_per_page).split()[0])
