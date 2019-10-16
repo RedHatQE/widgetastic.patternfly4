@@ -201,7 +201,7 @@ class CompactPagination(Pagination):
 
     def __iter__(self):
         self.first_page()
-        self._page_counter = 1
+        self._page_counter = 0
         return self
 
     def __next__(self):
