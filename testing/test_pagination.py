@@ -8,7 +8,7 @@ from widgetastic_patternfly4 import Pagination, PaginationNavDisabled, CompactPa
         (CompactPagination, {})
     ],
     ids=[
-        "Pagination", 
+        "Pagination",
         "CompactPagination"
     ]
 )

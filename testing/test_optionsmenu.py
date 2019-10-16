@@ -11,7 +11,9 @@ def view(browser):
     class TestView(View):
         ROOT = ".//h2[normalize-space(.)='Options menu - single option']/following-sibling::div[1]"
         options_menu_txt_locator = OptionsMenu("Options menu")
-        options_menu_custom_locator = OptionsMenu(locator=".//div[contains(@class, 'pf-c-options-menu')]")
+        options_menu_custom_locator = OptionsMenu(
+            locator=".//div[contains(@class, 'pf-c-options-menu')]"
+        )
         options_menu_default_locator = OptionsMenu()
     return TestView(browser)
 

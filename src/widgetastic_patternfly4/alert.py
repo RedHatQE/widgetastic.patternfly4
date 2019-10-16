@@ -33,7 +33,7 @@ class Alert(Widget):
     @property
     def title(self):
         trim_text = self.browser.text(self.browser.element("./span", parent=self._raw_title_el))
-        return self.browser.text(self._raw_title_el)[len(trim_text) :].strip()
+        return self.browser.text(self._raw_title_el)[len(trim_text):].strip()
 
     @property
     def body(self):
