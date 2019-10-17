@@ -121,17 +121,9 @@ def test_chipgroup_badge(root_view):
 
     assert chip_group.is_displayed
     assert chip_group.label is None
-    assert chip_group.is_multiselect
-    chip_group.show_more()
-    chip_group.show_less()
 
     expected_chips = [("Lemons", "10"), ("Limes", "8")]
     chips = [(chip.text, chip.badge) for chip in chip_group]
-    assert chips == expected_chips
-
-    chip_group.show_less()
-    expected_chips = [("Lemons", "10")]
-    chips = [(chip.text, chip.badge) for chip in chip_group.get_chips(show_more=False)]
     assert chips == expected_chips
 
     chip_group.remove_chip_by_name("Lemons")
@@ -158,13 +150,6 @@ def test_chipgroup_toolbar(root_view):
         "Category 3": ["Chip 5", "Chip 6", "Chip 7", "Chip 8"],
     }
     assert view.chip_group_toolbar.read() == data
-
-    view.chip_group_toolbar.show_less()
-    data = {"Category 1": ["Chip 1", "Chip 2"]}
-    groups = view.chip_group_toolbar.get_groups(show_more=False)
-    assert len(groups) == 1
-    assert groups[0].label == "Category 1"
-    assert groups[0].read() == ["Chip 1", "Chip 2"]
 
     groups = view.chip_group_toolbar.get_groups()
     cat_2_group = [g for g in groups if g.label == "Category 2"][0]
