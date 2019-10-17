@@ -92,15 +92,18 @@ def test_chipgroup_multiselect(root_view):
     assert chip_group.is_displayed
     assert chip_group.label is None
     assert chip_group.is_multiselect
-    chip_group.show_more()
-    chip_group.show_less()
 
+    expected_chips = ["Chip 1", "Really long chip that goes on and on", "Chip 3"]
+    chips = [chip.text for chip in chip_group.get_chips(show_more=False)]
+    assert chips == expected_chips
+
+    chip_group.show_more()
     expected_chips = ["Chip 1", "Really long chip that goes on and on", "Chip 3", "Chip 4"]
-    chips = [chip.text for chip in chip_group]
+    chips = [chip.text for chip in chip_group.get_chips(show_more=False)]
     assert chips == expected_chips
 
     chip_group.show_less()
-    expected_chips = ["Chip 1"]
+    expected_chips = ["Chip 1", "Really long chip that goes on and on", "Chip 3"]
     chips = [chip.text for chip in chip_group.get_chips(show_more=False)]
     assert chips == expected_chips
 
