@@ -3,8 +3,10 @@ from . import Select
 
 class ContextSelector(Select):
     ITEMS_LOCATOR = ".//ul[@class='pf-c-context-selector__menu-list']/li"
-    ITEM_LOCATOR = (".//button[contains(@class, 'pf-c-context-selector__menu-list-item')"
-                    " and normalize-space(.)={}]")
+    ITEM_LOCATOR = (
+        ".//button[contains(@class, 'pf-c-context-selector__menu-list-item')"
+        " and normalize-space(.)={}]"
+    )
     SEARCH_INPUT_LOCATOR = ".//input[@type='search']"
     SEARCH_BUTTON_LOCATOR = ".//button[contains(@id, 'pf-context-selector-search-button')]"
 

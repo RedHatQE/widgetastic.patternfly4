@@ -1,20 +1,13 @@
 import re
 
-from widgetastic.widget import (
-    Widget,
-    View,
-    ParametrizedLocator,
-    ParametrizedView,
-    ClickableMixin,
-)
+from widgetastic.widget import Widget, View, ParametrizedLocator, ParametrizedView, ClickableMixin
 from widgetastic.xpath import quote
 
 
 class DonutLegendItem(ParametrizedView, ClickableMixin):
     PARAMETERS = ("label_text",)
     ROOT = ParametrizedLocator(
-        ".//*[name()='text']"
-        "/*[name()='tspan' and contains(., '{label_text}')]"
+        ".//*[name()='text']" "/*[name()='tspan' and contains(., '{label_text}')]"
     )
     ALL_ITEMS = ".//*[name()='text']/*[name()='tspan']"
     LEGEND_ITEM_REGEX = re.compile(r"(.*?): ([\d]+)")
