@@ -1,6 +1,7 @@
 from widgetastic.log import call_sig
 from widgetastic.utils import ParametrizedLocator
-from widgetastic.widget import ClickableMixin, Widget
+from widgetastic.widget import ClickableMixin
+from widgetastic.widget import Widget
 from widgetastic.xpath import quote
 
 

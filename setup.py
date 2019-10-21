@@ -1,4 +1,5 @@
-from setuptools import find_packages, setup
+from setuptools import find_packages
+from setuptools import setup
 
 
 setup(
@@ -11,13 +12,8 @@ setup(
     url="https://github.com/quarckster/widgetastic.patternfly4",
     packages=find_packages("src"),
     package_dir={"": "src"},
-    install_requires=[
-        "selenium==3.141.0",
-        "widgetastic.core>=0.37",
-    ],
-    setup_requires=[
-        "setuptools_scm",
-    ],
+    install_requires=["selenium==3.141.0", "widgetastic.core>=0.37"],
+    setup_requires=["setuptools_scm"],
     classifiers=[
         "Programming Language :: Python",
         "Programming Language :: Python :: 2.7",

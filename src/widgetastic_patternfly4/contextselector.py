@@ -1,4 +1,4 @@
-from . import Select
+from .select import Select
 
 
 class ContextSelector(Select):

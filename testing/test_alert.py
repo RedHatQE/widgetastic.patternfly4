@@ -1,4 +1,5 @@
 import pytest
+
 from widgetastic_patternfly4 import Alert
 
 
@@ -21,5 +22,6 @@ def test_alert_title(alert):
 
 def test_alert_body(alert):
     alert_type = alert.type if alert.type != "error" else "danger"
-    assert alert.body == ("{} alert description."
-                          " This is a link.".format(alert_type.capitalize()))
+    assert alert.body == (
+        "{} alert description." " This is a link.".format(alert_type.capitalize())
+    )

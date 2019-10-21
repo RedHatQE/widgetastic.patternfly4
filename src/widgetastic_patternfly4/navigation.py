@@ -1,10 +1,10 @@
 from collections import OrderedDict
 
+from wait_for import wait_for
 from widgetastic.exceptions import NoSuchElementException
 from widgetastic.utils import ParametrizedLocator
-from widgetastic.xpath import quote
 from widgetastic.widget import Widget
-from wait_for import wait_for
+from widgetastic.xpath import quote
 
 
 def check_nav_loaded(fn):

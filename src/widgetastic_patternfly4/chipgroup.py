@@ -1,6 +1,10 @@
-from .button import Button
-from widgetastic.widget import ParametrizedLocator, Text, View, ParametrizedView
 from wait_for import wait_for
+from widgetastic.widget import ParametrizedLocator
+from widgetastic.widget import ParametrizedView
+from widgetastic.widget import Text
+from widgetastic.widget import View
+
+from .button import Button
 
 
 class ChipReadOnlyError(Exception):

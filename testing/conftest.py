@@ -2,8 +2,8 @@ import os
 
 import pytest
 from selenium import webdriver
-from widgetastic.browser import Browser
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+from widgetastic.browser import Browser
 
 
 @pytest.fixture(scope="session")

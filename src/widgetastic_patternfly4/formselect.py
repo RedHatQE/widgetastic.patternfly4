@@ -1,5 +1,4 @@
 from selenium.webdriver.support.ui import Select
-
 from widgetastic.exceptions import NoSuchElementException
 from widgetastic.widget import GenericLocatorWidget
 
