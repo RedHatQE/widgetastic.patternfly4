@@ -1,9 +1,8 @@
 import pytest
 from widgetastic.widget import View
-from widgetastic_patternfly4 import (
-    OptionsMenu,
-    DropdownItemNotFound,
-)
+
+from widgetastic_patternfly4 import DropdownItemNotFound
+from widgetastic_patternfly4 import OptionsMenu
 
 
 @pytest.fixture
@@ -15,12 +14,15 @@ def view(browser):
             locator=".//div[contains(@class, 'pf-c-options-menu')]"
         )
         options_menu_default_locator = OptionsMenu()
+
     return TestView(browser)
 
 
 @pytest.fixture(
     params=[
-        "options_menu_txt_locator", "options_menu_custom_locator", "options_menu_default_locator"
+        "options_menu_txt_locator",
+        "options_menu_custom_locator",
+        "options_menu_default_locator",
     ]
 )
 def options_menu(view, request):

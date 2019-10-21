@@ -1,16 +1,16 @@
 import pytest
-from widgetastic_patternfly4 import Pagination, PaginationNavDisabled, CompactPagination
+
+from widgetastic_patternfly4 import CompactPagination
+from widgetastic_patternfly4 import Pagination
+from widgetastic_patternfly4 import PaginationNavDisabled
 
 
 @pytest.fixture(
     params=[
-        (Pagination, {'locator': ".//div[@id='pagination-options-menu-top']"}),
-        (CompactPagination, {})
+        (Pagination, {"locator": ".//div[@id='pagination-options-menu-top']"}),
+        (CompactPagination, {}),
     ],
-    ids=[
-        "Pagination",
-        "CompactPagination"
-    ]
+    ids=["Pagination", "CompactPagination"],
 )
 def paginator(browser, request):
     paginator_cls, kwargs = request.param
@@ -79,7 +79,7 @@ def test_per_page_options(paginator):
         "10 per page",
         "20 per page",
         "50 per page",
-        "100 per page"
+        "100 per page",
     ]
 
 

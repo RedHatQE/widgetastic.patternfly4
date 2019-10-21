@@ -1,6 +1,10 @@
 import re
 
-from widgetastic.widget import Widget, View, ParametrizedLocator, ParametrizedView, ClickableMixin
+from widgetastic.widget import ClickableMixin
+from widgetastic.widget import ParametrizedLocator
+from widgetastic.widget import ParametrizedView
+from widgetastic.widget import View
+from widgetastic.widget import Widget
 from widgetastic.xpath import quote
 
 

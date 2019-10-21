@@ -1,7 +1,12 @@
 import pytest
-from widgetastic.widget import ParametrizedView, View
-from widgetastic_patternfly4 import Chip, StandAloneChipGroup, ChipGroupToolbar, ChipReadOnlyError
 from wait_for import wait_for
+from widgetastic.widget import ParametrizedView
+from widgetastic.widget import View
+
+from widgetastic_patternfly4 import Chip
+from widgetastic_patternfly4 import ChipGroupToolbar
+from widgetastic_patternfly4 import ChipReadOnlyError
+from widgetastic_patternfly4 import StandAloneChipGroup
 
 
 @pytest.fixture(scope="module")

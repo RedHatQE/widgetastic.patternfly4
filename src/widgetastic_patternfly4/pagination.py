@@ -1,8 +1,11 @@
-from contextlib import contextmanager
 import math
+from contextlib import contextmanager
 
 from widgetastic.utils import ParametrizedLocator
-from widgetastic.widget import GenericLocatorWidget, Text, TextInput, View
+from widgetastic.widget import GenericLocatorWidget
+from widgetastic.widget import Text
+from widgetastic.widget import TextInput
+from widgetastic.widget import View
 
 from .optionsmenu import OptionsMenu
 

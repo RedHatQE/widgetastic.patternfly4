@@ -1,6 +1,9 @@
 import pytest
-from widgetastic_patternfly4 import ExpandableTable, PatternflyTable, RowNotExpandable
 from widgetastic.widget import Checkbox
+
+from widgetastic_patternfly4 import ExpandableTable
+from widgetastic_patternfly4 import PatternflyTable
+from widgetastic_patternfly4 import RowNotExpandable
 
 
 SORT = [
@@ -36,8 +39,7 @@ def test_selectable_table(browser, sample):
 
 
 @pytest.mark.skipif(
-    lambda browser: browser.browser_type == "chrome",
-    reason="Chrome has an issue with this test"
+    lambda browser: browser.browser_type == "chrome", reason="Chrome has an issue with this test"
 )
 def test_expandable_table(browser):
     expected_read = [

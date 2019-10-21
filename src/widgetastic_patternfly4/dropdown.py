@@ -1,9 +1,10 @@
 from contextlib import contextmanager
 
-from widgetastic.exceptions import NoSuchElementException, UnexpectedAlertPresentException
+from widgetastic.exceptions import NoSuchElementException
+from widgetastic.exceptions import UnexpectedAlertPresentException
 from widgetastic.utils import ParametrizedLocator
-from widgetastic.xpath import quote
 from widgetastic.widget import Widget
+from widgetastic.xpath import quote
 
 
 class DropdownDisabled(Exception):

@@ -1,7 +1,10 @@
 import six
-
 from widgetastic.log import create_item_logger
-from widgetastic.widget import Table, TableColumn, TableRow, Text, Widget
+from widgetastic.widget import Table
+from widgetastic.widget import TableColumn
+from widgetastic.widget import TableRow
+from widgetastic.widget import Text
+from widgetastic.widget import Widget
 from widgetastic.widget.table import resolve_table_widget
 
 

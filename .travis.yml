@@ -32,10 +32,10 @@ jobs:
 before_install:
   - docker run -d -p 4444:4444 -v /dev/shm:/dev/shm quay.io/redhatqe/selenium-standalone
   - pip install -U setuptools pip wheel
-  - pip install -U flake8 pytest pytest-cov codecov 
+  - pip install -U pre-commit pytest pytest-cov codecov
 install: python setup.py install
 script:
-  - flake8 src testing --max-line-length=100
+  - pre-commit run --all
   - pytest -v --no-cov-on-fail --cov=widgetastic_patternfly4
 after_success:
   - codecov

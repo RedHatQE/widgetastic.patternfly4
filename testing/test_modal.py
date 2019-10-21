@@ -1,6 +1,8 @@
 import pytest
+
 from widgetastic_patternfly4.button import Button
-from widgetastic_patternfly4.modal import Modal, ModalItemNotFound
+from widgetastic_patternfly4.modal import Modal
+from widgetastic_patternfly4.modal import ModalItemNotFound
 
 
 @pytest.fixture()

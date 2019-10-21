@@ -2,8 +2,8 @@ import os
 
 import pytest
 from selenium import webdriver
-from widgetastic.browser import Browser
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+from widgetastic.browser import Browser
 
 
 @pytest.fixture(scope="session")
@@ -27,7 +27,7 @@ def selenium(browser_name):
 def browser(selenium, request):
     name = request.module.__name__.split("_")[1]
     category = getattr(request.module, "CATEGORY", "components")
-    url = "https://patternfly-react.surge.sh/patternfly-4/{}/{}/?shadow=false"
+    url = "https://patternfly-react.surge.sh/patternfly-4/documentation/react/{}/{}"
     selenium.maximize_window()
     selenium.get(url.format(category, name))
     return Browser(selenium)
