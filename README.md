@@ -23,6 +23,8 @@ Dropdown - https://www.patternfly.org/v4/documentation/react/components/dropdown
 
 FormSelect - https://www.patternfly.org/v4/documentation/react/components/formselect
 
+Modal - https://patternfly-react.surge.sh/v4/documentation/react/components/modal
+
 Nav - https://www.patternfly.org/v4/documentation/react/components/nav
 
 Pagination - https://www.patternfly.org/v4/documentation/react/components/pagination
