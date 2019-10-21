@@ -53,11 +53,9 @@ git clone https://github.com/RedHatQE/widgetastic.patternfly4.git
 
 # install pre-commit
 cd widgetastic.patternfly4
-pip install pre-commit
-pre-commit install
-
 # install the package in editable mode
-pip install -e .
+pip install -e .[dev]
+pre-commit install
 ```
 
 ### Testing
