@@ -182,8 +182,7 @@ class CompactPagination(Pagination):
 
         Compact pagination does not explicitly show this, so use some math.
 
-        For example, if "per page" is set to '20', we know that a page displaying
-        items:
+        For example, if "per page" is set to '20', we know that a page displaying items:
             1-20 is on 20/20 = page 1
             21-40 is on page 40/20 = page 2
             41-60 is on page 60/20 = page 3
