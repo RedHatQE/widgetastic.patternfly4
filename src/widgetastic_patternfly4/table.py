@@ -16,13 +16,16 @@ class HeaderColumn(TableColumn):
 
     @property
     def is_sortable(self):
+        """Returns true of the column is sortable."""
         return "pf-c-table__sort" in self.browser.classes(self)
 
     @property
     def sorting_order(self):
+        """Returns current sorting order as a string."""
         return self.browser.get_attribute("aria-sort", self)
 
     def sort(self, order="ascending"):
+        """Sorts the column according to the supplied "ascending" or "descending"."""
         if order not in ("ascending", "descending"):
             raise ValueError("order should be either 'ascending' or 'descending'")
         while self.sorting_order != order:
@@ -51,6 +54,7 @@ class HeaderRow(TableRow):
         return self.Column(self, index, logger=create_item_logger(self.logger, item))
 
     def read(self):
+        """Returns the values of the headers of the HeaderRow object."""
         return self.parent.headers
 
 
@@ -64,6 +68,7 @@ class PatternflyTableRow(TableRow):
 
     @property
     def has_row_header(self):
+        """Returns a boolean detailing if the Table Row has a header."""
         return len(self.browser.elements(self.HEADER_IN_ROW)) > 0
 
     def __getitem__(self, item):
@@ -112,6 +117,7 @@ class PatternflyTable(Table):
         return False
 
     def sort_by(self, column, order):
+        """Sets the sort order for the supplied column by name, and "ascending/descending"."""
         header = self.header_row[column]
         header.sort(order)
 
@@ -120,9 +126,11 @@ class PatternflyTable(Table):
         header.fill(value)
 
     def select_all(self, column=0):
+        """Selects all the rows."""
         self._toggle_select_all(True, column)
 
     def deselect_all(self, column=0):
+        """Deselects all the rows."""
         self._toggle_select_all(False, column)
 
 
@@ -172,10 +180,12 @@ class ExpandableTableRow(PatternflyTableRow):
 
     @property
     def is_displayed(self):
+        """Returns a boolean detailing if the Table Row is displayed."""
         return self.browser.is_displayed(locator=self.ROW)
 
     @property
     def is_expandable(self):
+        """Returns a boolean detailing if the table row is expandable."""
         return self[0].widget.is_displayed
 
     def _check_expandable(self):
@@ -184,21 +194,25 @@ class ExpandableTableRow(PatternflyTableRow):
 
     @property
     def is_expanded(self):
+        """Returns a boolean detailing if the table row has been expanded."""
         self._check_expandable()
         return self.browser.is_displayed(locator=self.EXPANDABLE_CONTENT)
 
     def expand(self):
+        """Expands the table row."""
         self._check_expandable()
         if not self.is_expanded:
             self[0].widget.click()
             self.content.wait_displayed()
 
     def collapse(self):
+        """Collapses the table row."""
         self._check_expandable()
         if self.is_expanded:
             self[0].widget.click()
 
     def read(self):
+        """Returns a text representation of the table row."""
         result = super(ExpandableTableRow, self).read()
         # Remove the column with the "expand" button in it
         if 0 in result and not result[0]:

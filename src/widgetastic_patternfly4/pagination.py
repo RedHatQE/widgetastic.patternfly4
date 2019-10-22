@@ -43,67 +43,82 @@ class Pagination(View):
 
     @property
     def is_first_disabled(self):
+        """Returns boolean detailing if the first page button is disabled."""
         return not self.browser.element(self._first).is_enabled()
 
     def first_page(self):
+        """Clicks on the first page button."""
         if self.is_first_disabled:
             raise PaginationNavDisabled("first")
         self._first.click()
 
     @property
     def is_previous_disabled(self):
+        """Returns boolean detailing if the previous page button is disabled."""
         return not self.browser.element(self._previous).is_enabled()
 
     def previous_page(self):
+        """Clicks the previous page button."""
         if self.is_previous_disabled:
             raise PaginationNavDisabled("previous")
         self._previous.click()
 
     @property
     def is_next_disabled(self):
+        """Returns boolean detailing if the next page button is disabled."""
         return not self.browser.element(self._next).is_enabled()
 
     def next_page(self):
+        """Clicks the next page button."""
         if self.is_next_disabled:
             raise PaginationNavDisabled("next")
         self._next.click()
 
     @property
     def is_last_disabled(self):
+        """Returns boolean detailing if the last page button is disabled."""
         return not self.browser.element(self._last).is_enabled()
 
     def last_page(self):
+        """Clicks the last page button."""
         if self.is_last_disabled:
             raise PaginationNavDisabled("last")
         self._last.click()
 
     @property
     def current_page(self):
+        """Returns an int of the current page number."""
         return int(self._current_page.value)
 
     @property
     def total_pages(self):
-        # example "of 6 pages"
+        """Returns int detailing the total number of pages."""
         return int(self._total_pages.text.strip().split()[1])
 
     @property
     def displayed_items(self):
+        """Returns a string detailing the number of displayed items information.
+
+        example "1 - 20 of 523 items"
+        """
         items_string = self._items.text
-        # example "1 - 20 of 523 items"
         first_num, last_num = items_string.split("of")[0].split("-")
         return int(first_num.strip()), int(last_num.strip())
 
     @property
     def total_items(self):
+        """Returns a string detailing the number of displayed items"""
         items_string = self._items.text
         return int(items_string.split("of")[1].split()[0])
 
     @property
     def per_page_options(self):
+        """Returns an iterable of the available pagination options."""
         return self._options.items
 
     @property
     def current_per_page(self):
+        """Returns an integer detailing how many items are cshown per page."""
         if self._cached_per_page_value:
             return self._cached_per_page_value
         return int(self._options.selected_items[0].split()[0])
@@ -123,7 +138,7 @@ class Pagination(View):
         self._cached_per_page_value = None
 
     def set_per_page(self, count):
-        # convert a possible int to string
+        """Sets the number of items per page. (Will cast to str)"""
         value = str(count)
         value_per_page = "{} per page".format(value)
         items = self._options.items
@@ -172,6 +187,7 @@ class CompactPagination(Pagination):
         return self.is_next_disabled
 
     def last_page(self):
+        """Compact paginator has no "last" button, so iterates until last is reached."""
         while not self.is_next_disabled:
             self.next_page()
 

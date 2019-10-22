@@ -27,19 +27,24 @@ class Tab(View):
 
     @property
     def tab_name(self):
+        """Returns the tab name as a string."""
         return self.TAB_NAME or type(self).__name__.replace("_", " ").capitalize()
 
     def is_active(self):
+        """Returns a boolean detailing of the tab is active."""
         return "pf-m-current" in self.parent_browser.classes(self.TAB_LOCATOR)
 
     @property
     def is_displayed(self):
+        """Returns a boolean detailing of the tab is displayed."""
         return self.parent_browser.is_displayed(self.TAB_LOCATOR)
 
     def click(self):
+        """Clicks the tab."""
         return self.parent_browser.click(self.TAB_LOCATOR)
 
     def select(self):
+        """Selects the tab (checks if active already first)."""
         if not self.is_active():
             self.logger.info("Opening the tab %s", self.tab_name)
             self.click()

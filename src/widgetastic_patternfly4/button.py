@@ -82,14 +82,17 @@ class Button(Widget, ClickableMixin):
             self.locator = self._generate_locator(*text, **kwargs)
 
     def read(self):
+        """Returns the string of the button."""
         return self.browser.text(self)
 
     @property
     def active(self):
+        """Returns a boolean detailing if the button is active."""
         return "pf-m-active" in self.browser.classes(self)
 
     @property
     def disabled(self):
+        """Returns a boolean detailing if the button is disabled."""
         check1 = "pf-m-disabled" in self.browser.classes(self)
         return check1 or self.browser.get_attribute("disabled", self) == "disabled"
 
@@ -98,4 +101,5 @@ class Button(Widget, ClickableMixin):
 
     @property
     def title(self):
+        """Returns the title of the button as a string."""
         return self.browser.get_attribute("title", self)

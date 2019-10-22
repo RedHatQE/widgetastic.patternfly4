@@ -26,14 +26,17 @@ class DonutLegendItem(ParametrizedView, ClickableMixin):
 
     @property
     def label(self):
+        """Returns the label of a DonutLegendItem as a string"""
         return self._get_legend_item(self.browser.text(self))[0]
 
     @property
     def value(self):
+        """Returns the value of a DonutLegendItem as a string"""
         return self._get_legend_item(self.browser.text(self))[1]
 
     @classmethod
     def all(cls, browser):
+        """Returns a list of all items"""
         return [(browser.text(el),) for el in browser.elements(cls.ALL_ITEMS)]
 
 
@@ -44,6 +47,7 @@ class DonutLegend(View):
 
     @property
     def all_items(self):
+        """Returns a list of all items, arranged as {label: value}"""
         result = []
         for i in self.item:
             result.append({"label": i.label, "value": i.value})
@@ -56,6 +60,7 @@ class DonutCircle(View):
 
     @property
     def labels(self):
+        """Returns a list of labels"""
         return [self.browser.text(elem) for elem in self.browser.elements(self.LABELS_LOCATOR)]
 
 
