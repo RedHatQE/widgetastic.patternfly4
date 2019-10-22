@@ -24,6 +24,7 @@ class Alert(Widget):
         self.locator = locator
 
     def read(self):
+        """Returns the text of the body of the alert as a string."""
         return self.body
 
     @property
@@ -32,20 +33,24 @@ class Alert(Widget):
 
     @property
     def title(self):
+        """Returns the title text of the alert as a string."""
         trim_text = self.browser.text(self.browser.element("./span", parent=self._raw_title_el))
         return self.browser.text(self._raw_title_el)[len(trim_text) :].strip()
 
     @property
     def body(self):
+        """Returns the text of the body of the alert as a string."""
         el = self.browser.element(self.DESCRIPTION)
         return self.browser.text(el)
 
     def click_action(self):
+        """Clicks the defined action button of the alert."""
         el = self.browser.element(self.ACTION)
         self.browser.click(el)
 
     @property
     def type(self):
+        """Returns the type of the alert, one of warning, success, error or info."""
         for class_ in self.browser.classes(self):
             if class_ in self.TYPE_MAPPING:
                 return self.TYPE_MAPPING[class_]
@@ -58,6 +63,7 @@ class Alert(Widget):
             )
 
     def assert_no_error(self):
+        """Asserts that the warning is not of the error type."""
         if self.type == "error":
             raise AssertionError("assert_no_error: {}".format(self.body))
 

@@ -54,6 +54,7 @@ class Dropdown(Widget):
 
     @contextmanager
     def opened(self):
+        """A context manager to open and then close a Dropdown."""
         self.open()
         yield
         self.close()
@@ -73,9 +74,11 @@ class Dropdown(Widget):
 
     @property
     def is_open(self):
+        """Returns True if the Dropdown is open"""
         return "pf-m-expanded" in self.browser.classes(self)
 
     def open(self):
+        """Opens a dropdown."""
         self._verify_enabled()
         if not self.is_open:
             self.browser.click(self.BUTTON_LOCATOR)

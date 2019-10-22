@@ -32,6 +32,7 @@ class Navigation(Widget):
 
     @property
     def loaded(self):
+        """Returns a boolean detailing if the nav is loaded."""
         if self._loaded:
             return True
         else:
@@ -66,10 +67,12 @@ class Navigation(Widget):
 
     @check_nav_loaded
     def read(self):
+        """Returns the current navigation item."""
         return self.currently_selected
 
     @check_nav_loaded
     def nav_links(self, *levels):
+        """Returns a list of all navigation items."""
         if not levels:
             return [self.browser.text(el) for el in self.browser.elements(self.ITEMS)]
         current_item = self
@@ -90,6 +93,7 @@ class Navigation(Widget):
 
     @check_nav_loaded
     def nav_item_tree(self, start=None):
+        """Returns an ordered dict representing the navigation tree."""
         start = start or []
         result = OrderedDict()
         for item in self.nav_links(*start):
@@ -103,6 +107,7 @@ class Navigation(Widget):
     @property
     @check_nav_loaded
     def currently_selected(self):
+        """Returns the currently selected item."""
         return [self.browser.text(el) for el in self.browser.elements(self.CURRENTLY_SELECTED)]
 
     @check_nav_loaded
