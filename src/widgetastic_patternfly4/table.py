@@ -210,15 +210,17 @@ class ExpandableTable(PatternflyTable):
     """
     The patternfly 4 expandable table has the following outline:
 
-    <table>
-      <thead>
-      <tbody>
-        <tr>The row always on display.</tr>
-        <tr>The "expandable" content viewed by clicking the arrow button</tr>
-      </tbody>
-      <tbody>
-        <tr>Next row...</tr>
-        <tr>Next row's expandable content...</tr>
+    .. code-block:: html
+
+        <table>
+          <thead>
+          <tbody>
+            <tr>The row always on display.</tr>
+            <tr>The "expandable" content viewed by clicking the arrow button</tr>
+          </tbody>
+          <tbody>
+            <tr>Next row...</tr>
+            <tr>Next row's expandable content...</tr>
 
     Therefore, we modify the behavior of Table here to look for rows based on 'tbody'
     tags instead of 'tr' tags. We use a custom class, ExpandableTableRow, which treats
