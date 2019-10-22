@@ -1,6 +1,7 @@
 [![Build Status](https://travis-ci.org/RedHatQE/widgetastic.patternfly4.svg?branch=master)](https://travis-ci.org/RedHatQE/widgetastic.patternfly4)
 [![codecov](https://codecov.io/gh/RedHatQE/widgetastic.patternfly4/branch/master/graph/badge.svg)](https://codecov.io/gh/RedHatQE/widgetastic.patternfly4)
 [![PyPI version](https://badge.fury.io/py/widgetastic.patternfly4.svg)](https://badge.fury.io/py/widgetastic.patternfly4)
+[![Documentation Status](https://readthedocs.org/projects/widgetasticpatternfly4/badge/?version=latest)](https://widgetasticpatternfly4.readthedocs.io/en/latest/?badge=latest)
 
 Library of Patternfly v4 (aka Next) components for [Widgetastic](https://github.com/RedHatQE/widgetastic.core).
 
