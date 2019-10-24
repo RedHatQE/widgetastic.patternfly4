@@ -20,10 +20,12 @@ class Switch(GenericLocatorWidget):
 
     @property
     def selected(self):
+        """Returns a boolean detailing if the Switch is on (True) of off (False)."""
         return self.browser.get_attribute("checked", self.CHECKBOX_LOCATOR) is not None
 
     @property
     def label(self):
+        """Returns the label of the Switch."""
         try:
             return self.browser.text(self.LABEL)
         except NoSuchElementException:
@@ -31,9 +33,11 @@ class Switch(GenericLocatorWidget):
 
     @property
     def is_enabled(self):
+        """Returns a boolean detailing if the switch is enabled."""
         return self.browser.get_attribute("disabled", self.CHECKBOX_LOCATOR) is None
 
     def fill(self, value):
+        """Fills a Switch with the supplied value."""
         if not self.is_enabled:
             raise SwitchDisabled("{} is disabled".format(repr(self)))
         if bool(value) == self.selected:
@@ -43,6 +47,7 @@ class Switch(GenericLocatorWidget):
             return True
 
     def read(self):
+        """Returns a boolean detailing if the Switch is on (True) of off (False)."""
         return self.selected
 
     def __repr__(self):

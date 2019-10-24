@@ -1,34 +1,36 @@
 from .alert import Alert
-from .chipgroup import (
-    Chip,
-    ChipReadOnlyError,
-    ChipGroupToolbar,
-    ChipGroupToolbarCategory,
-    StandAloneChipGroup
-)
 from .breadcrumb import BreadCrumb
 from .button import Button
+from .chipgroup import Chip
+from .chipgroup import ChipGroupToolbar
+from .chipgroup import ChipGroupToolbarCategory
+from .chipgroup import ChipReadOnlyError
+from .chipgroup import StandAloneChipGroup
+from .contextselector import ContextSelector
 from .donutchart import DonutChart
-from .dropdown import (
-    Dropdown,
-    DropdownDisabled,
-    DropdownItemDisabled,
-    DropdownItemNotFound,
-    GroupDropdown,
-)
-from .formselect import (
-    FormSelect,
-    FormSelectDisabled,
-    FormSelectOptionDisabled,
-    FormSelectOptionNotFound,
-)
+from .dropdown import Dropdown
+from .dropdown import DropdownDisabled
+from .dropdown import DropdownItemDisabled
+from .dropdown import DropdownItemNotFound
+from .dropdown import GroupDropdown
+from .formselect import FormSelect
+from .formselect import FormSelectDisabled
+from .formselect import FormSelectOptionDisabled
+from .formselect import FormSelectOptionNotFound
 from .modal import Modal
 from .navigation import Navigation
+from .optionsmenu import OptionsMenu
+from .pagination import CompactPagination
 from .pagination import Pagination
-from .select import Select, SelectItemDisabled, SelectItemNotFound
-from .contextselector import ContextSelector
-from .switch import Switch, SwitchDisabled
-from .table import ExpandableTable, PatternflyTable, RowNotExpandable
+from .pagination import PaginationNavDisabled
+from .select import Select
+from .select import SelectItemDisabled
+from .select import SelectItemNotFound
+from .switch import Switch
+from .switch import SwitchDisabled
+from .table import ExpandableTable
+from .table import PatternflyTable
+from .table import RowNotExpandable
 from .tabs import Tab
 
 
@@ -40,6 +42,7 @@ __all__ = [
     "ChipReadOnlyError",
     "ChipGroupToolbar",
     "ChipGroupToolbarCategory",
+    "CompactPagination",
     "StandAloneChipGroup",
     "DonutChart",
     "Dropdown",
@@ -53,7 +56,9 @@ __all__ = [
     "FormSelectOptionNotFound",
     "Modal",
     "Navigation",
+    "OptionsMenu",
     "Pagination",
+    "PaginationNavDisabled",
     "Select",
     "SelectItemDisabled",
     "SelectItemNotFound",

@@ -27,19 +27,23 @@ class Select(GenericLocatorWidget):
 
     @contextmanager
     def opened(self):
+        """A context manager to open and then close a Select."""
         self.open()
         yield
         self.close()
 
     @property
     def is_open(self):
+        """Returns a boolean detailing if Select is open."""
         return "pf-m-expanded" in self.browser.classes(self)
 
     def open(self):
+        """Opens a Select."""
         if not self.is_open:
             self.browser.click(self.BUTTON_LOCATOR)
 
     def close(self):
+        """Closes a Select."""
         if self.is_open:
             self.browser.click(self)
 
@@ -123,9 +127,11 @@ class Select(GenericLocatorWidget):
             self.browser.click(self.item_element(item, close=False))
 
     def fill(self, value):
+        """Fills a Select with a value."""
         self.item_select(value)
 
     def read(self):
+        """Returns a string of the text of the selected option."""
         return self.browser.text(self.BUTTON_LOCATOR)
 
     def __repr__(self):

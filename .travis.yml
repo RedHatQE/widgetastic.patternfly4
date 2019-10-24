@@ -1,6 +1,5 @@
-addons:
-  chrome: stable
-  firefox: latest
+services:
+  - docker
 language: python
 python:
   - 3.6
@@ -9,8 +8,8 @@ stages:
   - name: deploy
     if: tag IS true
 env:
-  - BROWSER=chrome
   - BROWSER=firefox
+  - BROWSER=chrome
 jobs:
   include:
     - stage: deploy
@@ -31,13 +30,12 @@ jobs:
         on:
           tags: true
 before_install:
+  - docker run -d -p 4444:4444 -v /dev/shm:/dev/shm quay.io/redhatqe/selenium-standalone
   - pip install -U setuptools pip wheel
-  - pip install -U flake8 pytest webdrivermanager
-  - pip install -U pytest-cov codecov
-  - webdrivermanager $BROWSER
+  - pip install -U pre-commit pytest pytest-cov codecov
 install: python setup.py install
 script:
-  - flake8 src testing --max-line-length=100
+  - pre-commit run --all
   - pytest -v --no-cov-on-fail --cov=widgetastic_patternfly4
 after_success:
   - codecov

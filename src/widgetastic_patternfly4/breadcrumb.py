@@ -23,13 +23,18 @@ class BreadCrumb(Widget):
 
     @property
     def locations(self):
+        """Returns a list of strings of the current location according to the breadcrumbs."""
         return [self.browser.text(loc) for loc in self._path_elements]
 
     @property
     def active_location(self):
+        """Returns the last location in the breadcrumb, or None if breadcrumbs are not present/set.
+        """
         return self.locations[-1] if self.locations else None
 
     def click_location(self, name, handle_alert=False):
+        """Clicks a location present in the breadcrumbs by string name.
+        """
         location = next(loc for loc in self._path_elements if self.browser.text(loc) == name)
         self.browser.click(location, ignore_ajax=handle_alert)
         if handle_alert:
@@ -37,5 +42,5 @@ class BreadCrumb(Widget):
             self.browser.plugin.ensure_page_safe()
 
     def read(self):
-        """Return the active location of the breadcrumb"""
+        """Return the active location of the breadcrumb."""
         return self.active_location

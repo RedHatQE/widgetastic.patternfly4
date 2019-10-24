@@ -1,18 +1,20 @@
 from selenium.webdriver.support.ui import Select
-
 from widgetastic.exceptions import NoSuchElementException
 from widgetastic.widget import GenericLocatorWidget
 
 
 class FormSelectDisabled(Exception):
+    """Raised if the FormSelect is Disabled."""
     pass
 
 
 class FormSelectOptionDisabled(Exception):
+    """Raise if the specific option chosen is disabled."""
     pass
 
 
 class FormSelectOptionNotFound(Exception):
+    """Raised if the specific form option is not found in the form select."""
     pass
 
 

@@ -1,16 +1,17 @@
 from collections import OrderedDict
 
+from wait_for import wait_for
 from widgetastic.exceptions import NoSuchElementException
 from widgetastic.utils import ParametrizedLocator
-from widgetastic.xpath import quote
 from widgetastic.widget import Widget
-from wait_for import wait_for
+from widgetastic.xpath import quote
 
 
 def check_nav_loaded(fn):
     def inner(self, *args, **kwargs):
         assert self.loaded
         return fn(self, *args, **kwargs)
+
     return inner
 
 
@@ -31,6 +32,7 @@ class Navigation(Widget):
 
     @property
     def loaded(self):
+        """Returns a boolean detailing if the nav is loaded."""
         if self._loaded:
             return True
         else:
@@ -39,7 +41,7 @@ class Navigation(Widget):
                 self.logger.info("Navigation not ready yet")
                 wait_for(
                     lambda: self.browser.element(".").get_attribute("data-ouia-safe") == "true",
-                    num_sec=10
+                    num_sec=10,
                 )
             elif not out:
                 self.logger.info("Navigation doesn't have 'data-ouia-safe' property")
@@ -65,10 +67,12 @@ class Navigation(Widget):
 
     @check_nav_loaded
     def read(self):
+        """Returns the current navigation item."""
         return self.currently_selected
 
     @check_nav_loaded
     def nav_links(self, *levels):
+        """Returns a list of all navigation items."""
         if not levels:
             return [self.browser.text(el) for el in self.browser.elements(self.ITEMS)]
         current_item = self
@@ -89,6 +93,7 @@ class Navigation(Widget):
 
     @check_nav_loaded
     def nav_item_tree(self, start=None):
+        """Returns an ordered dict representing the navigation tree."""
         start = start or []
         result = OrderedDict()
         for item in self.nav_links(*start):
@@ -102,6 +107,7 @@ class Navigation(Widget):
     @property
     @check_nav_loaded
     def currently_selected(self):
+        """Returns the currently selected item."""
         return [self.browser.text(el) for el in self.browser.elements(self.CURRENTLY_SELECTED)]
 
     @check_nav_loaded
