@@ -28,6 +28,8 @@ Modal - https://patternfly-react.surge.sh/v4/documentation/react/components/moda
 
 Nav - https://www.patternfly.org/v4/documentation/react/components/nav
 
+Options Menu - https://www.patternfly.org/v4/documentation/react/components/optionsmenu
+
 Pagination - https://www.patternfly.org/v4/documentation/react/components/pagination
 
 Select - https://www.patternfly.org/v4/documentation/react/components/select
