@@ -89,6 +89,7 @@ class Chip(ParametrizedView, _BaseChip):
 
     def remove(self):
         """Removes a chip"""
+
         def _gone():
             return not self.is_displayed
 
