@@ -11,7 +11,7 @@ class Alert(Widget):
     ROOT = ParametrizedLocator("{@locator}")
     TITLE = './/h4[@class="pf-c-alert__title"]'
     DESCRIPTION = './/div[@class="pf-c-alert__description"]'
-    ACTION = './/div[@class="pf-c-alert__action"]/*'
+    ACTION = './/div[contains(@class, "pf-c-alert__action")]'
     TYPE_MAPPING = {
         "pf-m-warning": "warning",
         "pf-m-success": "success",
@@ -31,6 +31,10 @@ class Alert(Widget):
         return self.browser.element(self.TITLE)
 
     @property
+    def _raw_description_el(self):
+        return self.browser.element(self.DESCRIPTION)
+
+    @property
     def title(self):
         trim_text = self.browser.text(self.browser.element("./span", parent=self._raw_title_el))
         return self.browser.text(self._raw_title_el)[len(trim_text):].strip()
@@ -43,6 +47,14 @@ class Alert(Widget):
     def click_action(self):
         el = self.browser.element(self.ACTION)
         self.browser.click(el)
+
+    def click_link(self):
+        el = self.browser.element("./span/a", parent=self._raw_description_el)
+
+        if el.is_displayed:
+            self.browser.click(el)
+        else:
+            raise ValueError("Could not find a link")
 
     @property
     def type(self):
