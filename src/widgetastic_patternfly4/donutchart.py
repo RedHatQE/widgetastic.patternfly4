@@ -1,22 +1,19 @@
 import re
 
-from widgetastic.widget import (
-    Widget,
-    View,
-    ParametrizedLocator,
-    ParametrizedView,
-    ClickableMixin,
-)
+from widgetastic.widget import ClickableMixin
+from widgetastic.widget import ParametrizedLocator
+from widgetastic.widget import ParametrizedView
+from widgetastic.widget import View
+from widgetastic.widget import Widget
 from widgetastic.xpath import quote
 
 
 class DonutLegendItem(ParametrizedView, ClickableMixin):
     PARAMETERS = ("label_text",)
     ROOT = ParametrizedLocator(
-        ".//*[name()='svg']/*[name()='g']/*[name()='text']"
-        "/*[name()='tspan' and contains(., '{label_text}')]"
+        ".//*[name()='text']" "/*[name()='tspan' and contains(., '{label_text}')]"
     )
-    ALL_ITEMS = "./*[name()='svg']/*[name()='g']/*[name()='text']/*[name()='tspan']"
+    ALL_ITEMS = ".//*[name()='text']/*[name()='tspan']"
     LEGEND_ITEM_REGEX = re.compile(r"(.*?): ([\d]+)")
 
     @classmethod
@@ -29,24 +26,28 @@ class DonutLegendItem(ParametrizedView, ClickableMixin):
 
     @property
     def label(self):
+        """Returns the label of a DonutLegendItem as a string"""
         return self._get_legend_item(self.browser.text(self))[0]
 
     @property
     def value(self):
+        """Returns the value of a DonutLegendItem as a string"""
         return self._get_legend_item(self.browser.text(self))[1]
 
     @classmethod
     def all(cls, browser):
+        """Returns a list of all items"""
         return [(browser.text(el),) for el in browser.elements(cls.ALL_ITEMS)]
 
 
 class DonutLegend(View):
-    ROOT = "./div[contains(@class, 'VictoryContainer')]"
+    ROOT = ".//*[name()='g'][2]"
 
     item = ParametrizedView.nested(DonutLegendItem)
 
     @property
     def all_items(self):
+        """Returns a list of all items, arranged as {label: value}"""
         result = []
         for i in self.item:
             result.append({"label": i.label, "value": i.value})
@@ -59,6 +60,7 @@ class DonutCircle(View):
 
     @property
     def labels(self):
+        """Returns a list of labels"""
         return [self.browser.text(elem) for elem in self.browser.elements(self.LABELS_LOCATOR)]
 
 

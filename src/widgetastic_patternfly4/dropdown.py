@@ -1,9 +1,10 @@
 from contextlib import contextmanager
 
-from widgetastic.exceptions import NoSuchElementException, UnexpectedAlertPresentException
+from widgetastic.exceptions import NoSuchElementException
+from widgetastic.exceptions import UnexpectedAlertPresentException
 from widgetastic.utils import ParametrizedLocator
-from widgetastic.xpath import quote
 from widgetastic.widget import Widget
+from widgetastic.xpath import quote
 
 
 class DropdownDisabled(Exception):
@@ -27,33 +28,33 @@ class Dropdown(Widget):
         text: Text of the button, can be the inner text or the title attribute.
 
     """
+
     ROOT = ParametrizedLocator("{@locator}")
-    BUTTON_LOCATOR = (
-        ".//button[contains(@class, 'pf-c-options-menu__toggle-button') or "
-        "contains(@class, 'pf-c-dropdown__toggle')]"
-    )
+    BUTTON_LOCATOR = ".//button[contains(@class, 'pf-c-dropdown__toggle')]"
     ITEMS_LOCATOR = ".//ul[contains(@class, 'pf-c-dropdown__menu')]/li"
     ITEM_LOCATOR = (
         ".//*[self::a or self::span or self::button][contains(@class, 'pf-c-dropdown__menu-item')"
         " and normalize-space(.)={}]"
     )
+    TEXT_LOCATOR = (
+        './/div[contains(@class, "pf-c-dropdown") and ' "child::button[normalize-space(.)={}]]"
+    )
+    DEFAULT_LOCATOR = './/div[contains(@class, "pf-c-dropdown")][1]'
 
     def __init__(self, parent, text=None, locator=None, logger=None):
         Widget.__init__(self, parent, logger=logger)
         if locator and text:
             raise ValueError("Either text or locator should be provided")
         if text:
-            self.locator = (
-                './/div[contains(@class, "pf-c-dropdown") and '
-                "child::button[normalize-space(.)={}]]"
-            ).format(quote(text))
+            self.locator = self.TEXT_LOCATOR.format(quote(text))
         elif locator:
             self.locator = locator
         else:
-            self.locator = './/div[contains(@class, "pf-c-dropdown")][1]'
+            self.locator = self.DEFAULT_LOCATOR
 
     @contextmanager
     def opened(self):
+        """A context manager to open and then close a Dropdown."""
         self.open()
         yield
         self.close()
@@ -73,9 +74,11 @@ class Dropdown(Widget):
 
     @property
     def is_open(self):
+        """Returns True if the Dropdown is open"""
         return "pf-m-expanded" in self.browser.classes(self)
 
     def open(self):
+        """Opens a dropdown."""
         self._verify_enabled()
         if not self.is_open:
             self.browser.click(self.BUTTON_LOCATOR)
@@ -190,6 +193,7 @@ class Dropdown(Widget):
 
 class GroupDropdown(Dropdown):
     """Dropdown with grouped items in it."""
+
     ITEMS_LOCATOR = ".//section[@class='pf-c-dropdown__group']/ul/li"
     GROUPS_LOCATOR = ".//section[@class='pf-c-dropdown__group']/h1"
     GROUP_LOCATOR = ".//section[@class='pf-c-dropdown__group'][h1[normalize-space(.)={}]]"
@@ -205,12 +209,15 @@ class GroupDropdown(Dropdown):
         """Returns a WebElement for given item name."""
         self.open()
         try:
-            kwargs = {
-                'parent': self.browser.element(self.GROUP_LOCATOR.format(quote(group_name)))
-            } if group_name else {}
+            kwargs = (
+                {"parent": self.browser.element(self.GROUP_LOCATOR.format(quote(group_name)))}
+                if group_name
+                else {}
+            )
         except NoSuchElementException:
             raise DropdownItemNotFound(
-                'Following group "{}" not found. Available are: {}'.format(group_name, self.groups))
+                'Following group "{}" not found. Available are: {}'.format(group_name, self.groups)
+            )
         return super().item_element(item, close=close, **kwargs)
 
     def item_select(self, item, group_name=None, handle_alert=None):

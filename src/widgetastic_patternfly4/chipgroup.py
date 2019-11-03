@@ -1,6 +1,10 @@
-from .button import Button
-from widgetastic.widget import ParametrizedLocator, Text, View, ParametrizedView
 from wait_for import wait_for
+from widgetastic.widget import ParametrizedLocator
+from widgetastic.widget import ParametrizedView
+from widgetastic.widget import Text
+from widgetastic.widget import View
+
+from .button import Button
 
 
 class ChipReadOnlyError(Exception):
@@ -49,9 +53,11 @@ class _BaseChip(View):
 
     @property
     def is_displayed(self):
+        """Returns True if the component is displayed."""
         return self._text.is_displayed
 
     def read(self):
+        """Returns the text of the Chip as a string"""
         return self.text
 
 
@@ -72,6 +78,7 @@ class Chip(ParametrizedView, _BaseChip):
 
     @classmethod
     def all(cls, browser):
+        """Returns a list of the text of each chip"""
         return [
             (cls._get_text_ignoring_badge(browser, el),)
             for el in browser.elements(f"{CHIP_ROOT}/{CHIP_TEXT}")
@@ -81,6 +88,8 @@ class Chip(ParametrizedView, _BaseChip):
         ParametrizedView.__init__(self, *args, **kwargs)
 
     def remove(self):
+        """Removes a chip"""
+
         def _gone():
             return not self.is_displayed
 
@@ -92,6 +101,7 @@ class Chip(ParametrizedView, _BaseChip):
 
     @property
     def read_only(self):
+        """Returns a boolean detailing if the chip is read only"""
         """
         Return whether or not this chip is read-only
         """
@@ -110,6 +120,7 @@ class OverflowChip(_BaseChip):
 
     @property
     def is_displayed(self):
+        """Returns a boolean detailing if the overflow chip is displayed"""
         return self.button.is_displayed
 
     def _show_less_shown(self):
@@ -119,6 +130,7 @@ class OverflowChip(_BaseChip):
         return "more" in self.text.lower()
 
     def show_more(self):
+        """Expands a chip group"""
         if self._show_more_shown():
             self._text.click()
         wait_for(
@@ -129,6 +141,7 @@ class OverflowChip(_BaseChip):
         )
 
     def show_less(self):
+        """Collapses a chip group"""
         if self._show_less_shown():
             self._text.click()
         wait_for(
@@ -161,9 +174,11 @@ class StandAloneChipGroup(View):
         return self.browser.text(elements[0]) if elements else None
 
     def show_more(self):
+        """Expands a chip group"""
         self.overflow.show_more()
 
     def show_less(self):
+        """Collapses a chip group"""
         self.overflow.show_less()
 
     @property
@@ -183,6 +198,7 @@ class StandAloneChipGroup(View):
             yield chip
 
     def remove_chip_by_name(self, name):
+        """Removes a chip from the group by name"""
         for chip in self:
             if chip.text.lower() == name.lower():
                 chip.remove()
@@ -191,6 +207,7 @@ class StandAloneChipGroup(View):
             raise ValueError(f"Could not find chip with name '{name}'")
 
     def remove_all_chips(self):
+        """Removes all chips from the group"""
         for chip in self:
             chip.remove()
 
@@ -257,13 +274,16 @@ class ChipGroupToolbar(View):
             yield group
 
     def read(self):
+        """Returns a dict of chips"""
         groups = {}
         for group in self:
             groups[group.label] = group.read()
         return groups
 
     def show_more(self):
+        """Expands a chip group"""
         self.overflow.show_more()
 
     def show_less(self):
+        """Collapses a chip group"""
         self.overflow.show_less()

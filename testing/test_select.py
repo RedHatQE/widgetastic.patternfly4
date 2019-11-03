@@ -1,5 +1,7 @@
 import pytest
-from widgetastic_patternfly4 import Select, SelectItemNotFound
+
+from widgetastic_patternfly4 import Select
+from widgetastic_patternfly4 import SelectItemNotFound
 
 
 @pytest.fixture
@@ -9,7 +11,7 @@ def select(browser):
         locator=(
             './/h2[normalize-space(.)="Single select input"]/following-sibling::div[1]/'
             '/div[contains(@class, "pf-c-select")]'
-        )
+        ),
     )
 
 
@@ -18,10 +20,10 @@ def test_select_is_displayed(select):
 
 
 def test_select_items(select):
-    assert set(select.items) == {'Choose...', 'Mr', 'Miss', 'Mrs', 'Ms', 'Dr', 'Other'}
-    assert select.has_item('Mr')
-    assert not select.has_item('Non existing item')
-    assert select.item_enabled('Miss')
+    assert set(select.items) == {"Choose...", "Mr", "Miss", "Mrs", "Ms", "Dr", "Other"}
+    assert select.has_item("Mr")
+    assert not select.has_item("Non existing item")
+    assert select.item_enabled("Miss")
 
 
 def test_select_open(select):
@@ -33,9 +35,9 @@ def test_select_open(select):
 
 
 def test_select_item_select(select):
-    select.fill('Mr')
-    assert select.read() == 'Mr'
+    select.fill("Mr")
+    assert select.read() == "Mr"
     assert not select.is_open
     with pytest.raises(SelectItemNotFound):
-        select.fill('Non existing item')
+        select.fill("Non existing item")
     assert not select.is_open

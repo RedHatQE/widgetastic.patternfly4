@@ -1,12 +1,26 @@
 import pytest
+
+from widgetastic_patternfly4 import CompactPagination
 from widgetastic_patternfly4 import Pagination
+from widgetastic_patternfly4 import PaginationNavDisabled
 
 
-@pytest.fixture
-def paginator(browser):
-    paginator = Pagination(browser, locator=".//div[@id='pagination-options-menu-top']")
+@pytest.fixture(
+    params=[
+        (Pagination, {"locator": ".//div[@id='pagination-options-menu-top']"}),
+        (CompactPagination, {}),
+    ],
+    ids=["Pagination", "CompactPagination"],
+)
+def paginator(browser, request):
+    paginator_cls, kwargs = request.param
+    paginator = paginator_cls(browser, **kwargs)
     yield paginator
-    paginator.first_page()
+    try:
+        paginator.first_page()
+    except PaginationNavDisabled:
+        # We are already at the first page...
+        pass
     paginator.set_per_page(20)
 
 
@@ -65,29 +79,31 @@ def test_per_page_options(paginator):
         "10 per page",
         "20 per page",
         "50 per page",
-        "100 per page"
+        "100 per page",
     ]
 
 
-@pytest.mark.parametrize("items_per_page", [10, 20, 50, 100])
+@pytest.mark.parametrize("items_per_page", [50, 100])
 def test_iteration(paginator, items_per_page):
     assert paginator.is_first_disabled
     paginator.set_per_page(items_per_page)
+    assert paginator.current_per_page == items_per_page
 
     # Ensure we're always using an int for the math calculations
     items_per_page_int = int(str(items_per_page).split()[0])
 
     expected_total_pages = 523 // items_per_page_int + 1
     assert paginator.is_previous_disabled
-    for page in paginator:
-        assert paginator.current_page == page
-        assert paginator.total_pages == expected_total_pages
-        if items_per_page_int * page > paginator.total_items:
-            right_number = paginator.total_items
-        else:
-            right_number = items_per_page_int * page
-        assert paginator.displayed_items == (1 + items_per_page_int * (page - 1), right_number)
-        assert paginator.total_items == 523
+    with paginator.cache_per_page_value():
+        for page in paginator:
+            assert paginator.current_page == page
+            assert paginator.total_pages == expected_total_pages
+            if items_per_page_int * page > paginator.total_items:
+                right_number = paginator.total_items
+            else:
+                right_number = items_per_page_int * page
+            assert paginator.displayed_items == (1 + items_per_page_int * (page - 1), right_number)
+            assert paginator.total_items == 523
     assert paginator.is_next_disabled
     assert paginator.is_last_disabled
 
