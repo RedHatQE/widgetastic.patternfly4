@@ -10,18 +10,10 @@ from widgetastic_patternfly4 import FormSelectOptionNotFound
 class FormSelectTestView(View):
     ROOT = ".//main[@role='main']"
 
-    input = FormSelect(
-        locator=".//h2[normalize-space(.)='Simple form select']/following-sibling::div[1]//select"
-    )
-    input_grouping = FormSelect(
-        locator=".//h2[normalize-space(.)='Grouped form select']/following-sibling::div[1]//select"
-    )
-    input_invalid = FormSelect(
-        locator=".//h2[normalize-space(.)='Invalid form select']/following-sibling::div[1]//select"
-    )
-    input_disabled = FormSelect(
-        locator=".//h2[normalize-space(.)='Disabled form select']/following-sibling::div[1]//select"
-    )
+    input = FormSelect(locator=".//div[@id='ws-react-c-formselect-basic']/select")
+    input_grouping = FormSelect(locator=".//div[@id='ws-react-c-formselect-grouped']/select")
+    input_invalid = FormSelect(locator=".//div[@id='ws-react-c-formselect-invalid']/select")
+    input_disabled = FormSelect(locator=".//div[@id='ws-react-c-formselect-disabled']/select")
 
 
 @pytest.fixture
