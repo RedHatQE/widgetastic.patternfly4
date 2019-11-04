@@ -5,7 +5,9 @@ CATEGORY = "charts"
 
 
 def test_donut(browser):
-    donut_chart = DonutChart(browser, locator=".//div[@class='donut-chart-legend-right']")
+    donut_chart = DonutChart(
+        browser, locator=".//div[@id='ws-react-c-chartdonut-right-aligned-legend']/div"
+    )
     assert donut_chart.donut.labels == ["100", "Pets"]
     assert donut_chart.legend.all_items == [
         {"label": "Cats", "value": "35"},
