@@ -12,7 +12,7 @@ from widgetastic_patternfly4 import StandAloneChipGroup
 @pytest.fixture(scope="module")
 def chips_view(browser):
     class TestView(View):
-        ROOT = ".//main[@role='main']//h2[(.)='Chip']/following-sibling::div[1]/div"
+        ROOT = ".//div[@id='ws-react-c-chipgroup-single']"
         chips = ParametrizedView.nested(Chip)
 
     return TestView(browser)
@@ -26,14 +26,14 @@ def root_view(browser):
         chip_group_toolbar = ChipGroupToolbar()
         chip_group_multiselect = StandAloneChipGroup(
             locator=(
-                ".//h2[(.)='Chip group multi-select']/"
-                "following-sibling::div[1]/div/ul[contains(@class, 'pf-c-chip-group')]"
+                ".//div[@id='ws-react-c-chipgroup-multi-select']"
+                "/ul[contains(@class, 'pf-c-chip-group')]"
             )
         )
         badge_chip_group = StandAloneChipGroup(
             locator=(
-                ".//h2[(.)='Badge chip group']/"
-                "following-sibling::div[1]/div/ul[contains(@class, 'pf-c-chip-group')]"
+                ".//div[@id='ws-react-c-chipgroup-badge']/"
+                "ul[contains(@class, 'pf-c-chip-group')]"
             )
         )
 
