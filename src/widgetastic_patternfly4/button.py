@@ -94,7 +94,7 @@ class Button(Widget, ClickableMixin):
     def disabled(self):
         """Returns a boolean detailing if the button is disabled."""
         check1 = "pf-m-disabled" in self.browser.classes(self)
-        return check1 or self.browser.get_attribute("disabled", self) == "disabled"
+        return check1 or self.browser.get_attribute("disabled", self)
 
     def __repr__(self):
         return "{}{}".format(type(self).__name__, call_sig(self.args, self.kwargs))
