@@ -8,10 +8,7 @@ from widgetastic_patternfly4 import SelectItemNotFound
 def select(browser):
     return Select(
         browser,
-        locator=(
-            './/h2[normalize-space(.)="Single select input"]/following-sibling::div[1]/'
-            '/div[contains(@class, "pf-c-select")]'
-        ),
+        locator=('.//div[@id="ws-react-c-select-single"]//div[contains(@class, "pf-c-select")]'),
     )
 
 
