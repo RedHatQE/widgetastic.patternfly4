@@ -4,9 +4,13 @@ from widgetastic_patternfly4 import Navigation
 
 
 NAVS = [
-    (".//nav[@id='nav-primary-simple']", ["Link 1", "Link 2", "Link 3", "Link 4"], ["Link 1"]),
     (
-        ".//h2[normalize-space(.)='Expandable navigation']/following-sibling::div[1]//nav",
+        ".//div[@id='ws-react-c-nav-basic']/nav",
+        ["Link 1", "Link 2", "Link 3", "Link 4"],
+        ["Link 1"],
+    ),
+    (
+        ".//div[@id='ws-react-c-nav-expandable']/nav",
         {
             "Link 1": ["Subnav Link 1", "Subnav Link 2", "Subnav Link 3"],
             "Link 2": ["Custom onClick", "Subnav Link 1", "Subnav Link 2", "Subnav Link 3"],
@@ -14,7 +18,7 @@ NAVS = [
         ["Link 1", "Subnav Link 1"],
     ),
     (
-        ".//h2[normalize-space(.)='Navigation mixed']/following-sibling::div[1]//nav",
+        ".//div[@id='ws-react-c-nav-mixed']/nav",
         {
             "Link 1 (not expandable)": None,
             "Link 2 - expandable": ["Link 1", "Link 2", "Link 3"],
