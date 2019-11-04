@@ -7,7 +7,7 @@ from widgetastic_patternfly4 import Tab
 class TabsTestView(View):
     @View.nested
     class primary(View):
-        ROOT = ".//h2[normalize-space(.)='Simple tabs']/following-sibling::div[1]"
+        ROOT = ".//div[@id='ws-react-c-tabs-basic']"
 
         @View.nested
         class tab1(Tab):
@@ -21,7 +21,7 @@ class TabsTestView(View):
 
     @View.nested
     class secondary(View):
-        ROOT = ".//h2[normalize-space(.)='Secondary buttons tabs']/following-sibling::div[1]"
+        ROOT = ".//div[@id='ws-react-c-tabs-secondary-buttons']"
 
         @View.nested
         class tab1(Tab):
