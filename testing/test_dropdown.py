@@ -10,16 +10,10 @@ from widgetastic_patternfly4 import GroupDropdown
 @pytest.fixture
 def view(browser):
     class TestView(View):
-        ROOT = ".//h2[normalize-space(.)='Simple dropdown']/following-sibling::div[1]"
+        ROOT = ".//div[@id='ws-react-c-dropdown-basic']"
         dropdown_txt_locator = Dropdown("Dropdown")
         dropdown_custom_locator = Dropdown(locator=".//div[contains(@class, 'pf-c-dropdown')]")
         dropdown_default_locator = Dropdown()
-        group_dropdown = GroupDropdown(
-            locator=(
-                "//h2[normalize-space(.)='Dropdown with groups']/following-sibling::div[1]"
-                "//div[contains(@class, 'pf-c-dropdown')]"
-            )
-        )
 
     return TestView(browser)
 
@@ -32,8 +26,14 @@ def dropdown(view, request):
 
 
 @pytest.fixture()
-def group_dropdown(view):
-    return view.group_dropdown
+def group_dropdown(browser):
+    return GroupDropdown(
+        browser,
+        locator=(
+            ".//div[@id='ws-react-c-dropdown-with-groups']"
+            "/div[contains(@class, 'pf-c-dropdown')]"
+        ),
+    )
 
 
 def test_dropdown_is_displayed(dropdown):
