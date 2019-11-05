@@ -32,6 +32,10 @@ class Alert(Widget):
         return self.browser.element(self.TITLE)
 
     @property
+    def _raw_description_el(self):
+        return self.browser.element(self.DESCRIPTION)
+
+    @property
     def title(self):
         """Returns the title text of the alert as a string."""
         trim_text = self.browser.text(self.browser.element("./span", parent=self._raw_title_el))
@@ -46,6 +50,10 @@ class Alert(Widget):
     def click_action(self):
         """Clicks the defined action button of the alert."""
         el = self.browser.element(self.ACTION)
+        self.browser.click(el)
+
+    def click_link(self):
+        el = self.browser.element("./span/a", parent=self._raw_description_el)
         self.browser.click(el)
 
     @property
