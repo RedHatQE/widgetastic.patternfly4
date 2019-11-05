@@ -54,11 +54,7 @@ class Alert(Widget):
 
     def click_link(self):
         el = self.browser.element("./span/a", parent=self._raw_description_el)
-
-        if el.is_displayed:
-            self.browser.click(el)
-        else:
-            raise ValueError("Could not find a link")
+        self.browser.click(el)
 
     @property
     def type(self):
