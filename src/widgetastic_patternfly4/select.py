@@ -4,6 +4,7 @@ from widgetastic.exceptions import NoSuchElementException
 from widgetastic.xpath import quote
 
 from .dropdown import Dropdown, DropdownItemNotFound, DropdownItemDisabled
+from collections import Iterable
 
 
 class SelectItemDisabled(DropdownItemDisabled):
@@ -24,6 +25,9 @@ class Select(Dropdown):
     ITEMS_LOCATOR = ".//ul[@class='pf-c-select__menu']/li"
     ITEM_LOCATOR = (
         ".//button[contains(@class, 'pf-c-select__menu-item')" " and normalize-space(.)={}]"
+    )
+    SELECTED_ITEM_LOCATOR = (
+        ".//span[contains(@class, 'ins-c-conditional-filter')" " and normalize-space(.)={}]"
     )
     TEXT_LOCATOR = (
         './/div[contains(@class, "pf-c-select") and ' "child::button[normalize-space(.)={}]]"
@@ -72,32 +76,63 @@ class Select(Dropdown):
 class CheckboxSelect(Select):
     ITEMS_LOCATOR = ".//label[contains(@class, 'pf-c-select__menu-item')]"
     ITEM_LOCATOR = (
-        f"{ITEMS_LOCATOR}/span[starts-with(normalize-space(.), {{}})]/preceding-sibling::input"
+        f"{ITEMS_LOCATOR}/span[starts-with(normalize-space(.), {{}})]/preceding-sibling::input"  # noqa
     )
 
-    def item_select(self, items):
-        if not hasattr(items, '__iter__'):
+    def item_select(self, items, close=True):
+        if not isinstance(items, (list, tuple, set)):
             items = [items]
+
         try:
             for item in items:
                 element = self.item_element(item, close=False)
                 if not self.browser.is_selected(element):
                     element.click()
         finally:
-            self.close()
+            if close:
+                self.close()
 
     def item_deselect(self, items):
-        pass    
+        if not isinstance(items, (list, tuple, set)):
+            items = [items]
 
-    def fill(self, value):
-        """
-        {"item1": True, "item2": False}
-        """
-        pass
+        try:
+            for item in items:
+                element = self.item_element(item, close=False)
+                if self.browser.is_selected(element):
+                    element.click()
+        finally:
+            self.close()
+
+    def fill(self, items):
+        for item, value in items.items():
+            if value:
+                self.item_select(item, close=False)
+        self.close()
 
     def read(self):
-        """
-        Returns {"item1": True, "item2": False}
-        """
-        pass
-    
+        selected = []
+        try:
+            for item in self._get_items():
+                    element = self.item_element(item, close=False)
+                    selected.append(self.browser.is_selected(element))
+        finally:
+            self.close()
+
+        return selected
+
+    def _get_items(self, close=False):
+        with self.opened():
+            result = [self.browser.text(el) for el in self.browser.elements(self.ITEMS_LOCATOR)]
+
+        if close:
+            self.close()
+
+        return result
+
+    @property
+    def items(self):
+        """Returns a list of all CheckboxSelect items as strings."""
+        items = self._get_items(close=True)
+
+        return items
