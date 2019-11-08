@@ -152,7 +152,7 @@ class Pagination(View):
             )
 
     def __iter__(self):
-        if self.current_page != 1:
+        if self.current_page > 1:
             self.first_page()
         self._page_counter = 0
         return self
