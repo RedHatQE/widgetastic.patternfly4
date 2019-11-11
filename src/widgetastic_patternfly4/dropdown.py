@@ -191,9 +191,7 @@ class Dropdown(Widget):
     @property
     def selected_item(self):
         """Returns a string of the selected item."""
-        result = self.browser.text(self.SELECTED_ITEM_LOCATOR)
-
-        return result
+        return self.browser.text(self.SELECTED_ITEM_LOCATOR)
 
     def __repr__(self):
         return "{}({!r})".format(type(self).__name__, getattr(self, "text", None) or self.locator)

@@ -19,14 +19,12 @@ class Select(Dropdown):
 
     BUTTON_LOCATOR = "./button"
     ITEMS_LOCATOR = ".//ul[@class='pf-c-select__menu']/li"
-    ITEM_LOCATOR = (
-        ".//button[contains(@class, 'pf-c-select__menu-item')" " and normalize-space(.)={}]"
-    )
+    ITEM_LOCATOR = ".//button[contains(@class, 'pf-c-select__menu-item') and normalize-space(.)={}]"
     SELECTED_ITEM_LOCATOR = (
-        ".//span[contains(@class, 'ins-c-conditional-filter')" " and normalize-space(.)={}]"
+        ".//span[contains(@class, 'ins-c-conditional-filter') and normalize-space(.)={}]"
     )
     TEXT_LOCATOR = (
-        './/div[contains(@class, "pf-c-select") and ' "child::button[normalize-space(.)={}]]"
+        ".//div[contains(@class, 'pf-c-select') and child::button[normalize-space(.)={}]]"
     )
     DEFAULT_LOCATOR = './/div[contains(@class, "pf-c-select")][1]'
 
@@ -116,8 +114,8 @@ class CheckboxSelect(Select):
         return selected
 
     def _get_items(self, close=False):
-        with self.opened():
-            result = [self.browser.text(el) for el in self.browser.elements(self.ITEMS_LOCATOR)]
+        self.open()
+        result = [self.browser.text(el) for el in self.browser.elements(self.ITEMS_LOCATOR)]
 
         if close:
             self.close()
@@ -127,9 +125,7 @@ class CheckboxSelect(Select):
     @property
     def items(self):
         """Returns a list of all CheckboxSelect items as strings."""
-        items = self._get_items(close=True)
-
-        return items
+        return self._get_items(close=True)
 
 
 class RadioSelect(CheckboxSelect):
