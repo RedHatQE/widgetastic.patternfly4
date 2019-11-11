@@ -40,9 +40,7 @@ class Dropdown(Widget):
         './/div[contains(@class, "pf-c-dropdown") and ' "child::button[normalize-space(.)={}]]"
     )
     DEFAULT_LOCATOR = './/div[contains(@class, "pf-c-dropdown")][1]'
-    SELECTED_ITEM_LOCATOR = (
-        ".//span[contains(@class, 'ins-c-conditional-filter')]"
-    )
+    SELECTED_ITEM_LOCATOR = ".//span[contains(@class, 'ins-c-conditional-filter')]"
 
     def __init__(self, parent, text=None, locator=None, logger=None):
         Widget.__init__(self, parent, logger=logger)

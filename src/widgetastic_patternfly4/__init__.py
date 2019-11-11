@@ -20,11 +20,19 @@ from .formselect import FormSelectOptionNotFound
 from .modal import Modal
 from .navigation import Navigation
 from .optionsmenu import OptionsMenu
-from .pagination import CompactPagination, Pagination, PaginationNavDisabled
-from .select import CheckboxSelect, Select, SelectItemDisabled, SelectItemNotFound
-from .contextselector import ContextSelector
-from .switch import Switch, SwitchDisabled
-from .table import ExpandableTable, PatternflyTable, RowNotExpandable
+from .pagination import CompactPagination
+from .pagination import Pagination
+from .pagination import PaginationNavDisabled
+from .select import CheckboxSelect
+from .select import RadioSelect
+from .select import Select
+from .select import SelectItemDisabled
+from .select import SelectItemNotFound
+from .switch import Switch
+from .switch import SwitchDisabled
+from .table import ExpandableTable
+from .table import PatternflyTable
+from .table import RowNotExpandable
 from .tabs import Tab
 
 
@@ -54,6 +62,7 @@ __all__ = [
     "OptionsMenu",
     "Pagination",
     "PaginationNavDisabled",
+    "RadioSelect",
     "Select",
     "SelectItemDisabled",
     "SelectItemNotFound",

@@ -1,10 +1,6 @@
-from contextlib import contextmanager
-
-from widgetastic.exceptions import NoSuchElementException
-from widgetastic.xpath import quote
-
-from .dropdown import Dropdown, DropdownItemNotFound, DropdownItemDisabled
-from collections import Iterable
+from .dropdown import Dropdown
+from .dropdown import DropdownItemDisabled
+from .dropdown import DropdownItemNotFound
 
 
 class SelectItemDisabled(DropdownItemDisabled):
@@ -75,9 +71,7 @@ class Select(Dropdown):
 
 class CheckboxSelect(Select):
     ITEMS_LOCATOR = ".//label[contains(@class, 'pf-c-select__menu-item')]"
-    ITEM_LOCATOR = (
-        f"{ITEMS_LOCATOR}/span[starts-with(normalize-space(.), {{}})]/preceding-sibling::input"  # noqa
-    )
+    ITEM_LOCATOR = f"{ITEMS_LOCATOR}/span[starts-with(normalize-space(.), {{}})]/preceding-sibling::input"  # noqa
 
     def item_select(self, items, close=True):
         if not isinstance(items, (list, tuple, set)):
@@ -114,8 +108,8 @@ class CheckboxSelect(Select):
         selected = []
         try:
             for item in self._get_items():
-                    element = self.item_element(item, close=False)
-                    selected.append(self.browser.is_selected(element))
+                element = self.item_element(item, close=False)
+                selected.append(self.browser.is_selected(element))
         finally:
             self.close()
 
@@ -136,3 +130,8 @@ class CheckboxSelect(Select):
         items = self._get_items(close=True)
 
         return items
+
+
+class RadioSelect(CheckboxSelect):
+    ITEMS_LOCATOR = ".//div[contains(@class, 'pf-c-radio')]"
+    ITEM_LOCATOR = f"{ITEMS_LOCATOR}/label[starts-with(normalize-space(.), {{}})]/preceding-sibling::input"  # noqa
