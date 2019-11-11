@@ -103,11 +103,11 @@ class CheckboxSelect(Select):
         self.close()
 
     def read(self):
-        selected = []
+        selected = {}
         try:
             for item in self._get_items():
                 element = self.item_element(item, close=False)
-                selected.append(self.browser.is_selected(element))
+                selected[item] = self.browser.is_selected(element)
         finally:
             self.close()
 
