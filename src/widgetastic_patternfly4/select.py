@@ -126,8 +126,3 @@ class CheckboxSelect(Select):
     def items(self):
         """Returns a list of all CheckboxSelect items as strings."""
         return self._get_items(close=True)
-
-
-class RadioSelect(CheckboxSelect):
-    ITEMS_LOCATOR = ".//div[contains(@class, 'pf-c-radio')]"
-    ITEM_LOCATOR = f"{ITEMS_LOCATOR}/label[starts-with(normalize-space(.), {{}})]/preceding-sibling::input"  # noqa

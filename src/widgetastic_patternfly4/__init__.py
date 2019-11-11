@@ -24,7 +24,6 @@ from .pagination import CompactPagination
 from .pagination import Pagination
 from .pagination import PaginationNavDisabled
 from .select import CheckboxSelect
-from .select import RadioSelect
 from .select import Select
 from .select import SelectItemDisabled
 from .select import SelectItemNotFound
@@ -62,7 +61,6 @@ __all__ = [
     "OptionsMenu",
     "Pagination",
     "PaginationNavDisabled",
-    "RadioSelect",
     "Select",
     "SelectItemDisabled",
     "SelectItemNotFound",
