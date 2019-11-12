@@ -72,14 +72,33 @@ def test_checkbox_select_open(checkbox_select):
 
 
 def test_checkbox_select_item_checkbox_select(checkbox_select):
-    checkbox_select.fill({"Restarted": True})
+    checkbox_select.fill({"Restarted": True, "Cancelled": True})
+    assert checkbox_select.read() == {
+        "Active": False,
+        "Cancelled": True,
+        "Paused": False,
+        "Warning": False,
+        "Restarted": True,
+    }
+
+    checkbox_select.fill(
+        {
+            "Active": False,
+            "Cancelled": False,
+            "Paused": False,
+            "Warning": False,
+            "Restarted": False,
+        }
+    )
+
     assert checkbox_select.read() == {
         "Active": False,
         "Cancelled": False,
         "Paused": False,
         "Warning": False,
-        "Restarted": True,
+        "Restarted": False,
     }
+
     assert not checkbox_select.is_open
     with pytest.raises(SelectItemNotFound):
         checkbox_select.fill({"Non existing item": True})
