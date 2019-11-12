@@ -97,10 +97,12 @@ class CheckboxSelect(Select):
             self.close()
 
     def fill(self, items):
-        for item, value in items.items():
-            if value:
-                self.item_select(item, close=False)
-        self.close()
+        try:
+            for item, value in items.items():
+                if value:
+                    self.item_select(item, close=False)
+        finally:
+            self.close()
 
     def read(self):
         selected = {}
