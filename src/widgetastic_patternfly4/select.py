@@ -84,7 +84,7 @@ class CheckboxSelect(Select):
             if close:
                 self.close()
 
-    def item_deselect(self, items):
+    def item_deselect(self, items, close=True):
         if not isinstance(items, (list, tuple, set)):
             items = [items]
 
@@ -94,13 +94,16 @@ class CheckboxSelect(Select):
                 if self.browser.is_selected(element):
                     element.click()
         finally:
-            self.close()
+            if close:
+                self.close()
 
     def fill(self, items):
         try:
             for item, value in items.items():
                 if value:
                     self.item_select(item, close=False)
+                else:
+                    self.item_deselect(item, close=False)
         finally:
             self.close()
 
