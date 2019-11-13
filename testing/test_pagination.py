@@ -7,7 +7,7 @@ from widgetastic_patternfly4 import PaginationNavDisabled
 
 @pytest.fixture(
     params=[
-        (Pagination, {"locator": ".//div[@id='pagination-options-menu-top']"}),
+        (Pagination, {"locator": "(.//div[@id='pagination-options-menu-top'])[1]"}),
         (CompactPagination, {}),
     ],
     ids=["Pagination", "CompactPagination"],

@@ -37,7 +37,7 @@ class Dropdown(Widget):
         " and normalize-space(.)={}]"
     )
     TEXT_LOCATOR = (
-        './/div[contains(@class, "pf-c-dropdown") and ' "child::button[normalize-space(.)={}]]"
+        ".//div[contains(@class, 'pf-c-dropdown') and child::button[normalize-space(.)={}]]"
     )
     DEFAULT_LOCATOR = './/div[contains(@class, "pf-c-dropdown")][1]'
 

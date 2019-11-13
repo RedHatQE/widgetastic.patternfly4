@@ -169,7 +169,7 @@ class Pagination(View):
 
 class CompactPagination(Pagination):
     DEFAULT_LOCATOR = (
-        ".//div[contains(@class, 'pf-c-pagination') and " "contains(@class, 'pf-m-compact')]"
+        ".//div[contains(@class, 'pf-c-pagination') and contains(@class, 'pf-m-compact')]"
     )
 
     @property

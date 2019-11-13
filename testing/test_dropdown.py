@@ -10,7 +10,7 @@ from widgetastic_patternfly4 import GroupDropdown
 @pytest.fixture
 def view(browser):
     class TestView(View):
-        ROOT = ".//div[@id='ws-react-c-dropdown-basic']"
+        ROOT = "(.//div[@id='ws-react-c-dropdown-basic'])[1]"
         dropdown_txt_locator = Dropdown("Dropdown")
         dropdown_custom_locator = Dropdown(locator=".//div[contains(@class, 'pf-c-dropdown')]")
         dropdown_default_locator = Dropdown()
