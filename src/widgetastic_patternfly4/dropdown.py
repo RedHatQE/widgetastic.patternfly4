@@ -40,7 +40,6 @@ class Dropdown(Widget):
         './/div[contains(@class, "pf-c-dropdown") and ' "child::button[normalize-space(.)={}]]"
     )
     DEFAULT_LOCATOR = './/div[contains(@class, "pf-c-dropdown")][1]'
-    SELECTED_ITEM_LOCATOR = ".//span[contains(@class, 'ins-c-conditional-filter')]"
 
     def __init__(self, parent, text=None, locator=None, logger=None):
         Widget.__init__(self, parent, logger=logger)
@@ -189,9 +188,9 @@ class Dropdown(Widget):
                 pass
 
     @property
-    def selected_item(self):
+    def button_text(self):
         """Returns a string of the selected item."""
-        return self.browser.text(self.SELECTED_ITEM_LOCATOR)
+        return self.browser.text(self.BUTTON_LOCATOR)
 
     def __repr__(self):
         return "{}({!r})".format(type(self).__name__, getattr(self, "text", None) or self.locator)

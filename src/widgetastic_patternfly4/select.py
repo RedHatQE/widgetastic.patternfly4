@@ -68,10 +68,21 @@ class Select(Dropdown):
 
 
 class CheckboxSelect(Select):
+    """Represents the Patternfly Checkbox Select.
+
+    https://www.patternfly.org/v4/documentation/react/components/select
+    """
+
     ITEMS_LOCATOR = ".//label[contains(@class, 'pf-c-select__menu-item')]"
     ITEM_LOCATOR = f"{ITEMS_LOCATOR}/span[starts-with(normalize-space(.), {{}})]/preceding-sibling::input"  # noqa
 
     def item_select(self, items, close=True):
+        """Opens the Checkbox and selects the desired item.
+
+        Args:
+            item: Item to be selected
+            close: Close the dropdown when finished
+        """
         if not isinstance(items, (list, tuple, set)):
             items = [items]
 
@@ -85,6 +96,12 @@ class CheckboxSelect(Select):
                 self.close()
 
     def item_deselect(self, items, close=True):
+        """Opens the Checkbox and deselects the desired item.
+
+        Args:
+            item: Item to be selected
+            close: Close the dropdown when finished
+        """
         if not isinstance(items, (list, tuple, set)):
             items = [items]
 
@@ -98,6 +115,12 @@ class CheckboxSelect(Select):
                 self.close()
 
     def fill(self, items):
+        """Fills a Checkbox with all items.
+        Example dictionary: {"foo": True, "bar": False, "baz": True}
+
+        Args:
+            items: A dictionary containing what items to select (True) or deselect (False)
+        """
         try:
             for item, value in items.items():
                 if value:
@@ -108,6 +131,7 @@ class CheckboxSelect(Select):
             self.close()
 
     def read(self):
+        """Returns a dictionary containing the selected status as bools."""
         selected = {}
         try:
             for item in self._get_items():
@@ -119,6 +143,11 @@ class CheckboxSelect(Select):
         return selected
 
     def _get_items(self, close=False):
+        """Returns a list of all checkbox items as strings.
+
+        Args:
+            close: Close the dropdown when finished
+        """
         self.open()
         result = [self.browser.text(el) for el in self.browser.elements(self.ITEMS_LOCATOR)]
 
