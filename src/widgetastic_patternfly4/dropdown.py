@@ -189,7 +189,7 @@ class Dropdown(Widget):
 
     @property
     def button_text(self):
-        """Returns a string of the selected item."""
+        """Returns a string of the current dropdown name."""
         return self.browser.text(self.BUTTON_LOCATOR)
 
     def __repr__(self):
