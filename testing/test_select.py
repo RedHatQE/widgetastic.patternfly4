@@ -1,5 +1,6 @@
 import pytest
 
+from widgetastic_patternfly4 import CheckboxSelect
 from widgetastic_patternfly4 import Select
 from widgetastic_patternfly4 import SelectItemNotFound
 
@@ -38,3 +39,67 @@ def test_select_item_select(select):
     with pytest.raises(SelectItemNotFound):
         select.fill("Non existing item")
     assert not select.is_open
+
+
+@pytest.fixture
+def checkbox_select(browser):
+    return CheckboxSelect(
+        browser,
+        locator=(
+            './/div[@id="ws-react-c-select-checkbox-input"]'
+            '//div[contains(@class, "pf-c-select")]'
+        ),
+    )
+
+
+def test_checkbox_select_is_displayed(checkbox_select):
+    assert checkbox_select.is_displayed
+
+
+def test_checkbox_select_items(checkbox_select):
+    assert set(checkbox_select.items) == {"Active", "Cancelled", "Paused", "Warning", "Restarted"}
+    assert checkbox_select.has_item("Active")
+    assert not checkbox_select.has_item("Non existing item")
+    assert checkbox_select.item_enabled("Paused")
+
+
+def test_checkbox_select_open(checkbox_select):
+    assert not checkbox_select.is_open
+    checkbox_select.open()
+    assert checkbox_select.is_open
+    checkbox_select.close()
+    assert not checkbox_select.is_open
+
+
+def test_checkbox_select_item_checkbox_select(checkbox_select):
+    checkbox_select.fill({"Restarted": True, "Cancelled": True})
+    assert checkbox_select.read() == {
+        "Active": False,
+        "Cancelled": True,
+        "Paused": False,
+        "Warning": False,
+        "Restarted": True,
+    }
+
+    checkbox_select.fill(
+        {
+            "Active": False,
+            "Cancelled": False,
+            "Paused": False,
+            "Warning": False,
+            "Restarted": False,
+        }
+    )
+
+    assert checkbox_select.read() == {
+        "Active": False,
+        "Cancelled": False,
+        "Paused": False,
+        "Warning": False,
+        "Restarted": False,
+    }
+
+    assert not checkbox_select.is_open
+    with pytest.raises(SelectItemNotFound):
+        checkbox_select.fill({"Non existing item": True})
+    assert not checkbox_select.is_open

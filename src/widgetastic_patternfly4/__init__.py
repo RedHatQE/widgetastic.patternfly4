@@ -23,6 +23,7 @@ from .optionsmenu import OptionsMenu
 from .pagination import CompactPagination
 from .pagination import Pagination
 from .pagination import PaginationNavDisabled
+from .select import CheckboxSelect
 from .select import Select
 from .select import SelectItemDisabled
 from .select import SelectItemNotFound
@@ -38,6 +39,7 @@ __all__ = [
     "Alert",
     "BreadCrumb",
     "Button",
+    "CheckboxSelect",
     "Chip",
     "ChipReadOnlyError",
     "ChipGroupToolbar",

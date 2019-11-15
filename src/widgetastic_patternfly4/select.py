@@ -1,19 +1,17 @@
-from contextlib import contextmanager
-
-from widgetastic.exceptions import NoSuchElementException
-from widgetastic.widget import GenericLocatorWidget
-from widgetastic.xpath import quote
+from .dropdown import Dropdown
+from .dropdown import DropdownItemDisabled
+from .dropdown import DropdownItemNotFound
 
 
-class SelectItemDisabled(Exception):
+class SelectItemDisabled(DropdownItemDisabled):
     pass
 
 
-class SelectItemNotFound(Exception):
+class SelectItemNotFound(DropdownItemNotFound):
     pass
 
 
-class Select(GenericLocatorWidget):
+class Select(Dropdown):
     """Represents the Patternfly Select.
 
     https://www.patternfly.org/v4/documentation/react/components/select
@@ -21,90 +19,25 @@ class Select(GenericLocatorWidget):
 
     BUTTON_LOCATOR = "./button"
     ITEMS_LOCATOR = ".//ul[@class='pf-c-select__menu']/li"
-    ITEM_LOCATOR = (
-        ".//button[contains(@class, 'pf-c-select__menu-item')" " and normalize-space(.)={}]"
+    ITEM_LOCATOR = ".//button[contains(@class, 'pf-c-select__menu-item') and normalize-space(.)={}]"
+    SELECTED_ITEM_LOCATOR = (
+        ".//span[contains(@class, 'ins-c-conditional-filter') and normalize-space(.)={}]"
     )
-
-    @contextmanager
-    def opened(self):
-        """A context manager to open and then close a Select."""
-        self.open()
-        yield
-        self.close()
-
-    @property
-    def is_open(self):
-        """Returns a boolean detailing if Select is open."""
-        return "pf-m-expanded" in self.browser.classes(self)
-
-    def open(self):
-        """Opens a Select."""
-        if not self.is_open:
-            self.browser.click(self.BUTTON_LOCATOR)
-
-    def close(self):
-        """Closes a Select."""
-        if self.is_open:
-            self.browser.click(self)
-
-    @property
-    def items(self):
-        """Returns a list of all Select items as strings."""
-        with self.opened():
-            result = [self.browser.text(el) for el in self.browser.elements(self.ITEMS_LOCATOR)]
-        return result
-
-    @property
-    def enabled_items(self):
-        """Returns a list of all enabled Select items as strings."""
-        result = []
-        with self.opened():
-            for el in self.browser.elements(self.ITEMS_LOCATOR):
-                item_value = self.browser.text(el)
-                if self.item_enabled(item_value):
-                    result.append(item_value)
-        return result
-
-    def has_item(self, item):
-        """Returns whether the items exists.
-
-        Args:
-            item: item name
-
-        Returns:
-            Boolean - True if enabled, False if not.
-        """
-        return item in self.items
+    TEXT_LOCATOR = (
+        ".//div[contains(@class, 'pf-c-select') and child::button[normalize-space(.)={}]]"
+    )
+    DEFAULT_LOCATOR = './/div[contains(@class, "pf-c-select")][1]'
 
     def item_element(self, item, close=True):
         """Returns a WebElement for given item name."""
         try:
-            self.open()
-            result = self.browser.element(self.ITEM_LOCATOR.format(quote(item)))
-            if close:
-                self.close()
-            return result
-        except NoSuchElementException:
+            return super().item_element(item, close)
+        except DropdownItemNotFound:
             raise SelectItemNotFound(
                 "Item {!r} not found in {}. Available items: {}".format(
                     item, repr(self), self.items
                 )
             )
-
-    def item_enabled(self, item, close=True):
-        """Returns whether the given item is enabled.
-
-        Args:
-            item: Name of the item or item WebElement.
-
-        Returns:
-            Boolean - True if enabled, False if not.
-        """
-        el = self.item_element(item, close=False)
-        is_el_enabled = "pf-m-disabled" not in self.browser.classes(el)
-        if close:
-            self.close()
-        return is_el_enabled
 
     def item_select(self, item):
         """Opens the Select and selects the desired item.
@@ -115,16 +48,15 @@ class Select(GenericLocatorWidget):
         Raises:
             SelectItemDisabled: if item is disabled
         """
-        self.logger.info("Selecting %r in %r", item, self)
-        with self.opened():
-            if not self.item_enabled(item, close=False):
-                raise SelectItemDisabled(
-                    'Item "{}" of {} is disabled\n'
-                    "The following items are available and enabled: {}".format(
-                        item, repr(self), self.enabled_items
-                    )
+        try:
+            return super().item_select(item)
+        except DropdownItemDisabled:
+            raise SelectItemDisabled(
+                'Item "{}" of {} is disabled\n'
+                "The following items are available and enabled: {}".format(
+                    item, repr(self), self.enabled_items
                 )
-            self.browser.click(self.item_element(item, close=False))
+            )
 
     def fill(self, value):
         """Fills a Select with a value."""
@@ -134,5 +66,97 @@ class Select(GenericLocatorWidget):
         """Returns a string of the text of the selected option."""
         return self.browser.text(self.BUTTON_LOCATOR)
 
-    def __repr__(self):
-        return "{}({!r})".format(type(self).__name__, self.locator)
+
+class CheckboxSelect(Select):
+    """Represents the Patternfly Checkbox Select.
+
+    https://www.patternfly.org/v4/documentation/react/components/select
+    """
+
+    ITEMS_LOCATOR = ".//label[contains(@class, 'pf-c-select__menu-item')]"
+    ITEM_LOCATOR = f"{ITEMS_LOCATOR}/span[starts-with(normalize-space(.), {{}})]/preceding-sibling::input"  # noqa
+
+    def item_select(self, items, close=True):
+        """Opens the Checkbox and selects the desired item.
+
+        Args:
+            item: Item to be selected
+            close: Close the dropdown when finished
+        """
+        if not isinstance(items, (list, tuple, set)):
+            items = [items]
+
+        try:
+            for item in items:
+                element = self.item_element(item, close=False)
+                if not self.browser.is_selected(element):
+                    element.click()
+        finally:
+            if close:
+                self.close()
+
+    def item_deselect(self, items, close=True):
+        """Opens the Checkbox and deselects the desired item.
+
+        Args:
+            item: Item to be selected
+            close: Close the dropdown when finished
+        """
+        if not isinstance(items, (list, tuple, set)):
+            items = [items]
+
+        try:
+            for item in items:
+                element = self.item_element(item, close=False)
+                if self.browser.is_selected(element):
+                    element.click()
+        finally:
+            if close:
+                self.close()
+
+    def fill(self, items):
+        """Fills a Checkbox with all items.
+        Example dictionary: {"foo": True, "bar": False, "baz": True}
+
+        Args:
+            items: A dictionary containing what items to select (True) or deselect (False)
+        """
+        try:
+            for item, value in items.items():
+                if value:
+                    self.item_select(item, close=False)
+                else:
+                    self.item_deselect(item, close=False)
+        finally:
+            self.close()
+
+    def read(self):
+        """Returns a dictionary containing the selected status as bools."""
+        selected = {}
+        try:
+            for item in self._get_items():
+                element = self.item_element(item, close=False)
+                selected[item] = self.browser.is_selected(element)
+        finally:
+            self.close()
+
+        return selected
+
+    def _get_items(self, close=False):
+        """Returns a list of all checkbox items as strings.
+
+        Args:
+            close: Close the dropdown when finished
+        """
+        self.open()
+        result = [self.browser.text(el) for el in self.browser.elements(self.ITEMS_LOCATOR)]
+
+        if close:
+            self.close()
+
+        return result
+
+    @property
+    def items(self):
+        """Returns a list of all CheckboxSelect items as strings."""
+        return self._get_items(close=True)
