@@ -24,6 +24,35 @@ def paginator(browser, request):
     paginator.set_per_page(20)
 
 
+@pytest.fixture(
+    params=[
+        (Pagination, {"locator": "(.//div[@id='pagination-options-menu-top'])[4]"}),
+        (CompactPagination, {"locator": "(.//div[@id='pagination-options-menu-top'])[4]"}),
+    ],
+    ids=["Pagination", "CompactPagination"],
+)
+def one_page_paginator(browser, request):
+    paginator_cls, kwargs = request.param
+    paginator = paginator_cls(browser, **kwargs)
+    yield paginator
+    try:
+        paginator.first_page()
+    except PaginationNavDisabled:
+        # We are already at the first page...
+        pass
+    paginator.set_per_page(20)
+
+
+def test_one_page_iteration(one_page_paginator):
+
+    page_counter = 0
+
+    with one_page_paginator.cache_per_page_value():
+        for page in one_page_paginator:
+            page_counter += 1
+    assert page_counter
+
+
 def test_first_page(paginator):
     paginator.last_page()
     assert paginator.current_page == 27

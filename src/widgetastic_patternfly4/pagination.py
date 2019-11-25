@@ -216,17 +216,3 @@ class CompactPagination(Pagination):
         Compact pagination does not explicitily show the page count, so use some math.
         """
         return math.ceil(self.total_items / self.current_per_page)
-
-    def __iter__(self):
-        self.first_page()
-        self._page_counter = 0
-        return self
-
-    def __next__(self):
-        if not self.is_next_disabled:
-            self._page_counter += 1
-            if self._page_counter > 1:
-                self.next_page()
-            return self._page_counter
-        else:
-            raise StopIteration
