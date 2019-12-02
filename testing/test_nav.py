@@ -5,7 +5,7 @@ from widgetastic_patternfly4 import Navigation
 
 NAVS = [
     (
-        ".//div[@id='ws-react-c-nav-basic']/nav",
+        ".//div[@id='ws-react-c-nav-default']/nav",
         ["Link 1", "Link 2", "Link 3", "Link 4"],
         ["Link 1"],
     ),
