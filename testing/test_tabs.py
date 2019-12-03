@@ -37,6 +37,25 @@ class TabsTestView(View):
                 TAB_NAME = "Secondary tab item 2"
                 content = Text(".")
 
+    @View.nested
+    class separate(View):
+        ROOT = ".//div[@id='ws-react-c-tabs-separate-content']"
+
+        @View.nested
+        class tab1(Tab):
+            TAB_NAME = "Tab item 1"
+            content = Text(".")
+
+        @View.nested
+        class tab2(Tab):
+            TAB_NAME = "Tab item 2"
+            content = Text(".")
+
+        @View.nested
+        class tab3(Tab):
+            TAB_NAME = "Tab item 3"
+            content = Text(".")
+
 
 def test_primary_tabs(browser):
     view = TabsTestView(browser)
@@ -77,3 +96,16 @@ def test_auto_selected(browser):
     assert not view.primary.tab2.is_active()
     view.primary.tab2.content.read()
     assert view.primary.tab2.is_active()
+
+
+def test_separate_content_tabs(browser):
+    view = TabsTestView(browser)
+    view.separate.tab1.select()
+    assert view.separate.tab2.is_displayed
+    assert view.separate.tab1.is_active()
+    assert not view.separate.tab2.is_active()
+    assert view.separate.tab1.content.text == "Tab 1 section"
+    view.separate.tab2.select()
+    assert not view.separate.tab1.is_active()
+    assert view.separate.tab2.is_active()
+    assert view.separate.tab2.content.text == "Tab 2 section"

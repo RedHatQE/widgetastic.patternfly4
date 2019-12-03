@@ -23,6 +23,9 @@ class Tab(View):
     ROOT = ParametrizedLocator(
         ".//section[@aria-labelledby=string("
         "preceding-sibling::div/ul/li/button[normalize-space(.)={@tab_name|quote}]/@id)]"
+        "|"
+        ".//section[@id=string(../preceding-sibling::div/ul/li"
+        "/button[normalize-space(.)={@tab_name|quote}]/@aria-controls)]"
     )
 
     @property
