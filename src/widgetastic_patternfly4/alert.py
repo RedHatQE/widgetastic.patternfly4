@@ -53,7 +53,7 @@ class Alert(Widget):
         self.browser.click(el)
 
     def click_link(self):
-        el = self.browser.element("./span/a", parent=self._raw_description_el)
+        el = self.browser.element("./a/span", parent=self._raw_description_el)
         self.browser.click(el)
 
     @property
