@@ -125,7 +125,8 @@ class Navigation(Widget):
         current_item = self
         for i, level in enumerate(levels, 1):
             li = self.browser.element(self.ITEM_MATCHING.format(quote(level)), parent=current_item)
-            self.browser.click(li)
+            if "pf-m-expanded" not in li.get_attribute("class").split():
+                self.browser.click(li)
             if i == len(levels):
                 return
             current_item = self.browser.element(self.SUB_ITEMS_ROOT, parent=li)

@@ -37,7 +37,7 @@ class Dropdown(Widget):
         " and normalize-space(.)={}]"
     )
     TEXT_LOCATOR = (
-        './/div[contains(@class, "pf-c-dropdown") and ' "child::button[normalize-space(.)={}]]"
+        ".//div[contains(@class, 'pf-c-dropdown') and child::button[normalize-space(.)={}]]"
     )
     DEFAULT_LOCATOR = './/div[contains(@class, "pf-c-dropdown")][1]'
 
@@ -186,6 +186,11 @@ class Dropdown(Widget):
             except UnexpectedAlertPresentException:
                 self.logger.warning("There is an unexpected alert present.")
                 pass
+
+    @property
+    def button_text(self):
+        """Returns a string of the current dropdown name."""
+        return self.browser.text(self.BUTTON_LOCATOR)
 
     def __repr__(self):
         return "{}({!r})".format(type(self).__name__, getattr(self, "text", None) or self.locator)

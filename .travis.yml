@@ -1,5 +1,4 @@
-services:
-  - docker
+dist: bionic
 language: python
 python:
   - 3.6
@@ -18,13 +17,15 @@ jobs:
       script: pre-commit run --all
     - &test
       stage: test
+      services:
+        - docker
       env: BROWSER=firefox
+      before_install:
+        - docker run -d -p 4444:4444 -v /dev/shm:/dev/shm quay.io/redhatqe/selenium-standalone
       install:
         - pip install -U setuptools pip wheel
         - pip install pytest pytest-cov codecov
         - python setup.py install
-      before_script:
-        - docker run -d -p 4444:4444 -v /dev/shm:/dev/shm quay.io/redhatqe/selenium-standalone
       script: pytest -v --no-cov-on-fail --cov=widgetastic_patternfly4
       after_success:
         - codecov

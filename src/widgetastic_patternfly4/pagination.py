@@ -48,7 +48,7 @@ class Pagination(View):
 
     def first_page(self):
         """Clicks on the first page button."""
-        if self.is_first_disabled:
+        if self.no_items or self.is_first_disabled:
             raise PaginationNavDisabled("first")
         self._first.click()
 
@@ -59,7 +59,7 @@ class Pagination(View):
 
     def previous_page(self):
         """Clicks the previous page button."""
-        if self.is_previous_disabled:
+        if self.no_items or self.is_previous_disabled:
             raise PaginationNavDisabled("previous")
         self._previous.click()
 
@@ -117,11 +117,20 @@ class Pagination(View):
         return self._options.items
 
     @property
+    def no_items(self):
+        """Returns wether the pagination object has elements or not"""
+        return not self.total_items
+
+    @property
     def current_per_page(self):
         """Returns an integer detailing how many items are cshown per page."""
         if self._cached_per_page_value:
             return self._cached_per_page_value
-        return int(self._options.selected_items[0].split()[0])
+
+        if self.no_items:
+            return 0
+        else:
+            return int(self._options.selected_items[0].split()[0])
 
     @contextmanager
     def cache_per_page_value(self):
@@ -152,7 +161,7 @@ class Pagination(View):
             )
 
     def __iter__(self):
-        if self.current_page != 1:
+        if self.current_page > 1:
             self.first_page()
         self._page_counter = 0
         return self
@@ -169,7 +178,7 @@ class Pagination(View):
 
 class CompactPagination(Pagination):
     DEFAULT_LOCATOR = (
-        ".//div[contains(@class, 'pf-c-pagination') and " "contains(@class, 'pf-m-compact')]"
+        ".//div[contains(@class, 'pf-c-pagination') and contains(@class, 'pf-m-compact')]"
     )
 
     @property
@@ -205,8 +214,11 @@ class CompactPagination(Pagination):
 
         and so on.
         """
-        _, last_num = self.displayed_items
-        return math.ceil(last_num / self.current_per_page)
+        if self.no_items:
+            return 0
+        else:
+            _, last_num = self.displayed_items
+            return math.ceil(last_num / self.current_per_page)
 
     @property
     def total_pages(self):
@@ -215,18 +227,7 @@ class CompactPagination(Pagination):
 
         Compact pagination does not explicitily show the page count, so use some math.
         """
-        return math.ceil(self.total_items / self.current_per_page)
-
-    def __iter__(self):
-        self.first_page()
-        self._page_counter = 0
-        return self
-
-    def __next__(self):
-        if not self.is_next_disabled:
-            self._page_counter += 1
-            if self._page_counter > 1:
-                self.next_page()
-            return self._page_counter
+        if self.no_items:
+            return 0
         else:
-            raise StopIteration
+            return math.ceil(self.total_items / self.current_per_page)

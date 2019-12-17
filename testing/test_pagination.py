@@ -1,3 +1,5 @@
+import contextlib
+
 import pytest
 
 from widgetastic_patternfly4 import CompactPagination
@@ -5,14 +7,8 @@ from widgetastic_patternfly4 import Pagination
 from widgetastic_patternfly4 import PaginationNavDisabled
 
 
-@pytest.fixture(
-    params=[
-        (Pagination, {"locator": ".//div[@id='pagination-options-menu-top']"}),
-        (CompactPagination, {}),
-    ],
-    ids=["Pagination", "CompactPagination"],
-)
-def paginator(browser, request):
+@contextlib.contextmanager
+def _paginator(browser, request, reset_elements_per_page=True):
     paginator_cls, kwargs = request.param
     paginator = paginator_cls(browser, **kwargs)
     yield paginator
@@ -21,7 +17,67 @@ def paginator(browser, request):
     except PaginationNavDisabled:
         # We are already at the first page...
         pass
-    paginator.set_per_page(20)
+    if reset_elements_per_page:
+        paginator.set_per_page(20)
+
+
+@pytest.fixture(
+    params=[
+        (Pagination, {"locator": "(.//div[@id='pagination-options-menu-top'])[1]"}),
+        (CompactPagination, {}),
+    ],
+    ids=["Pagination", "CompactPagination"],
+)
+def paginator(browser, request):
+    with _paginator(browser, request) as result:
+        yield result
+
+
+@pytest.fixture(
+    params=[
+        (Pagination, {"locator": "(.//div[@id='pagination-options-menu-top'])[4]"}),
+        (CompactPagination, {"locator": "(.//div[@id='pagination-options-menu-top'])[4]"}),
+    ],
+    ids=["Pagination", "CompactPagination"],
+)
+def one_page_paginator(browser, request):
+    with _paginator(browser, request) as result:
+        yield result
+
+
+@pytest.fixture(
+    params=[
+        (Pagination, {"locator": "(.//div[@id='pagination-options-menu-top'])[3]"}),
+        (CompactPagination, {"locator": "(.//div[@id='pagination-options-menu-top'])[3]"}),
+    ],
+    ids=["Pagination", "CompactPagination"],
+)
+def no_elements_paginator(browser, request):
+    with _paginator(browser, request, reset_elements_per_page=False) as result:
+        yield result
+
+
+# Can't parametrize fixtures:
+# https://github.com/pytest-dev/pytest/issues/349
+# @pytest.mark.parametrize('params', [ { "paginator": one_page_paginator, "expected_pages": 1}])
+
+
+def _page_iteration_asserts(paginator, expected_pages):
+
+    page_counter = 0
+
+    with paginator.cache_per_page_value():
+        for page in paginator:
+            page_counter += 1
+    assert page_counter == expected_pages
+
+
+def test_one_page_iteration(one_page_paginator):
+    _page_iteration_asserts(paginator=one_page_paginator, expected_pages=1)
+
+
+def test_no_elements_iteration(no_elements_paginator):
+    _page_iteration_asserts(paginator=no_elements_paginator, expected_pages=0)
 
 
 def test_first_page(paginator):
