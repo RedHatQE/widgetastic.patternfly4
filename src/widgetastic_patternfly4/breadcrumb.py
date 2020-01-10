@@ -10,13 +10,6 @@ class BreadCrumb(Widget):
     ROOT = './/nav[contains(@class, "pf-c-breadcrumb")]/ol'
     ELEMENTS = ".//li"
 
-    def __init__(self, parent, locator=None, logger=None):
-        Widget.__init__(self, parent=parent, logger=logger)
-        self._locator = locator or self.ROOT
-
-    def __locator__(self):
-        return self._locator
-
     @property
     def _path_elements(self):
         return self.browser.elements(self.ELEMENTS)
