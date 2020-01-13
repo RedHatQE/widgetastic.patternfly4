@@ -23,7 +23,7 @@ def root_view(browser):
     class TestView(View):
         ROOT = ".//main[@role='main']"
 
-        chip_group_toolbar = ChipGroupToolbar()
+        chip_group_toolbar = ChipGroupToolbar(locator=".//div[@id='ws-react-c-chipgroup-toolbar']")
         chip_group_multiselect = StandAloneChipGroup(
             locator=(
                 ".//div[@id='ws-react-c-chipgroup-multi-select']"
