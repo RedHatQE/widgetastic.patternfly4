@@ -287,3 +287,9 @@ class ChipGroupToolbar(View):
     def show_less(self):
         """Collapses a chip group"""
         self.overflow.show_less()
+
+    @property
+    def is_displayed(self):
+        # If we delete all chips the ROOT is still shown thus we need to check if there are
+        # any chips.
+        return self.read() != {}
