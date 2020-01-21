@@ -113,3 +113,12 @@ def test_bad_paginator_page_value(paginator):
         paginator.set_per_page(9999999)
     with pytest.raises(ValueError):
         paginator.set_per_page("999999")
+
+
+def test_custom_page(paginator):
+    if isinstance(paginator, CompactPagination):
+        pytest.skip("Cannot insert custom page number into CompactPagination")
+    disp_items = paginator.displayed_items
+    paginator.go_to_page(2)
+    assert paginator.current_page == 2
+    assert disp_items != paginator.displayed_items
