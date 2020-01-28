@@ -1,6 +1,7 @@
 import math
 from contextlib import contextmanager
 
+from selenium.webdriver.common.keys import Keys
 from widgetastic.utils import ParametrizedLocator
 from widgetastic.widget import GenericLocatorWidget
 from widgetastic.widget import Text
@@ -159,6 +160,11 @@ class Pagination(View):
             raise ValueError(
                 "count '{}' is not a valid option in the pagination dropdown".format(count)
             )
+
+    def go_to_page(self, value):
+        """Navigate to custom page number."""
+        self._current_page.fill(value)
+        self.browser.send_keys(Keys.RETURN, self._current_page)
 
     def __iter__(self):
         if self.current_page > 1:
