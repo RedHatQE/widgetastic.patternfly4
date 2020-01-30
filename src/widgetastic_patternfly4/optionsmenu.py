@@ -8,7 +8,7 @@ class OptionsMenu(Dropdown):
     )
     ITEMS_LOCATOR = ".//ul[contains(@class, 'pf-c-options-menu__menu')]/li"
     ITEM_LOCATOR = (
-        ".//button[contains(@class, 'pf-c-options-menu__menu-item') and normalize-space(.)={}]"
+        ".//*[contains(@class, 'pf-c-options-menu__menu-item') and normalize-space(.)={}]"
     )
     TEXT_LOCATOR = (
         './/div[contains(@class, "pf-c-options-menu") and '
