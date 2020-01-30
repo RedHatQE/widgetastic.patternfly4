@@ -32,9 +32,7 @@ class Dropdown(Widget):
     ROOT = ParametrizedLocator("{@locator}")
     BUTTON_LOCATOR = ".//button[contains(@class, 'pf-c-dropdown__toggle')]"
     ITEMS_LOCATOR = ".//ul[contains(@class, 'pf-c-dropdown__menu')]/li"
-    ITEM_LOCATOR = (
-        ".//*[contains(@class, 'pf-c-dropdown__menu-item') and normalize-space(.)={}]"
-    )
+    ITEM_LOCATOR = ".//*[contains(@class, 'pf-c-dropdown__menu-item') and normalize-space(.)={}]"
     TEXT_LOCATOR = (
         ".//div[contains(@class, 'pf-c-dropdown') and child::button[normalize-space(.)={}]]"
     )
