@@ -8,7 +8,7 @@ from widgetastic_patternfly4 import PaginationNavDisabled
 
 
 # Locates a paginator under a specific header
-LOCATOR = ".//h3[contains(@id, '{}')]//div[contains(@class, 'pf-c-pagination'])"
+LOCATOR = ".//h3[@id='{}']//div[contains(@class, 'pf-c-pagination'])"
 
 
 @contextlib.contextmanager
