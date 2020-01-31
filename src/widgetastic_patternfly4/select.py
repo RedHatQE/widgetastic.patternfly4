@@ -19,7 +19,7 @@ class Select(Dropdown):
 
     BUTTON_LOCATOR = "./button"
     ITEMS_LOCATOR = ".//ul[@class='pf-c-select__menu']/li"
-    ITEM_LOCATOR = ".//button[contains(@class, 'pf-c-select__menu-item') and normalize-space(.)={}]"
+    ITEM_LOCATOR = ".//*[contains(@class, 'pf-c-select__menu-item') and normalize-space(.)={}]"
     SELECTED_ITEM_LOCATOR = (
         ".//span[contains(@class, 'ins-c-conditional-filter') and normalize-space(.)={}]"
     )
