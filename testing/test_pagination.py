@@ -14,8 +14,6 @@ LOCATOR = ".//h3[contains(@id, '{}')]//div[contains(@class, 'pf-c-pagination'])"
 @contextlib.contextmanager
 def _paginator(browser, request, reset_elements_per_page=True):
     paginator_cls, kwargs = request.param
-    if not kwargs:
-        pytest.skip("Skipped due to empty parameter kwargs")
 
     paginator = paginator_cls(browser, **kwargs)
     yield paginator
