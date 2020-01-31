@@ -8,7 +8,7 @@ ALERT_TYPES = ["success", "danger", "warning", "info"]
 
 @pytest.fixture(params=ALERT_TYPES)
 def alert(browser, request):
-    return Alert(browser, "(.//div[@class='pf-c-alert pf-m-{}'])[1]".format(request.param))
+    return Alert(browser, locator=".//div[@class='pf-c-alert pf-m-{}'][1]".format(request.param))
 
 
 def test_alert_is_displayed(alert):
