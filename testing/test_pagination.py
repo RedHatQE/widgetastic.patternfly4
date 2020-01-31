@@ -7,9 +7,16 @@ from widgetastic_patternfly4 import Pagination
 from widgetastic_patternfly4 import PaginationNavDisabled
 
 
+# Locates a paginator under a specific header
+LOCATOR = ".//h3[contains(@id, '{}')]//div[contains(@class, 'pf-c-pagination'])"
+
+
 @contextlib.contextmanager
 def _paginator(browser, request, reset_elements_per_page=True):
     paginator_cls, kwargs = request.param
+    if not kwargs:
+        pytest.skip("Skipped due to empty parameter kwargs")
+
     paginator = paginator_cls(browser, **kwargs)
     yield paginator
     try:
@@ -23,8 +30,8 @@ def _paginator(browser, request, reset_elements_per_page=True):
 
 @pytest.fixture(
     params=[
-        (Pagination, {"locator": "(.//div[@id='pagination-options-menu-top'])[1]"}),
-        (CompactPagination, {}),
+        (Pagination, {"locator": LOCATOR.format("top")}),
+        (CompactPagination, {"locator": LOCATOR.format("compact")}),
     ],
     ids=["Pagination", "CompactPagination"],
 )
@@ -35,10 +42,10 @@ def paginator(browser, request):
 
 @pytest.fixture(
     params=[
-        (Pagination, {"locator": "(.//div[@id='pagination-options-menu-top'])[4]"}),
-        (CompactPagination, {"locator": "(.//div[@id='pagination-options-menu-top'])[4]"}),
+        (Pagination, {"locator": LOCATOR.format("one-page")}),
+        # there is no compact paginator of this type on the demo page
     ],
-    ids=["Pagination", "CompactPagination"],
+    ids=["Pagination"],
 )
 def one_page_paginator(browser, request):
     with _paginator(browser, request) as result:
@@ -47,10 +54,10 @@ def one_page_paginator(browser, request):
 
 @pytest.fixture(
     params=[
-        (Pagination, {"locator": "(.//div[@id='pagination-options-menu-top'])[3]"}),
-        (CompactPagination, {"locator": "(.//div[@id='pagination-options-menu-top'])[3]"}),
+        (Pagination, {"locator": LOCATOR.format("no-items")}),
+        # there is no compact paginator of this type on the demo page
     ],
-    ids=["Pagination", "CompactPagination"],
+    ids=["Pagination"],
 )
 def no_elements_paginator(browser, request):
     with _paginator(browser, request, reset_elements_per_page=False) as result:
@@ -63,7 +70,6 @@ def no_elements_paginator(browser, request):
 
 
 def _page_iteration_asserts(paginator, expected_pages):
-
     page_counter = 0
 
     with paginator.cache_per_page_value():
