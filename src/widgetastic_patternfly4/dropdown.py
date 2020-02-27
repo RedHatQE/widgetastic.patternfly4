@@ -89,7 +89,7 @@ class Dropdown(Widget):
         try:
             self._verify_enabled()
             if self.is_open:
-                self.browser.click(self)
+                self.browser.click(self.BUTTON_LOCATOR)
         except (NoSuchElementException, DropdownDisabled):
             if ignore_nonpresent:
                 self.logger.info("%r hid so it was not possible to close it. But ignoring.", self)
