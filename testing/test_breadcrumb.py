@@ -9,7 +9,7 @@ from widgetastic_patternfly4 import BreadCrumb
 
 def test_breadcrumb(browser):
     class TestView(View):
-        ROOT = ".//main[@role='main']"
+        ROOT = ".//main"
         breadcrumb = BreadCrumb()
 
     view = TestView(browser)
