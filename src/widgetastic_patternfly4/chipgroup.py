@@ -292,4 +292,4 @@ class ChipGroupToolbar(View):
     def is_displayed(self):
         # If we delete all chips the ROOT is still shown thus we need to check if there are
         # any chips.
-        return self.read() != {}
+        return super().is_displayed and self.read() != {}
