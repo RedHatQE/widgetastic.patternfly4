@@ -185,4 +185,4 @@ def test_chipgroup_toolbar(root_view):
 
     for group in view.chip_group_toolbar:
         group.remove_all_chips()
-    assert not view.chip_group_toolbar.is_displayed
+    assert not view.chip_group_toolbar.has_chips
