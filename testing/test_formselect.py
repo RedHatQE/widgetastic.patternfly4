@@ -8,7 +8,7 @@ from widgetastic_patternfly4 import FormSelectOptionNotFound
 
 
 class FormSelectTestView(View):
-    ROOT = ".//main[@role='main']"
+    ROOT = ".//main"
 
     input = FormSelect(locator=".//div[@id='ws-react-c-formselect-basic']/select")
     input_grouping = FormSelect(locator=".//div[@id='ws-react-c-formselect-grouped']/select")
