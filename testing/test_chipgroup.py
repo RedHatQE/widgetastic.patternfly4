@@ -21,7 +21,9 @@ def chips_view(browser):
 @pytest.fixture(scope="module")
 def root_view(browser):
     class TestView(View):
-        ROOT = ".//main[@role='main']"
+        ROOT = ".//main"
+        non_existent_chip_group_toolbar = ChipGroupToolbar(locator="foobar-locator")
+        non_existent_chip_group = StandAloneChipGroup(locator="foobar-locator")
 
         chip_group_toolbar = ChipGroupToolbar(locator=".//div[@id='ws-react-c-chipgroup-toolbar']")
         chip_group_multiselect = StandAloneChipGroup(
@@ -47,6 +49,14 @@ def root_view(browser):
     )
 
     return view
+
+
+def test_non_existent_chips(root_view):
+
+    view = root_view
+
+    assert not view.non_existent_chip_group_toolbar.is_displayed
+    assert not view.non_existent_chip_group.is_displayed
 
 
 def test_chipgroup_chips(chips_view):
@@ -144,13 +154,13 @@ def test_chipgroup_toolbar(root_view):
     assert view.chip_group_toolbar.is_displayed
 
     groups = [group.label for group in view.chip_group_toolbar.get_groups()]
-    assert groups == ["Category 1", "Category 2", "Category 3"]
+    assert groups == ["Category 1 has a very long name", "Category 2", "Category 3"]
 
     groups = [group.label for group in view.chip_group_toolbar]
-    assert groups == ["Category 1", "Category 2", "Category 3"]
+    assert groups == ["Category 1 has a very long name", "Category 2", "Category 3"]
 
     data = {
-        "Category 1": ["Chip 1", "Chip 2"],
+        "Category 1 has a very long name": ["Chip 1", "Chip 2"],
         "Category 2": ["Chip 3", "Chip 4"],
         "Category 3": ["Chip 5", "Chip 6", "Chip 7", "Chip 8"],
     }
@@ -160,7 +170,7 @@ def test_chipgroup_toolbar(root_view):
     cat_2_group = [g for g in groups if g.label == "Category 2"][0]
     cat_2_group.remove_chip_by_name("Chip 3")
     data = {
-        "Category 1": ["Chip 1", "Chip 2"],
+        "Category 1 has a very long name": ["Chip 1", "Chip 2"],
         "Category 2": ["Chip 4"],
         "Category 3": ["Chip 5", "Chip 6", "Chip 7", "Chip 8"],
     }
@@ -168,11 +178,11 @@ def test_chipgroup_toolbar(root_view):
 
     cat_2_group.remove_all_chips()
     data = {
-        "Category 1": ["Chip 1", "Chip 2"],
+        "Category 1 has a very long name": ["Chip 1", "Chip 2"],
         "Category 3": ["Chip 5", "Chip 6", "Chip 7", "Chip 8"],
     }
     assert view.chip_group_toolbar.read() == data
 
     for group in view.chip_group_toolbar:
         group.remove_all_chips()
-    assert not view.chip_group_toolbar.is_displayed
+    assert not view.chip_group_toolbar.has_chips
