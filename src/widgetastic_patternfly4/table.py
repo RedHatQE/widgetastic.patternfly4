@@ -1,4 +1,5 @@
 import six
+from selenium.common.exceptions import NoSuchElementException
 from widgetastic.log import create_item_logger
 from widgetastic.widget import Table
 from widgetastic.widget import TableColumn
@@ -152,6 +153,14 @@ class RowNotExpandable(Exception):
         return "Row is not expandable: {}".format(repr(self.row))
 
 
+class ColumnNotExpandable(Exception):
+    def __init__(self, column):
+        self.column = column
+
+    def __str__(self):
+        return "Column is not expandable: {}".format(repr(self.column))
+
+
 class ExpandableTableRow(PatternflyTableRow):
     """Represents a row in the table.
 
@@ -274,3 +283,126 @@ class ExpandableTable(PatternflyTable):
 
     def _create_row(self, parent, index, logger=None):
         return self.Row(parent, index, self.content_view, logger)
+
+
+class ExpandableColumn(TableColumn):
+    EXPAND_LOCATOR = "./button"
+
+    def __init__(self, parent, position, content_view=None, absolute_position=None, logger=None):
+        super(ExpandableColumn, self).__init__(parent, position, absolute_position, logger=logger)
+
+        expandable_content = f"./tr[{position + 1}]"
+        content_parent = Text(parent=self.row, locator=expandable_content)
+        if content_view:
+            self.content = resolve_table_widget(content_parent, content_view)
+        else:
+            self.content = content_parent
+
+    def __locator__(self):
+        """Override the locator to look inside the first 'tr' within the tbody"""
+        if self.position == 0:
+            # we assume the th column is in the first position
+            return "./tr[1]/th[{}]".format(self.position + 1)
+        else:
+            return "./tr[1]/td[{}]".format(self.position)
+
+    @property
+    def is_expandable(self):
+        """ To check to see if this column is expandable, check to see if a button is in it."""
+        try:
+            self.browser.element(self.EXPAND_LOCATOR)
+        except NoSuchElementException:
+            return False
+        return True
+
+    def _check_expandable(self):
+        if not self.is_expandable:
+            raise ColumnNotExpandable(self)
+
+    @property
+    def widget(self):
+        # TODO: make this configurable?
+        if self.is_expandable:
+            return Text(locator=self.EXPAND_LOCATOR, parent=self)
+        else:
+            return None
+
+    @property
+    def is_expanded(self):
+        self._check_expandable()
+        return self.browser.get_attribute("aria-expanded", self.widget).lower()[0] in [
+            "1",
+            "t",
+            "y",
+        ]
+
+    def expand(self):
+        """Expands the table column."""
+        self._check_expandable()
+        if not self.is_expanded:
+            self.widget.click()
+            self.content.wait_displayed()
+
+    def collapse(self):
+        """Collapses the table column."""
+        self._check_expandable()
+        if self.is_expanded:
+            self.widget.click()
+
+
+class CompoundExpandableRow(PatternflyTableRow):
+    TABLE_COLUMN_CLS = ExpandableColumn
+    HEADER_IN_ROW = "./tr[1]/th[1]"
+    # these are the columns that allow for expansion
+    EXPANDABLE_COLUMNS = "./tr[1]/td[contains(@class, 'compound-expansion')]"
+    Column = ExpandableColumn
+
+    def __getitem__(self, item):
+        if isinstance(item, six.string_types):
+            index = self.table.header_index_mapping[self.table.ensure_normal(item)]
+        elif isinstance(item, int):
+            index = item
+        else:
+            raise TypeError("row[] accepts only integers and strings")
+
+        # Typically for this widget the layout is: <th>, <td>, <td>, <td>, and so on...
+        if self.has_row_header:
+            return self.Column(
+                self, index, self.table.content_view, logger=create_item_logger(self.logger, item)
+            )
+
+        return super(PatternflyTableRow, self).__getitem__(index)
+
+
+class CompoundExpandableTable(PatternflyTable):
+    """
+    This widget is similar to the ExpandableTable, only that it can have any number of
+    expandable rows, and the expandable column is not necessarily in the first position.
+
+    https://www.patternfly.org/v4/documentation/react/components/table#
+    """
+
+    ROWS = "./tbody"
+    ROW_RESOLVER_PATH = "/table/tbody"
+    ROW_AT_INDEX = "./tbody[{0}]"
+    COLUMN_RESOLVER_PATH = "/tr[0]/td"
+    COLUMN_AT_POSITION = "./tr[1]/td[{0}]"
+    ROW_TAG = "tbody"
+    HEADERS = "./thead/tr/th|./thead/tr/td"
+
+    Row = CompoundExpandableRow
+
+    def __init__(self, *args, **kwargs):
+        """Extend init of Table
+
+        Automatically add the 'expand' button widget as column 0.
+
+        Provide additional kwarg for 'content_view', which is used to pass in a WidgetDescriptor
+        to be used as the Widget/View for the expanded content of each column.
+        """
+        self.content_view = kwargs.pop("content_view", None)
+        super(CompoundExpandableTable, self).__init__(*args, **kwargs)
+
+    def _create_column(self, parent, position, absolute_position=None, logger=None):
+        """Override this if you wish to change column behavior in a child class."""
+        return self.Row.Column(parent, position, self.content_view, absolute_position, logger)

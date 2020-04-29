@@ -29,6 +29,7 @@ from .select import SelectItemDisabled
 from .select import SelectItemNotFound
 from .switch import Switch
 from .switch import SwitchDisabled
+from .table import CompoundExpandableTable
 from .table import ExpandableTable
 from .table import PatternflyTable
 from .table import RowNotExpandable
@@ -45,6 +46,7 @@ __all__ = [
     "ChipGroupToolbar",
     "ChipGroupToolbarCategory",
     "CompactPagination",
+    "CompoundExpandableTable",
     "StandAloneChipGroup",
     "DonutChart",
     "Dropdown",
