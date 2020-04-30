@@ -29,6 +29,7 @@ from .select import SelectItemDisabled
 from .select import SelectItemNotFound
 from .switch import Switch
 from .switch import SwitchDisabled
+from .table import ColumnNotExpandable
 from .table import CompoundExpandableTable
 from .table import ExpandableTable
 from .table import PatternflyTable
@@ -45,6 +46,7 @@ __all__ = [
     "ChipReadOnlyError",
     "ChipGroupToolbar",
     "ChipGroupToolbarCategory",
+    "ColumnNotExpandable",
     "CompactPagination",
     "CompoundExpandableTable",
     "StandAloneChipGroup",
