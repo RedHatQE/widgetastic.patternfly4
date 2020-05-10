@@ -189,6 +189,9 @@ class Dropdown(Widget):
         """Returns a string of the current dropdown name."""
         return self.browser.text(self.BUTTON_LOCATOR)
 
+    def read(self):
+        return self.button_text
+
     def __repr__(self):
         return "{}({!r})".format(type(self).__name__, getattr(self, "text", None) or self.locator)
 
