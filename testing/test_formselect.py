@@ -35,6 +35,10 @@ def test_formselect_enablement(view):
     assert not view.input_disabled.is_enabled
 
 
+@pytest.mark.skip(
+    "http://patternfly-react.surge.sh/documentation/react/components/formselect#invalid "
+    "misbehaves"
+)
 def test_formselect_validity(view):
     assert view.input.is_valid
     assert view.input_grouping.is_valid
