@@ -18,7 +18,7 @@ class OptionsMenu(Dropdown):
     DEFAULT_LOCATOR = './/div[contains(@class, "pf-c-options-menu")][1]'
 
     SELECTED_ITEMS_LOCATOR = (
-        f"{ITEMS_LOCATOR}/button[*[name()='svg'] or descendant::i[not(@hidden)]]"
+        f"{ITEMS_LOCATOR}/button[.//*[name()='svg'] or descendant::i[not(@hidden)]]"
     )
 
     @property
