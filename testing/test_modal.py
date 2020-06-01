@@ -1,4 +1,5 @@
 import pytest
+from widgetastic.widget import Text
 
 from widgetastic_patternfly4.button import Button
 from widgetastic_patternfly4.modal import Modal
@@ -13,6 +14,12 @@ def modal(browser):
     yield modal
     if modal.is_displayed:
         modal.close()
+
+
+class CustomModal(Modal):
+    """Model use as view and enhance with widgets"""
+
+    custom_body = Text(".//div[contains(@class, 'pf-c-modal-box__body')]")
 
 
 def test_title(modal):
@@ -50,3 +57,9 @@ def test_footer_item_invalid(modal):
         assert True
     else:
         pytest.fail("ModalItemNotFound exception expected.")
+
+
+def test_modal_as_view(browser, modal):
+    view = CustomModal(browser)
+    assert view.is_displayed
+    assert view.custom_body.text == modal.body.text

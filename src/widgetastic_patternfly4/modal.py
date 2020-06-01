@@ -16,11 +16,11 @@ class Modal(View):
 
     ROOT = ParametrizedLocator("{@locator}")
     BODY = ".//div[contains(@class, 'pf-c-modal-box__body')]"
-    FOOTER = ".//div[contains(@class, 'pf-c-modal-box__footer')]/child::node()"
+    FOOTER = ".//*[contains(@class, 'pf-c-modal-box__footer')]/child::node()"
     FOOTER_ITEM = (
-        ".//div[contains(@class, 'pf-c-modal-box__footer')]" "/button[normalize-space(.)={}]"
+        ".//*[contains(@class, 'pf-c-modal-box__footer')]" "/button[normalize-space(.)={}]"
     )
-    TITLE = ".//h1[contains(@class, 'pf-c-title')]"
+    TITLE = ".//h1[contains(@class, 'pf-c-title') or contains(@class, 'pf-c-modal-box__title')]"
     CLOSE = ".//button[@aria-label='Close']"
 
     def __init__(self, parent, locator=None, logger=None, **kwargs):
