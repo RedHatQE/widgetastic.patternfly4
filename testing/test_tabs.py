@@ -7,25 +7,25 @@ from widgetastic_patternfly4 import Tab
 class TabsTestView(View):
     @View.nested
     class primary(View):
-        ROOT = ".//div[@id='ws-react-c-tabs-basic']"
+        ROOT = ".//div[@id='ws-react-c-tabs-default']"
 
         @View.nested
         class tab1(Tab):
-            TAB_NAME = "Tab item 1"
+            TAB_NAME = "Users"
             content = Text(".")
 
         @View.nested
         class tab2(Tab):
-            TAB_NAME = "Tab item 2"
+            TAB_NAME = "Containers"
             content = Text(".")
 
     @View.nested
     class secondary(View):
-        ROOT = ".//div[@id='ws-react-c-tabs-secondary-buttons']"
+        ROOT = ".//div[@id='ws-react-c-tabs-tabs-with-sub-tabs']"
 
         @View.nested
         class tab1(Tab):
-            TAB_NAME = "Tab item 1"
+            TAB_NAME = "Users"
 
             @View.nested
             class secondary1(Tab):
@@ -65,11 +65,11 @@ def test_primary_tabs(browser):
     assert view.primary.tab2.is_displayed
     assert view.primary.tab1.is_active()
     assert not view.primary.tab2.is_active()
-    assert view.primary.tab1.content.text == "Tab 1 section"
+    assert view.primary.tab1.content.text == "Users"
     view.primary.tab2.select()
     assert not view.primary.tab1.is_active()
     assert view.primary.tab2.is_active()
-    assert view.primary.tab2.content.text == "Tab 2 section"
+    assert view.primary.tab2.content.text == "Containers"
 
 
 def test_secondary_tabs(browser):
@@ -80,13 +80,13 @@ def test_secondary_tabs(browser):
     assert view.secondary.tab1.is_active()
     assert view.secondary.tab1.secondary1.is_displayed
     assert view.secondary.tab1.secondary2.is_displayed
-    assert view.secondary.tab1.secondary1.is_active()
+    assert not view.secondary.tab1.secondary1.is_active()
     assert not view.secondary.tab1.secondary2.is_active()
     assert view.secondary.tab1.secondary1.content.text == "Secondary tab item 1 item section"
     view.secondary.tab1.secondary2.select()
     assert not view.secondary.tab1.secondary1.is_active()
     assert view.secondary.tab1.secondary2.is_active()
-    assert view.secondary.tab1.secondary2.content.text == "Secondary tab item 2 section"
+    assert view.secondary.tab1.secondary2.content.text == "> Secondary tab item 2 section"
 
 
 def test_auto_selected(browser):
