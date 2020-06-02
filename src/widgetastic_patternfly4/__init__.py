@@ -13,6 +13,7 @@ from .dropdown import DropdownDisabled
 from .dropdown import DropdownItemDisabled
 from .dropdown import DropdownItemNotFound
 from .dropdown import GroupDropdown
+from .dropdown import SplitButtonDropdown
 from .formselect import FormSelect
 from .formselect import FormSelectDisabled
 from .formselect import FormSelectOptionDisabled
@@ -56,6 +57,7 @@ __all__ = [
     "DropdownItemDisabled",
     "DropdownItemNotFound",
     "GroupDropdown",
+    "SplitButtonDropdown",
     "FormSelect",
     "FormSelectDisabled",
     "FormSelectOptionDisabled",
