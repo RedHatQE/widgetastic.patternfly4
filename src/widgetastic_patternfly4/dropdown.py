@@ -3,6 +3,7 @@ from contextlib import contextmanager
 from widgetastic.exceptions import NoSuchElementException
 from widgetastic.exceptions import UnexpectedAlertPresentException
 from widgetastic.utils import ParametrizedLocator
+from widgetastic.widget import Checkbox
 from widgetastic.widget import Widget
 from widgetastic.xpath import quote
 
@@ -238,3 +239,28 @@ class GroupDropdown(Dropdown):
             DropdownItemDisabled
         """
         return super().item_select(item, handle_alert=handle_alert, group_name=group_name)
+
+
+class SplitButtonDropdown(Dropdown):
+    """Represents the Patternfly Split Button Dropdown.
+
+    https://www.patternfly.org/v4/documentation/react/components/dropdown#split-button-with-text
+    """
+
+    toggle_check = Checkbox(locator=".//input[@type='checkbox']")
+
+    def check(self):
+        """Check toggle checkbox."""
+        return self.toggle_check.fill(True)
+
+    def uncheck(self):
+        """Uncheck toggle checkbox."""
+        return self.toggle_check.fill(False)
+
+    @property
+    def selected(self):
+        """Returns selected or not"""
+        return self.toggle_check.selected
+
+    def read(self):
+        return self.browser.text(self)
