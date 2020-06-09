@@ -1,12 +1,11 @@
 import pytest
-from wait_for import wait_for
 from widgetastic.widget import ParametrizedView
 from widgetastic.widget import View
 
+from widgetastic_patternfly4 import CategoryChipGroup
 from widgetastic_patternfly4 import Chip
-from widgetastic_patternfly4 import ChipGroupToolbar
+from widgetastic_patternfly4 import ChipGroup
 from widgetastic_patternfly4 import ChipReadOnlyError
-from widgetastic_patternfly4 import StandAloneChipGroup
 
 
 @pytest.fixture(scope="module")
@@ -19,44 +18,28 @@ def chips_view(browser):
 
 
 @pytest.fixture(scope="module")
-def root_view(browser):
+def chip_group_view(browser):
     class TestView(View):
-        ROOT = ".//main"
-        non_existent_chip_group_toolbar = ChipGroupToolbar(locator="foobar-locator")
-        non_existent_chip_group = StandAloneChipGroup(locator="foobar-locator")
+        ROOT = ".//div[@id='ws-react-c-chipgroup-simple-inline-chip-group']"
 
-        chip_group_toolbar = ChipGroupToolbar(locator=".//div[@id='ws-react-c-chipgroup-toolbar']")
-        chip_group_multiselect = StandAloneChipGroup(
-            locator=(
-                ".//div[@id='ws-react-c-chipgroup-multi-select']"
-                "/ul[contains(@class, 'pf-c-chip-group')]"
-            )
-        )
-        badge_chip_group = StandAloneChipGroup(
-            locator=(
-                ".//div[@id='ws-react-c-chipgroup-badge']/"
-                "ul[contains(@class, 'pf-c-chip-group')]"
-            )
-        )
+        non_existent_chip_group = ChipGroup(locator="foobar-locator")
+        chip_group = ChipGroup()
 
-    view = TestView(browser)
-
-    wait_for(
-        lambda: view.chip_group_multiselect.is_displayed,
-        num_sec=3,
-        delay=0.1,
-        message="wait for chip-group-multi-select widget to appear on page",
-    )
-
-    return view
+    return TestView(browser)
 
 
-def test_non_existent_chips(root_view):
+@pytest.fixture(scope="module")
+def category_chip_group_view(browser):
+    class TestView(View):
+        ROOT = ".//div[@id='ws-react-c-chipgroup-chip-groups-with-categories-removable']"
+        category_one = CategoryChipGroup(label="Category one")
+        category_two = CategoryChipGroup(label="Category two has a very long name")
 
-    view = root_view
+    return TestView(browser)
 
-    assert not view.non_existent_chip_group_toolbar.is_displayed
-    assert not view.non_existent_chip_group.is_displayed
+
+def test_non_existent_chips(chip_group_view):
+    assert not chip_group_view.non_existent_chip_group.is_displayed
 
 
 def test_chipgroup_chips(chips_view):
@@ -100,89 +83,38 @@ def test_chipgroup_chips(chips_view):
         read_only_chip.remove()
 
 
-def test_chipgroup_multiselect(root_view):
-    view = root_view
-    chip_group = view.chip_group_multiselect
+def test_chipgroup_simple(chip_group_view):
+    assert chip_group_view.is_displayed
+    assert chip_group_view.chip_group.is_displayed
 
-    assert chip_group.is_displayed
-    assert chip_group.label is None
-    assert chip_group.is_multiselect
+    chips = [
+        "Chip one",
+        "Really long chip that goes on and on",
+        "Chip three",
+        "Chip four",
+        "Chip five",
+    ]
+    assert chip_group_view.chip_group.read() == chips
 
-    expected_chips = ["Chip 1", "Really long chip that goes on and on", "Chip 3"]
-    chips = [chip.text for chip in chip_group.get_chips(show_more=False)]
-    assert chips == expected_chips
+    chip_group_view.chip_group.show_less()
+    chips = ["Chip one", "Really long chip that goes on and on", "Chip three"]
+    assert [chip.text for chip in chip_group_view.chip_group.get_chips(show_more=False)] == chips
 
-    chip_group.show_more()
-    expected_chips = ["Chip 1", "Really long chip that goes on and on", "Chip 3", "Chip 4"]
-    chips = [chip.text for chip in chip_group.get_chips(show_more=False)]
-    assert chips == expected_chips
+    chips = ["Chip one", "Chip three", "Chip four", "Chip five"]
+    chip_group_view.chip_group.remove_chip_by_name("Really long chip that goes on and on")
+    assert chip_group_view.chip_group.read() == chips
 
-    chip_group.show_less()
-    expected_chips = ["Chip 1", "Really long chip that goes on and on", "Chip 3"]
-    chips = [chip.text for chip in chip_group.get_chips(show_more=False)]
-    assert chips == expected_chips
-
-    chip_group.remove_chip_by_name("Chip 1")
-    expected_chips = ["Really long chip that goes on and on", "Chip 3", "Chip 4"]
-    assert chip_group.read() == expected_chips
-
-    chip_group.remove_all_chips()
-    assert not chip_group.is_displayed
+    chip_group_view.chip_group.remove_all_chips()
+    assert not chip_group_view.chip_group.has_chips
 
 
-def test_chipgroup_badge(root_view):
-    view = root_view
-    chip_group = view.badge_chip_group
+def test_chipgroup_category(category_chip_group_view):
+    assert category_chip_group_view.category_one.is_displayed
+    assert category_chip_group_view.category_one.label == "Category one"
 
-    assert chip_group.is_displayed
-    assert chip_group.label is None
+    category_chip_group_view.category_one.close()
+    assert not category_chip_group_view.category_one.is_displayed
 
-    expected_chips = [("Lemons", "10"), ("Limes", "8")]
-    chips = [(chip.text, chip.badge) for chip in chip_group]
-    assert chips == expected_chips
-
-    chip_group.remove_chip_by_name("Lemons")
-    expected_chips = ["Limes"]
-    assert chip_group.read() == expected_chips
-
-    chip_group.remove_all_chips()
-    assert not chip_group.is_displayed
-
-
-def test_chipgroup_toolbar(root_view):
-    view = root_view
-    assert view.chip_group_toolbar.is_displayed
-
-    groups = [group.label for group in view.chip_group_toolbar.get_groups()]
-    assert groups == ["Category 1 has a very long name", "Category 2", "Category 3"]
-
-    groups = [group.label for group in view.chip_group_toolbar]
-    assert groups == ["Category 1 has a very long name", "Category 2", "Category 3"]
-
-    data = {
-        "Category 1 has a very long name": ["Chip 1", "Chip 2"],
-        "Category 2": ["Chip 3", "Chip 4"],
-        "Category 3": ["Chip 5", "Chip 6", "Chip 7", "Chip 8"],
-    }
-    assert view.chip_group_toolbar.read() == data
-
-    groups = view.chip_group_toolbar.get_groups()
-    cat_2_group = [g for g in groups if g.label == "Category 2"][0]
-    cat_2_group.remove_chip_by_name("Chip 3")
-    data = {
-        "Category 1 has a very long name": ["Chip 1", "Chip 2"],
-        "Category 2": ["Chip 4"],
-        "Category 3": ["Chip 5", "Chip 6", "Chip 7", "Chip 8"],
-    }
-    assert view.chip_group_toolbar.read() == data
-
-    cat_2_group.remove_all_chips()
-    data = {
-        "Category 1 has a very long name": ["Chip 1", "Chip 2"],
-        "Category 3": ["Chip 5", "Chip 6", "Chip 7", "Chip 8"],
-    }
-    assert view.chip_group_toolbar.read() == data
-
-    for group in view.chip_group_toolbar:
-        group.remove_all_chips()
-    assert not view.chip_group_toolbar.has_chips
+    # This tests that a category disappears after all chips are removed
+    category_chip_group_view.category_two.remove_all_chips()
+    assert not category_chip_group_view.category_two.is_displayed

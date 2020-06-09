@@ -13,16 +13,23 @@ class ChipReadOnlyError(Exception):
         self.chip = chip
 
 
-CHIP_ROOT = (
-    ".//*[(self::div or self::li) and contains(@class, 'pf-c-chip')"
-    " and not(contains(@class, 'pf-m-overflow'))]"
-)
+CHIP_ROOT = ".//div[contains(@class, 'pf-c-chip') and not(contains(@class, 'pf-m-overflow'))]"
 CHIP_TEXT = ".//span[contains(@class, 'pf-c-chip__text')]"
 CHIP_BADGE = ".//span[contains(@class, 'pf-c-badge')]"
-
-GROUP_ROOT = ".//ul[contains(@class, 'pf-c-chip-group')]"
-STANDALONE_GROUP_LABEL = "./preceding-sibling::*[contains(@class, 'pf-c-chip-group__label')]"
+GROUP_ROOT = ".//div[contains(@class, 'pf-c-chip-group')]"
+CATEGORY_GROUP_ROOT = (
+    ".//div[contains(@class, 'pf-c-chip-group') and contains(@class, 'pf-m-category')]"
+)
+CATEGORY_LABEL = "./span[contains(@class, 'pf-c-chip-group__label')]"
+CATEGORY_CLOSE = "./div[contains(@class, 'pf-c-chip-group__close')]/button"
+# For backwards compatibility
+OLD_GROUP_ROOT = ".//ul[contains(@class, 'pf-c-chip-group')]"
 TOOLBAR_GROUP_LABEL = "./li/*[contains(@class, 'pf-c-chip-group__label')]"
+STANDALONE_GROUP_LABEL = "./preceding-sibling::*[contains(@class, 'pf-c-chip-group__label')]"
+OLD_CHIP_ROOT = (
+    ".//*[(self::div or self::li) and contains(@class, 'pf-c-chip') "
+    "and not(contains(@class, 'pf-m-overflow'))]|"
+)
 
 
 class _BaseChip(View):
@@ -113,15 +120,7 @@ class OverflowChip(_BaseChip):
     The 'Show More'/'Show Less' button is essentially a special kind of chip
     """
 
-    ROOT = (
-        ".//*[(self::li or self::div) and "
-        "contains(@class, 'pf-c-chip') and contains(@class, 'pf-m-overflow')]"
-    )
-
-    @property
-    def is_displayed(self):
-        """Returns a boolean detailing if the overflow chip is displayed"""
-        return self.button.is_displayed
+    ROOT = ".//button[contains(@class, 'pf-c-chip') and contains(@class, 'pf-m-overflow')]"
 
     def _show_less_shown(self):
         return self.text.replace(" ", "").lower() == "showless"
@@ -152,9 +151,9 @@ class OverflowChip(_BaseChip):
         )
 
 
-class StandAloneChipGroup(View):
+class ChipGroup(View):
     """
-    Represents a chip group that is "on its own", i.e. not a part of a chip group toolbar
+    Represents a chip group that is "on its own", i.e. not a part of a chip group category
     """
 
     ROOT = ParametrizedLocator("{@locator}")
@@ -166,12 +165,18 @@ class StandAloneChipGroup(View):
         super().__init__(parent, logger=logger)
         self.locator = locator or GROUP_ROOT
 
+    # For backwards compatibility
     @property
     def label(self):
         # It's unlikely we'll have a labelled chip group that is not in a toolbar
         # ... but just in case
         elements = self.browser.elements(STANDALONE_GROUP_LABEL)
         return self.browser.text(elements[0]) if elements else None
+
+    # For backwards compatibility
+    @property
+    def is_multiselect(self):
+        return self.overflow.is_displayed
 
     def show_more(self):
         """Expands a chip group"""
@@ -181,17 +186,17 @@ class StandAloneChipGroup(View):
         """Collapses a chip group"""
         self.overflow.show_less()
 
-    @property
-    def is_multiselect(self):
-        return self.overflow.is_displayed
-
     def get_chips(self, show_more=True):
         """
         A helper to expand the chip group before reading its chips
         """
-        if self.is_multiselect and show_more:
+        if self.overflow.is_displayed and show_more:
             self.show_more()
         return self.chips
+
+    @property
+    def has_chips(self):
+        return self.is_displayed
 
     def __iter__(self):
         for chip in self.get_chips():
@@ -212,36 +217,95 @@ class StandAloneChipGroup(View):
             chip.remove()
 
     def read(self):
+        print(self.get_chips())
         return [chip.text for chip in self]
 
 
-class ChipGroupToolbarCategory(ParametrizedView, StandAloneChipGroup):
+class CategoryChipGroup(ChipGroup):
+    """
+    Represents a Chip Group with a category label
+    """
+
+    ROOT = ParametrizedLocator(
+        f"{CATEGORY_GROUP_ROOT}[{CATEGORY_LABEL}[normalize-space(.)={{@_label|quote}}]]"
+    )
+
+    chips = ParametrizedView.nested(Chip)
+    close_button = Button(locator=CATEGORY_CLOSE)
+
+    def __init__(self, parent, label, logger=None):
+        self._label = label
+        ChipGroup.__init__(self, parent, logger=logger)
+
+    @property
+    def label(self):
+        elements = self.browser.elements(CATEGORY_LABEL)
+        return self.browser.text(elements[0]) if elements else None
+
+    @property
+    def can_close(self):
+        return self.close_button.is_displayed
+
+    def close(self):
+        self.close_button.click()
+
+
+# For backwards compatibility
+class OldChip(Chip):
+    ROOT = ParametrizedLocator(
+        f"{OLD_CHIP_ROOT}[{CHIP_TEXT}[starts-with(normalize-space(.), {{text|quote}})]]"
+    )
+
+
+# For backwards compatibility
+class OldOverflowChip(OverflowChip):
+    ROOT = (
+        ".//*[(self::li or self::div) and "
+        "contains(@class, 'pf-c-chip') and contains(@class, 'pf-m-overflow')]"
+    )
+
+    @property
+    def is_displayed(self):
+        """Returns a boolean detailing if the overflow chip is displayed"""
+        return self.button.is_displayed
+
+
+# For backwards compatibility
+class StandAloneChipGroup(ChipGroup):
+    chips = ParametrizedView.nested(OldChip)
+    overflow = ParametrizedView.nested(OldOverflowChip)
+
+
+# For backwards compatibility
+class ChipGroupToolbarCategory(ParametrizedView, ChipGroup):
     """
     Represents a chip group that is part of a toolbar, identifiable by a category label
     """
 
     PARAMETERS = ("label",)
     ROOT = ParametrizedLocator(
-        f"{GROUP_ROOT}[{TOOLBAR_GROUP_LABEL}[normalize-space(.)={{label|quote}}]]"
+        f"{OLD_GROUP_ROOT}[{TOOLBAR_GROUP_LABEL}[normalize-space(.)={{label|quote}}]]"
     )
 
-    chips = ParametrizedView.nested(Chip)
+    chips = ParametrizedView.nested(OldChip)
 
     def __init__(self, *args, **kwargs):
         ParametrizedView.__init__(self, *args, **kwargs)
 
     @property
     def label(self):
-        elements = self.browser.elements(TOOLBAR_GROUP_LABEL)
+        elements = self.browser.elements(CATEGORY_LABEL)
         return self.browser.text(elements[0]) if elements else None
 
     @classmethod
     def all(cls, browser):
         return [
-            (browser.text(el),) for el in browser.elements(f"{GROUP_ROOT}/{TOOLBAR_GROUP_LABEL}")
+            (browser.text(el),)
+            for el in browser.elements(f"{OLD_GROUP_ROOT}/{TOOLBAR_GROUP_LABEL}")
         ]
 
 
+# For backwards compatibility
 class ChipGroupToolbar(View):
     ROOT = ParametrizedLocator("{@locator}")
 
@@ -252,7 +316,7 @@ class ChipGroupToolbar(View):
         "contains(@class, 'pf-m-toolbar')]/parent::*"
     )
 
-    overflow = OverflowChip(
+    overflow = OldOverflowChip(
         locator=("./div[contains(@class, 'pf-c-chip') and contains(@class, 'pf-m-overflow')]")
     )
     groups = ParametrizedView.nested(ChipGroupToolbarCategory)
