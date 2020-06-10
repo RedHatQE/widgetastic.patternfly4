@@ -1,11 +1,12 @@
 from .alert import Alert
 from .breadcrumb import BreadCrumb
 from .button import Button
+from .chipgroup import CategoryChipGroup
 from .chipgroup import Chip
+from .chipgroup import ChipGroup
 from .chipgroup import ChipGroupToolbar
 from .chipgroup import ChipGroupToolbarCategory
 from .chipgroup import ChipReadOnlyError
-from .chipgroup import StandAloneChipGroup
 from .contextselector import ContextSelector
 from .donutchart import DonutChart
 from .dropdown import Dropdown
@@ -50,7 +51,8 @@ __all__ = [
     "ColumnNotExpandable",
     "CompactPagination",
     "CompoundExpandableTable",
-    "StandAloneChipGroup",
+    "ChipGroup",
+    "CategoryChipGroup",
     "DonutChart",
     "Dropdown",
     "DropdownDisabled",
