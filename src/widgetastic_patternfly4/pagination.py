@@ -124,7 +124,7 @@ class Pagination(View):
 
     @property
     def current_per_page(self):
-        """Returns an integer detailing how many items are cshown per page."""
+        """Returns an integer detailing how many items are shown per page."""
         if self._cached_per_page_value:
             return self._cached_per_page_value
 

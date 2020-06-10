@@ -1,6 +1,7 @@
 import contextlib
 
 import pytest
+from wait_for import wait_for
 
 from widgetastic_patternfly4 import CompactPagination
 from widgetastic_patternfly4 import Pagination
@@ -16,6 +17,7 @@ def _paginator(browser, request, reset_elements_per_page=True):
     paginator_cls, kwargs = request.param
 
     paginator = paginator_cls(browser, **kwargs)
+    wait_for(lambda: paginator.is_displayed, num_sec=10)
     yield paginator
     try:
         paginator.first_page()
