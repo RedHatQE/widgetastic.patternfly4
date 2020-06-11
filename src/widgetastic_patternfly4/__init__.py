@@ -1,5 +1,6 @@
 from .alert import Alert
 from .breadcrumb import BreadCrumb
+from .bulletchart import BulletChart
 from .button import Button
 from .chipgroup import Chip
 from .chipgroup import ChipGroupToolbar
@@ -42,6 +43,7 @@ __all__ = [
     "Alert",
     "BreadCrumb",
     "Button",
+    "BulletChart",
     "CheckboxSelect",
     "Chip",
     "ChipReadOnlyError",
