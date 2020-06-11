@@ -1,9 +1,8 @@
 import re
 
-from cached_property import cached_property
 from widgetastic.utils import ParametrizedLocator
 from widgetastic.widget import Text
-from widgetastic.widget import Widget
+from widgetastic.widget import View
 from widgetastic.xpath import quote
 
 
@@ -15,6 +14,9 @@ class Legend:
         self.value = value
         self.color = color
         self.element = element
+
+    def click(self):
+        self.element.click()
 
     def __repr__(self):
         return f"Legend({self.label}: {self.value})"
@@ -28,14 +30,14 @@ class Legend:
         )
 
 
-class Bar(Legend):
-    """Represents Bar of chart."""
+class DataPoint(Legend):
+    """Represents DataPoint on chart."""
 
     def __repr__(self):
-        return f"Bar({self.label}: {self.value})"
+        return f"DataPoint({self.label}: {self.value})"
 
 
-class BulletChart(Widget):
+class BulletChart(View):
     """Represents the Patternfly Bullet Chart.
 
     https://www.patternfly.org/v4/documentation/react/charts/chartbullet
@@ -52,10 +54,11 @@ class BulletChart(Widget):
         ".//*[name()='g' or name()='svg']/*[name()='rect']/following-sibling::*[name()='path']"
     )
     LEGEND_TEXT = ".//*[name()='text' and contains(@id, 'legend-labels')]"
-    LEGEND_ITEM_REGEX = re.compile(r"(\w.*)\s(\d+)|(\d+)\s(\w.*)")
+    LEGEND_ITEM_REGEX = re.compile(r"(\d+)\s(\w.*)|(\w.*)\s(\d+)")
 
     ITEMS = ".//*[name()='g']/*[name()='path' and not(contains(@style, 'type:square'))]"
     TOOLTIP_REGEX = re.compile(r"(.*?): ([\d]+)")
+    APPLY_OFFSET = True
 
     tooltip = Text(
         ".//*[name()='svg' and contains(@aria-labelledby, 'victory-container')]/"
@@ -63,7 +66,7 @@ class BulletChart(Widget):
     )
 
     def __init__(self, parent=None, id=None, locator=None, logger=None, *args, **kwargs):
-        Widget.__init__(self, parent=parent, logger=logger)
+        View.__init__(self, parent=parent, logger=logger)
         if id:
             self.locator = ".//div[@id={}]".format(quote(id))
         elif locator:
@@ -77,39 +80,40 @@ class BulletChart(Widget):
     def _offsets(self, el):
         """Calculate offset. Need to set offset with try and error method."""
         offset_denominator = self.kwargs.pop("offset_denominator", 2.5)
-        width = el.size["width"]
-        height = el.size["height"]
-        x = int(width / offset_denominator) if (width > 10 and height > 10) else 0
-        y = int(height / offset_denominator) if (width > 10 and height > 10) else 0
-        return x, y
+        size = self.browser.size_of(el)
+        width = size.width
+        height = size.height
+        dx = int(width / offset_denominator) if (width > 10 and height > 10) else 0
+        dy = int(height / offset_denominator) if (width > 10 and height > 10) else 0
+        return dx, dy
 
-    @cached_property
-    def _legends_data(self):
+    @property
+    def legends(self):
+        """Return all Legend objects."""
+
         br = self.browser
         _data = []
         for (icon, label_el) in zip(br.elements(self.LEGEND_ICON), br.elements(self.LEGEND_TEXT)):
             label_text = br.text(label_el)
             match = self.LEGEND_ITEM_REGEX.match(label_text)
             if match:
-                right_label, right_value, left_value, left_label = match.groups()
+                left_value, left_label, right_label, right_value = match.groups()
             label = right_label or left_label if match else label_text
             value = int(right_value or left_value) if match else None
             _data.append(
                 Legend(
-                    label=label, value=value, color=icon.value_of_css_property("fill"), element=icon
+                    label=label,
+                    value=value,
+                    color=icon.value_of_css_property("fill"),
+                    element=label_el,
                 )
             )
         return _data
 
     @property
-    def legends(self):
-        """Return all Legend objects."""
-        return self._legends_data
-
-    @property
     def legend_names(self):
         """Return all legend names."""
-        return [leg.label for leg in self._legends_data]
+        return [leg.label for leg in self.legends]
 
     def get_legend(self, label):
         """Get specific Legend object.
@@ -118,26 +122,27 @@ class BulletChart(Widget):
         """
         try:
             return next(leg for leg in self.legends if leg.label == label)
-        except StopAsyncIteration:
+        except StopIteration:
             return None
 
-    @cached_property
+    @property
     def data(self):
-        """Read graph and returns all Bar objects."""
+        """Read graph and returns all Data Point objects."""
         _data = []
-        # point cursor outside graph
-        self.browser.raw_click(self)
-        # self.parent_browser.raw_click(".//body")
+        # focus away from graph
+        self.parent_browser.move_to_element("//body")
 
         for el in self.browser.elements(self.ITEMS):
-            x_diff, y_diff = self._offsets(el)
-            self.browser.move_to_element(el, force_scroll=True)
-            self.browser.move_by_offset(x_diff, y_diff)
+            self.browser.move_to_element(el)
+
+            if self.APPLY_OFFSET:
+                dx, dy = self._offsets(el)
+                self.browser.move_by_offset(dx, dy)
 
             match = self.TOOLTIP_REGEX.match(self.tooltip.text)
             if match:
                 _data.append(
-                    Bar(
+                    DataPoint(
                         label=match.groups()[0],
                         value=int(match.groups()[1]),
                         color=el.value_of_css_property("fill"),
@@ -146,16 +151,16 @@ class BulletChart(Widget):
                 )
         return _data
 
-    def get_bar(self, label):
-        """Get specific Bar object.
+    def get_data_point(self, label):
+        """Get specific data point object.
         Arg:
-            label: Name of Bar label.
+            label: Name of respective data point label.
         """
         try:
-            return next(bar for bar in self.data if bar.label == label)
-        except StopAsyncIteration:
+            return next(dp for dp in self.data if dp.label == label)
+        except StopIteration:
             return None
 
     def read(self):
         """Read graph and returns label, value dict."""
-        return {b.label: b.value for b in self.data}
+        return {dp.label: dp.value for dp in self.data}
