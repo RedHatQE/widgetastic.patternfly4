@@ -16,6 +16,8 @@ Breadcrumb - https://www.patternfly.org/v4/documentation/react/components/breadc
 
 Button - https://www.patternfly.org/v4/documentation/react/components/button
 
+Bullet Chart - https://www.patternfly.org/v4/documentation/react/charts/chartbullet
+
 Chip Group - https://www.patternfly.org/v4/documentation/react/components/chipgroup
 
 Context Selector - https://www.patternfly.org/v4/documentation/react/components/contextselector
