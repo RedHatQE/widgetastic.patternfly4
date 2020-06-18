@@ -26,6 +26,7 @@ from .optionsmenu import OptionsMenu
 from .pagination import CompactPagination
 from .pagination import Pagination
 from .pagination import PaginationNavDisabled
+from .piechart import PieChart
 from .select import CheckboxSelect
 from .select import Select
 from .select import SelectItemDisabled
@@ -38,7 +39,6 @@ from .table import ExpandableTable
 from .table import PatternflyTable
 from .table import RowNotExpandable
 from .tabs import Tab
-
 
 __all__ = [
     "Alert",
@@ -71,6 +71,7 @@ __all__ = [
     "OptionsMenu",
     "Pagination",
     "PaginationNavDisabled",
+    "PieChart",
     "Select",
     "SelectItemDisabled",
     "SelectItemNotFound",
