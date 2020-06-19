@@ -36,6 +36,8 @@ Options Menu - https://www.patternfly.org/v4/documentation/react/components/opti
 
 Pagination - https://www.patternfly.org/v4/documentation/react/components/pagination
 
+Pie Chart - https://www.patternfly.org/v4/documentation/react/charts/chartpie
+
 Select - https://www.patternfly.org/v4/documentation/react/components/select
 
 Switch - https://www.patternfly.org/v4/documentation/react/components/switch
