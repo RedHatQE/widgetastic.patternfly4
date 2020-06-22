@@ -7,7 +7,7 @@ def test_button_click(browser):
     class TestView(View):
         any_button = Button()
         button1 = Button("Primary")
-        button2 = Button("Link to Core Docs")
+        button2 = Button("Link to core docs")
 
     view = TestView(browser)
     assert view.any_button.is_displayed
