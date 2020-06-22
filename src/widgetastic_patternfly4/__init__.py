@@ -76,6 +76,7 @@ __all__ = [
     "SelectItemDisabled",
     "SelectItemNotFound",
     "ContextSelector",
+    "StandAloneChipGroup",
     "Switch",
     "SwitchDisabled",
     "ExpandableTable",
