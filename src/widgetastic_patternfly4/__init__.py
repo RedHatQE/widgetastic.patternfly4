@@ -8,6 +8,7 @@ from .chipgroup import ChipGroup
 from .chipgroup import ChipGroupToolbar
 from .chipgroup import ChipGroupToolbarCategory
 from .chipgroup import ChipReadOnlyError
+from .chipgroup import StandAloneChipGroup
 from .contextselector import ContextSelector
 from .donutchart import DonutChart
 from .dropdown import Dropdown
@@ -48,12 +49,13 @@ __all__ = [
     "CheckboxSelect",
     "Chip",
     "ChipReadOnlyError",
+    "ChipGroup",
     "ChipGroupToolbar",
     "ChipGroupToolbarCategory",
+    "StandAloneChipGroup",
     "ColumnNotExpandable",
     "CompactPagination",
     "CompoundExpandableTable",
-    "ChipGroup",
     "CategoryChipGroup",
     "DonutChart",
     "Dropdown",
@@ -76,7 +78,6 @@ __all__ = [
     "SelectItemDisabled",
     "SelectItemNotFound",
     "ContextSelector",
-    "StandAloneChipGroup",
     "Switch",
     "SwitchDisabled",
     "ExpandableTable",
