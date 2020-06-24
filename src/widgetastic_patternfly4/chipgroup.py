@@ -28,7 +28,7 @@ TOOLBAR_GROUP_LABEL = "./li/*[contains(@class, 'pf-c-chip-group__label')]"
 STANDALONE_GROUP_LABEL = "./preceding-sibling::*[contains(@class, 'pf-c-chip-group__label')]"
 OLD_CHIP_ROOT = (
     ".//*[(self::div or self::li) and contains(@class, 'pf-c-chip') "
-    "and not(contains(@class, 'pf-m-overflow'))]|"
+    "and not(contains(@class, 'pf-m-overflow'))]"
 )
 
 
@@ -255,6 +255,14 @@ class OldChip(Chip):
     ROOT = ParametrizedLocator(
         f"{OLD_CHIP_ROOT}[{CHIP_TEXT}[starts-with(normalize-space(.), {{text|quote}})]]"
     )
+
+    @classmethod
+    def all(cls, browser):
+        """Returns a list of the text of each chip"""
+        return [
+            (cls._get_text_ignoring_badge(browser, el),)
+            for el in browser.elements(f"{OLD_CHIP_ROOT}/{CHIP_TEXT}")
+        ]
 
 
 # For backwards compatibility
