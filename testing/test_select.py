@@ -57,8 +57,14 @@ def test_checkbox_select_is_displayed(checkbox_select):
 
 
 def test_checkbox_select_items(checkbox_select):
-    assert set(checkbox_select.items) == {"Active", "Cancelled", "Paused", "Warning", "Restarted"}
-    assert checkbox_select.has_item("Active")
+    assert set(checkbox_select.items) == {
+        "Active This is a description",
+        "Cancelled",
+        "Paused",
+        "Warning",
+        "Restarted",
+    }
+    assert checkbox_select.has_item("Active This is a description")
     assert not checkbox_select.has_item("Non existing item")
     assert checkbox_select.item_enabled("Paused")
 
@@ -74,7 +80,7 @@ def test_checkbox_select_open(checkbox_select):
 def test_checkbox_select_item_checkbox_select(checkbox_select):
     checkbox_select.fill({"Restarted": True, "Cancelled": True})
     assert checkbox_select.read() == {
-        "Active": False,
+        "Active This is a description": False,
         "Cancelled": True,
         "Paused": False,
         "Warning": False,
@@ -82,17 +88,11 @@ def test_checkbox_select_item_checkbox_select(checkbox_select):
     }
 
     checkbox_select.fill(
-        {
-            "Active": False,
-            "Cancelled": False,
-            "Paused": False,
-            "Warning": False,
-            "Restarted": False,
-        }
+        {"Cancelled": False, "Paused": False, "Warning": False, "Restarted": False}
     )
 
     assert checkbox_select.read() == {
-        "Active": False,
+        "Active This is a description": False,
         "Cancelled": False,
         "Paused": False,
         "Warning": False,
