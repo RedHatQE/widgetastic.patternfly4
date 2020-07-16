@@ -29,6 +29,7 @@ class Navigation(Widget):
     ITEMS = "./ul/li/a"
     SUB_ITEMS_ROOT = "./section"
     ITEM_MATCHING = "./ul/li[.//a[normalize-space(.)={}]]"
+    ITEM_MATCHING_OUIA = "./ul/li[@ouia-nav-group={text} or .//a[@ouia-nav-item={text}]]"
 
     @property
     def loaded(self):
@@ -124,7 +125,14 @@ class Navigation(Widget):
             return
         current_item = self
         for i, level in enumerate(levels, 1):
-            li = self.browser.element(self.ITEM_MATCHING.format(quote(level)), parent=current_item)
+            try:
+                li = self.browser.element(
+                    self.ITEM_MATCHING.format(quote(level)), parent=current_item
+                )
+            except NoSuchElementException:
+                li = self.browser.element(
+                    self.ITEM_MATCHING_OUIA.format(text=quote(level)), parent=current_item
+                )
             if "pf-m-expanded" not in li.get_attribute("class").split():
                 self.browser.click(li)
             if i == len(levels):
