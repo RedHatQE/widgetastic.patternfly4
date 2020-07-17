@@ -75,7 +75,7 @@ class Navigation(Widget):
     def nav_links(self, *levels):
         """Returns a list of all navigation items."""
         if not levels:
-            return [self.browser.text(el) for el in self.browser.elements(self.ITEMS)]
+            return [el.get_property("textContent") for el in self.browser.elements(self.ITEMS)]
         current_item = self
         for i, level in enumerate(levels):
             li = self.browser.element(self.ITEM_MATCHING.format(quote(level)), parent=current_item)
@@ -87,9 +87,9 @@ class Navigation(Widget):
                     return []
                 else:
                     raise
-
         return [
-            self.browser.text(el) for el in self.browser.elements(self.ITEMS, parent=current_item)
+            el.get_property("textContent")
+            for el in self.browser.elements(self.ITEMS, parent=current_item)
         ]
 
     @check_nav_loaded
@@ -109,7 +109,7 @@ class Navigation(Widget):
     @check_nav_loaded
     def currently_selected(self):
         """Returns the currently selected item."""
-        return [self.browser.text(el) for el in self.browser.elements(self.CURRENTLY_SELECTED)]
+        return [el.get_property("text") for el in self.browser.elements(self.CURRENTLY_SELECTED)]
 
     @check_nav_loaded
     def select(self, *levels, **kwargs):
