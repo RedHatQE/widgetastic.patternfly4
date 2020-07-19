@@ -23,12 +23,12 @@ jobs:
         - docker
       env: BROWSER=firefox
       before_install:
-        - docker run -d -p 4444:4444 -v /dev/shm:/dev/shm quay.io/redhatqe/selenium-standalone
+        - docker run -d -p 4444:4444 --shm-size=2g quay.io/redhatqe/selenium-standalone
       install:
         - pip install -U setuptools pip wheel
-        - pip install pytest pytest-cov codecov
+        - pip install pytest pytest-cov codecov pytest-xdist
         - python setup.py install
-      script: pytest -v --no-cov-on-fail --cov=widgetastic_patternfly4
+      script: pytest -v -n 8 --no-cov-on-fail --cov=widgetastic_patternfly4
       after_success:
         - codecov
     - <<: *test
