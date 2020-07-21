@@ -44,11 +44,11 @@ jobs:
         env:
           BROWSER: ${{ matrix.browser }}
         run: |
-          pytest -v -n 6 --no-cov-on-fail --cov=widgetastic_patternfly4
+          pytest -v -n 5 --no-cov-on-fail --cov=widgetastic_patternfly4 --cov-report=xml:/tmp/coverage.xml
       - name: Publish coverage
         uses: codecov/codecov-action@v1
         with:
-          file: ./coverage
+          file: /tmp/coverage.xml
 
   deploy:
 
