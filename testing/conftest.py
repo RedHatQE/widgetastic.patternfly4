@@ -15,8 +15,11 @@ def browser_name():
 
 
 @pytest.fixture(scope="session")
-def selenium_port(worker_id):
-    s_port = 4444 + int(worker_id.lstrip("gw"))
+def selenium_host(worker_id):
+    oktet = 1 if worker_id == "master" else int(worker_id.lstrip("gw")) + 1
+    host = f"127.0.0.{oktet}"
+    # we have to run a rootful container due to https://github.com/containers/podman/issues/7016
+    # TODO remove sudo when the bug will be fixed
     ps = subprocess.run(
         [
             "sudo",
@@ -25,27 +28,27 @@ def selenium_port(worker_id):
             "--rm",
             "-d",
             "-p",
-            f"{s_port}:4444",
+            f"{host}:4444:4444",
             "--shm-size=2g",
             "quay.io/redhatqe/selenium-standalone",
         ],
         stdout=subprocess.PIPE,
     )
-    yield s_port
+    yield host
     container_id = ps.stdout.decode("utf-8").strip()
     subprocess.run(["sudo", "podman", "kill", container_id])
 
 
 @pytest.fixture(scope="session")
-def wait_for_port(selenium_port):
+def wait_for_selenium(selenium_host):
     @wait_for_decorator(timeout=10, handle_exception=True)
     def make_request():
-        urlopen(f"http://127.0.0.1:{selenium_port}/wd/hub")
+        urlopen(f"http://{selenium_host}:4444/wd/hub")
 
 
 @pytest.fixture(scope="module")
-def selenium(browser_name, wait_for_port, selenium_port):
-    command_executor = f"http://127.0.0.1:{selenium_port}/wd/hub"
+def selenium(browser_name, wait_for_selenium, selenium_host):
+    command_executor = f"http://{selenium_host}:4444/wd/hub"
     if browser_name == "firefox":
         driver = webdriver.Remote(
             command_executor=command_executor, desired_capabilities=DesiredCapabilities.FIREFOX
