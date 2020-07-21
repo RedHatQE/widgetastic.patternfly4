@@ -29,12 +29,9 @@ jobs:
     strategy:
       matrix:
         browser: ["firefox", "chrome"]
-        python: ["3.6", "3.8"]
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
-        with:
-          python-version: ${{ matrix.python }}
       - name: Install dependencies
         run: |
           pip install -U setuptools pip
