@@ -15,14 +15,24 @@ DATA_POINTES = [DataPoint(label, value) for label, value in DATA.items()]
 
 @pytest.fixture(
     params=[
-        "ws-react-c-chartpie-multi--color-ordered-with-bottom-aligned-legend",
-        "ws-react-c-chartpie-basic-with-right-aligned-legend",
+        {
+            "id": "ws-react-c-chartpie-multi-color-ordered-with-bottom-aligned-legend",
+            "anchor": "#basic-with-right-aligned-legend",
+        },
+        {
+            "id": "ws-react-c-chartpie-basic-with-right-aligned-legend",
+            "anchor": "#orange-with-right-aligned-legend",
+        },
     ],
     ids=["bottom-aligned", "right-aligned"],
 )
 def chart(browser, request):
     sleep(3)  # Stabilized graph data on testing page; specially for firefox.
-    return PieChart(browser, id=request.param)
+    # Firefox fails the test if the chart is not fully visible therefore we click here on anchor
+    # in order to properly scroll down
+    anchor = browser.element(f".//a[@href='{request.param['anchor']}']")
+    browser.click(anchor)
+    return PieChart(browser, id=request.param["id"])
 
 
 def test_pie_chart(chart):

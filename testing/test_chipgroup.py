@@ -25,6 +25,10 @@ def chip_group_view(browser):
         non_existent_chip_group = ChipGroup(locator="foobar-locator")
         chip_group = ChipGroup()
 
+    # Firefox fails the test if the chart is not fully visible therefore we click here on anchor
+    # in order to properly scroll down
+    anchor = browser.element("//a[@href='#simple-inline-chip-group']")
+    browser.click(anchor)
     return TestView(browser)
 
 
