@@ -28,9 +28,9 @@ DATA_POINTES = [DataPoint(label, value) for label, value in DATA.items()]
 )
 def chart(browser, request):
     sleep(3)  # Stabilized graph data on testing page; specially for firefox.
-    anchor = browser.element(f".//a[@href='{request.param['anchor']}']")
-    # Firefox fails the test if the chart is not fully visible therefor we click here on anchor
+    # Firefox fails the test if the chart is not fully visible therefore we click here on anchor
     # in order to properly scroll down
+    anchor = browser.element(f".//a[@href='{request.param['anchor']}']")
     browser.click(anchor)
     return PieChart(browser, id=request.param["id"])
 
