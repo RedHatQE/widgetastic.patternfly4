@@ -11,6 +11,7 @@ CATEGORY = "charts"
 TEST_DATA = {
     "dot": {
         "id": "ws-react-c-chartbullet-bullet-chart-with-primary-measure-dot",
+        "anchor": "#bullet-chart-with-primary-measure-dot",
         "bar_data": [
             DataPoint("Range", 75),
             DataPoint("Range", 50),
@@ -28,6 +29,7 @@ TEST_DATA = {
     },
     "tick": {
         "id": "ws-react-c-chartbullet-error-measure-and-custom-axis-ticks",
+        "anchor": "#error-measure-and-custom-axis-ticks",
         "bar_data": [
             DataPoint("Range", 150),
             DataPoint("Range", 100),
@@ -52,6 +54,10 @@ TEST_DATA = {
 @pytest.fixture(params=TEST_DATA.keys())
 def chart_data(browser, request):
     sleep(3)  # Stabilized graph data on testing page; specially for firefox.
+    # Firefox fails the test if the chart is not fully visible therefore we click here on anchor
+    # in order to properly scroll down
+    anchor = browser.element(f".//a[@href='{TEST_DATA[request.param]['anchor']}']")
+    browser.click(anchor)
     return (
         BulletChart(browser, id=TEST_DATA[request.param]["id"]),
         TEST_DATA[request.param]["bar_data"],
