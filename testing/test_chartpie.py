@@ -15,7 +15,7 @@ DATA_POINTES = [DataPoint(label, value) for label, value in DATA.items()]
 
 @pytest.fixture(
     params=[
-        "ws-react-c-chartpie-multi--color-ordered-with-bottom-aligned-legend",
+        "ws-react-c-chartpie-multi-color-ordered-with-bottom-aligned-legend",
         "ws-react-c-chartpie-basic-with-right-aligned-legend",
     ],
     ids=["bottom-aligned", "right-aligned"],
