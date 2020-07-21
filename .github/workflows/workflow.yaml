@@ -37,7 +37,7 @@ jobs:
         env:
           BROWSER: ${{ matrix.browser }}
         run: |
-          pytest -v -n 8 --no-cov-on-fail --cov=widgetastic_patternfly4
+          pytest -v -n 4 --no-cov-on-fail --cov=widgetastic_patternfly4
       - name: Publish coverage
         uses: codecov/codecov-action@v1
 
