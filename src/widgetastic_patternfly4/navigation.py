@@ -24,11 +24,12 @@ class Navigation(Widget):
     LOCATOR_START = './/nav[@class="pf-c-nav"{}]'
     ROOT = ParametrizedLocator("{@locator}")
     CURRENTLY_SELECTED = (
-        './/a[contains(@class, "pf-m-current") or parent::li[contains(@class, "pf-m-current")]]'
+        './/*[self::a or self::button][contains(@class, "pf-m-current") or '
+        'parent::li[contains(@class, "pf-m-current")]]'
     )
-    ITEMS = "./ul/li/a"
+    ITEMS = "./ul/li/*[self::a or self::button]"
     SUB_ITEMS_ROOT = "./section"
-    ITEM_MATCHING = "./ul/li[.//a[normalize-space(.)={}]]"
+    ITEM_MATCHING = "./ul/li[.//*[self::a or self::button][normalize-space(.)={}]]"
     ITEM_MATCHING_OUIA = "./ul/li[@ouia-nav-group={text} or .//a[@ouia-nav-item={text}]]"
 
     @property
@@ -109,7 +110,7 @@ class Navigation(Widget):
     @check_nav_loaded
     def currently_selected(self):
         """Returns the currently selected item."""
-        return [el.get_property("text") for el in self.browser.elements(self.CURRENTLY_SELECTED)]
+        return [self.browser.text(el) for el in self.browser.elements(self.CURRENTLY_SELECTED)]
 
     @check_nav_loaded
     def select(self, *levels, **kwargs):
