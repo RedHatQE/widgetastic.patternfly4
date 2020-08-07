@@ -56,7 +56,6 @@ def test_switch_selected(view):
     assert not view.disabled_no_label_switch_off.read()
 
 
-@pytest.mark.skip
 def test_switch_fill(view):
     assert view.switch.selected
     assert view.switch.label == "Message when on"
