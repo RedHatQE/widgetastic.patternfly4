@@ -18,25 +18,24 @@ def browser_name():
 def selenium_host(worker_id):
     oktet = 1 if worker_id == "master" else int(worker_id.lstrip("gw")) + 1
     host = f"127.0.0.{oktet}"
-    # we have to run a rootful container due to https://github.com/containers/podman/issues/7016
-    # TODO remove sudo when the bug will be fixed
     ps = subprocess.run(
         [
-            "sudo",
             "podman",
             "run",
             "--rm",
             "-d",
             "-p",
             f"{host}:4444:4444",
+            "-p",
+            f"{host}:5999:5999",
             "--shm-size=2g",
-            "quay.io/redhatqe/selenium-standalone",
+            "quay.io/redhatqe/selenium-standalone:latest",
         ],
         stdout=subprocess.PIPE,
     )
     yield host
     container_id = ps.stdout.decode("utf-8").strip()
-    subprocess.run(["sudo", "podman", "kill", container_id])
+    subprocess.run(["podman", "kill", container_id])
 
 
 @pytest.fixture(scope="session")
@@ -51,7 +50,7 @@ def selenium(browser_name, wait_for_selenium, selenium_host):
     command_executor = f"http://{selenium_host}:4444/wd/hub"
     if browser_name == "firefox":
         driver = webdriver.Remote(
-            command_executor=command_executor, desired_capabilities=DesiredCapabilities.FIREFOX
+            command_executor=command_executor, desired_capabilities=DesiredCapabilities.FIREFOX,
         )
     elif browser_name == "chrome":
         caps = DesiredCapabilities.CHROME.copy()
