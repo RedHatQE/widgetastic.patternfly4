@@ -41,9 +41,6 @@ def test_selectable_table(browser, sample):
         assert expected_result == row[0].widget.selected
 
 
-@pytest.mark.skipif(
-    lambda browser: browser.browser_type == "chrome", reason="Chrome has an issue with this test"
-)
 def test_expandable_table(browser):
     expected_read = [
         {
