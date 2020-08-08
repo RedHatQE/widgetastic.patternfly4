@@ -20,6 +20,7 @@ def selenium_host(worker_id):
     host = f"127.0.0.{oktet}"
     ps = subprocess.run(
         [
+            "sudo",
             "podman",
             "run",
             "--rm",
@@ -35,7 +36,7 @@ def selenium_host(worker_id):
     )
     yield host
     container_id = ps.stdout.decode("utf-8").strip()
-    subprocess.run(["podman", "kill", container_id])
+    subprocess.run(["sudo", "podman", "kill", container_id])
 
 
 @pytest.fixture(scope="session")
