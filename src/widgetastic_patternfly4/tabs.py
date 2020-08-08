@@ -1,3 +1,4 @@
+from wait_for import wait_for_decorator
 from widgetastic.utils import ParametrizedLocator
 from widgetastic.widget import View
 
@@ -50,7 +51,11 @@ class Tab(View):
         """Selects the tab (checks if active already first)."""
         if not self.is_active():
             self.logger.info("Opening the tab %s", self.tab_name)
-            self.click()
+
+            @wait_for_decorator(timeout=3)
+            def _click():
+                self.click()
+                return self.is_active()
 
     def child_widget_accessed(self, widget):
         # Select the tab

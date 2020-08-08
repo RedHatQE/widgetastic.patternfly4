@@ -1,5 +1,6 @@
 from contextlib import contextmanager
 
+from wait_for import wait_for_decorator
 from widgetastic.exceptions import NoSuchElementException
 from widgetastic.exceptions import UnexpectedAlertPresentException
 from widgetastic.utils import ParametrizedLocator
@@ -78,8 +79,13 @@ class Dropdown(Widget):
     def open(self):
         """Opens a dropdown."""
         self._verify_enabled()
-        if not self.is_open:
+        if self.is_open:
+            return
+
+        @wait_for_decorator(timeout=3)
+        def _click():
             self.browser.click(self.BUTTON_LOCATOR)
+            return self.is_open
 
     def close(self, ignore_nonpresent=False):
         """Close the dropdown

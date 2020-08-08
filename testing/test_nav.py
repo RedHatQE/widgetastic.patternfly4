@@ -37,9 +37,8 @@ def test_navigation(browser, sample):
     assert nav.nav_item_tree() == tree
 
 
-@pytest.mark.skip
 def test_navigation_select(browser):
-    loc = ".//h2[normalize-space(.)='Navigation mixed']/following-sibling::div[1]//nav"
+    loc = ".//div[@id='ws-react-c-nav-mixed']/nav"
     nav = Navigation(browser, locator=loc)
     nav.select("Link 3 - expandable", "Link 2")
     assert nav.currently_selected == ["Link 3 - expandable", "Link 2"]
