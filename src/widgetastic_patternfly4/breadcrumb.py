@@ -8,6 +8,7 @@ class BreadCrumb(Widget):
     https://www.patternfly.org/v4/documentation/react/components/breadcrumb
     """
 
+    PF_NAME = "Breadcrumb"
     ROOT = './/nav[contains(@class, "pf-c-breadcrumb")]/ol'
     ELEMENTS = ".//li"
 

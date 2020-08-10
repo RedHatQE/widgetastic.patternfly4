@@ -21,6 +21,7 @@ class Navigation(Widget):
     https://www.patternfly.org/v4/documentation/react/components/nav
     """
 
+    PF_NAME = "Nav"
     LOCATOR_START = './/nav[@class="pf-c-nav"{}]'
     ROOT = ParametrizedLocator("{@locator}")
     CURRENTLY_SELECTED = (

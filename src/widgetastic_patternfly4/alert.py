@@ -8,6 +8,7 @@ class Alert(Widget):
     https://www.patternfly.org/v4/documentation/react/components/alert
     """
 
+    PF_NAME = "Alert"
     ROOT = ParametrizedLocator("{@locator}")
     TITLE = './/h4[@class="pf-c-alert__title"]'
     DESCRIPTION = './/div[@class="pf-c-alert__description"]'

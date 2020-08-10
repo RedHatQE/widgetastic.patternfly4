@@ -12,6 +12,7 @@ class Switch(GenericLocatorWidget):
     https://www.patternfly.org/v4/documentation/react/components/switch
     """
 
+    PF_NAME = "Switch"
     CHECKBOX_LOCATOR = "./input"
     LABEL_ON = "./span[contains(@class, 'pf-m-on')]"
     LABEL_OFF = "./span[contains(@class, 'pf-m-off')]"

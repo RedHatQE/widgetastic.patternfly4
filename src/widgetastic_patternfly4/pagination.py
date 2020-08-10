@@ -21,6 +21,7 @@ class Pagination(View):
     https://www.patternfly.org/v4/documentation/react/components/pagination
     """
 
+    PF_NAME = "Pagination"
     ROOT = ParametrizedLocator("{@locator}")
     DEFAULT_LOCATOR = (
         ".//div[contains(@class, 'pf-c-pagination') and not(contains(@class, 'pf-m-compact'))]"

@@ -14,6 +14,7 @@ class Modal(View):
     https://www.patternfly.org/v4/documentation/react/components/modal
     """
 
+    PF_NAME = "ModalContent"
     ROOT = ParametrizedLocator("{@locator}")
     BODY = ".//div[contains(@class, 'pf-c-modal-box__body')]"
     FOOTER = ".//*[contains(@class, 'pf-c-modal-box__footer')]/child::node()"

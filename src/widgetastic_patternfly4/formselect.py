@@ -27,6 +27,7 @@ class FormSelect(GenericLocatorWidget):
     https://www.patternfly.org/v4/documentation/react/components/formselect
     """
 
+    PF_NAME = "FormSelect"
     ALL_OPTIONS_LOCATOR = ".//option"
     PARENT_OPTION_GROUP = "./parent::optgroup"
 

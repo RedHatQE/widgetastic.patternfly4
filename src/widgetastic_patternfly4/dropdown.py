@@ -31,6 +31,7 @@ class Dropdown(Widget):
 
     """
 
+    PF_NAME = "Dropdown"
     ROOT = ParametrizedLocator("{@locator}")
     BUTTON_LOCATOR = ".//button[contains(@class, 'pf-c-dropdown__toggle')]"
     ITEMS_LOCATOR = ".//ul[contains(@class, 'pf-c-dropdown__menu')]/li"
