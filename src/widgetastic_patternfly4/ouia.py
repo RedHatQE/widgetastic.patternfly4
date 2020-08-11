@@ -1,7 +1,8 @@
-import importlib
 import sys
 
 from widgetastic.utils import ParametrizedLocator
+
+import widgetastic_patternfly4
 
 
 class OUIAMixin:
@@ -20,26 +21,44 @@ class OUIAMixin:
         return "true" in self.browser.get_attribute("data-ouia-safe", self)
 
 
+def generate_ouia_compat_class(name):
+    klass_name = name.rstrip("OUIA")
+    try:
+        klass = getattr(widgetastic_patternfly4, klass_name)
+    except AttributeError:
+        raise ImportError(f"cannot import name '{klass_name}'")
+    if not hasattr(klass, "PF_NAME"):
+        raise ValueError(f"{klass_name} is not OUIA ready")
+
+    class WidgetWithOUIA(OUIAMixin, klass):
+        klass.ROOT = OUIAMixin.ROOT
+
+        def __init__(self, parent, component_id, logger=None, *args, **kwargs):
+            OUIAMixin.__init__(self, klass.PF_NAME, component_id)
+            super(klass, self).__init__(parent, logger=logger)
+
+    WidgetWithOUIA.__name__ = WidgetWithOUIA.__qualname__ = name
+    return WidgetWithOUIA
+
+
+class WidgetsClassesCache(dict):
+    def __missing__(self, key):
+        klass = generate_ouia_compat_class(key)
+        self[key] = klass
+        return klass
+
+
 class ImportHack:
+
+    cache = WidgetsClassesCache()
+    objs = {name: getattr(sys.modules[__name__], name) for name in dir(sys.modules[__name__])}
+
     def __getattr__(self, name):
         if name.endswith("OUIA"):
-            return self.generate_ouia_compat_widget(name)
-
-    def generate_ouia_compat_widget(self, name):
-        klass_name = name.rstrip("OUIA")
-        module = importlib.import_module("widgetastic_patternfly4")
-        klass = getattr(module, klass_name)
-        if not hasattr(klass, "PF_NAME"):
-            raise ImportError(f"{klass_name} is not OUIA ready")
-
-        class WidgetWithOUIA(klass, OUIAMixin):
-            def __init__(self, parent, component_id, logger=None, *args, **kwargs):
-                klass.ROOT = OUIAMixin.ROOT
-                OUIAMixin.__init__(self, klass.PF_NAME, component_id)
-                super(klass, self).__init__(parent, logger=logger)
-
-        WidgetWithOUIA.__name__ = WidgetWithOUIA.__qualname__ = name
-        return WidgetWithOUIA
+            return self.cache[name]
+        if name == "__path__":
+            return
+        return self.objs[name]
 
 
 sys.modules[__name__] = ImportHack()
