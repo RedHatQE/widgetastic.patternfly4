@@ -1,7 +1,6 @@
 import pytest
 
 from widgetastic_patternfly4 import Alert
-from widgetastic_patternfly4.ouia import AlertOUIA
 
 
 ALERT_TYPES = ["success", "danger", "warning", "info"]
@@ -19,8 +18,3 @@ def test_alert_is_displayed(alert):
 def test_alert_title(alert):
     alert_type = alert.type if alert.type != "error" else "danger"
     assert alert.title == f"{alert_type.capitalize()} alert title"
-
-
-def test_alert_ouia(browser):
-    alert = AlertOUIA(browser, "633")
-    assert alert.is_displayed
