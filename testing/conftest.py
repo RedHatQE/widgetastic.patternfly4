@@ -9,9 +9,17 @@ from wait_for import wait_for_decorator
 from widgetastic.browser import Browser
 
 
+
+def pytest_addoption(parser):
+    parser.addoption(
+        "--browser-name",
+        help="name of the browser",
+        choices=("firefox", "chrome"),
+        default="firefox",
+    )
 @pytest.fixture(scope="session")
-def browser_name():
-    return os.environ["BROWSER"]
+def browser_name(pytestconfig):
+    return os.environ.get("BROWSER") or pytestconfig.getoption("--browser-name")
 
 
 @pytest.fixture(scope="session")
