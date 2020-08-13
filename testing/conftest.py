@@ -26,7 +26,7 @@ def pytest_addoption(parser):
         default="firefox",
     )
 
-    parser.addoption("--force-host", default=None, help="foce a selenium hostname")
+    parser.addoption("--force-host", default=None, help="force a selenium hostname")
 
 
 @pytest.fixture(scope="session")
