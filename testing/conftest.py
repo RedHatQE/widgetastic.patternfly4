@@ -66,7 +66,7 @@ def selenium_url(pytestconfig, worker_id):
 
 @pytest.fixture(scope="session")
 def wait_for_selenium(selenium_url):
-    wait_for(lambda: urlopen(selenium_url), timeout=10, handle_exception=True)
+    wait_for(lambda: urlopen(selenium_url), timeout=180, handle_exception=True)
 
 
 @pytest.fixture(scope="module")
