@@ -34,6 +34,8 @@ jobs:
           pip install -U setuptools pip
           pip install pytest pytest-cov codecov pytest-xdist
           python setup.py install
+      - name: fetch podman image
+        run: podman pull quay.io/redhatqe/selenium-standalone:latest
       - name: Test with pytest
         env:
           BROWSER: ${{ matrix.browser }}
