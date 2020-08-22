@@ -80,9 +80,19 @@ def selenium(browser_name, wait_for_selenium, selenium_url):
 
 @pytest.fixture(scope="module")
 def browser(selenium, request):
+    module = request.module
+
+    try:
+        page = module.SUBPAGE
+    except AttributeError:
+
+        page = name = module.__name__.split("_")[1]
+        category = getattr(module, "CATEGORY", "components")
+        page = f"{category}/{name}"
+
     name = request.module.__name__.split("_")[1]
     category = getattr(request.module, "CATEGORY", "components")
-    url = f"https://patternfly-react.surge.sh/documentation/react/{category}/{name}"
+    url = f"https://patternfly-react.surge.sh/documentation/react/{page}"
     selenium.maximize_window()
     selenium.get(url)
     return Browser(selenium)
