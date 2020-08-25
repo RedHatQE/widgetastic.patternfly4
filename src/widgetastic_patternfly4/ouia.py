@@ -1,6 +1,7 @@
 import sys
 
 from widgetastic.utils import ParametrizedLocator
+from widgetastic.xpath import quote
 
 import widgetastic_patternfly4
 
@@ -8,13 +9,14 @@ import widgetastic_patternfly4
 class OUIAMixin:
 
     ROOT = ParametrizedLocator(
-        './/*[@data-ouia-component-type="PF4/{@component_type}" and '
-        '@data-ouia-component-id="{@component_id}"]'
+        ".//*[@data-ouia-component-type={@component_type} and "
+        "@data-ouia-component-id={@component_id}]"
     )
 
     def __init__(self, component_type, component_id):
-        self.component_type = component_type
-        self.component_id = component_id
+        self.component_type = quote(f"PF4/{component_type}")
+        self.component_id = quote(component_id)
+        self.locator = self.ROOT.locator
 
     @property
     def is_safe(self):
