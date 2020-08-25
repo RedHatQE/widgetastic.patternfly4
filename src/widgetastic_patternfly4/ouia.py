@@ -1,6 +1,7 @@
 import sys
 
 from widgetastic.utils import ParametrizedLocator
+from widgetastic.widget import GenericLocatorWidget
 from widgetastic.xpath import quote
 
 import widgetastic_patternfly4
@@ -37,7 +38,10 @@ def generate_ouia_compat_class(name):
 
         def __init__(self, parent, component_id, logger=None, *args, **kwargs):
             OUIAMixin.__init__(self, klass.PF_NAME, component_id)
-            super(klass, self).__init__(parent, logger=logger)
+            if issubclass(klass, GenericLocatorWidget):
+                super(klass, self).__init__(parent, self.locator, logger=logger)
+            else:
+                super(klass, self).__init__(parent, logger=logger)
 
     WidgetWithOUIA.__name__ = WidgetWithOUIA.__qualname__ = name
     return WidgetWithOUIA
