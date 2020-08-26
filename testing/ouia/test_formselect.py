@@ -5,13 +5,12 @@ from widgetastic_patternfly4 import FormSelectOptionNotFound
 from widgetastic_patternfly4.ouia import FormSelectOUIA
 
 
-class FormSelectTestView(View):
-    ROOT = ".//div[@id='ws-react-c-formselect-ouia']"
-    input = FormSelectOUIA("FormSelect Input")
-
-
 @pytest.fixture
 def view(browser):
+    class FormSelectTestView(View):
+        ROOT = ".//div[@id='ws-react-c-formselect-ouia']"
+        input = FormSelectOUIA("FormSelect Input")
+
     return FormSelectTestView(browser)
 
 

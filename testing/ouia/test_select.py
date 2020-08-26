@@ -5,13 +5,12 @@ from widgetastic_patternfly4 import SelectItemNotFound
 from widgetastic_patternfly4.ouia import SelectOUIA
 
 
-class TestView(View):
-    ROOT = ".//div[@id='ws-react-c-select-ouia']"
-    select = SelectOUIA("Single")
-
-
 @pytest.fixture
 def select(browser):
+    class TestView(View):
+        ROOT = ".//div[@id='ws-react-c-select-ouia']"
+        select = SelectOUIA("Single")
+
     return TestView(browser).select
 
 

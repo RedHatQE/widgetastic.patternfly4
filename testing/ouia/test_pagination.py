@@ -6,17 +6,12 @@ from widgetastic_patternfly4 import PaginationNavDisabled
 from widgetastic_patternfly4.ouia import PaginationOUIA
 
 
-# Locates a paginator under a specific header
-LOCATOR = ".//div[@id='ws-react-c-pagination-{}']/div[contains(@class, 'pf-c-pagination')]"
-
-
-class TestView(View):
-    ROOT = ".//div[@id='ws-react-c-pagination-ouia']"
-    paginator = PaginationOUIA("pagination-options-menu-top")
-
-
 @pytest.fixture
 def paginator(browser, request):
+    class TestView(View):
+        ROOT = ".//div[@id='ws-react-c-pagination-ouia']"
+        paginator = PaginationOUIA("pagination-options-menu-top")
+
     paginator = TestView(browser).paginator
     wait_for(lambda: paginator.is_displayed, num_sec=10)
     yield paginator

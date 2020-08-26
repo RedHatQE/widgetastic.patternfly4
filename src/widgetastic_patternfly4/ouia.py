@@ -3,9 +3,11 @@ import sys
 from widgetastic.utils import ParametrizedLocator
 from widgetastic.widget import GenericLocatorWidget
 from widgetastic.widget import Table
+from widgetastic.widget import Widget
 from widgetastic.xpath import quote
 
 import widgetastic_patternfly4
+from .dropdown import Dropdown
 
 
 class OUIAMixin:
@@ -35,14 +37,14 @@ def generate_ouia_compat_class(name):
         raise ValueError(f"{klass_name} is not OUIA ready")
 
     class WidgetWithOUIA(OUIAMixin, klass):
-        klass.ROOT = OUIAMixin.ROOT
-
         def __init__(self, parent, component_id, logger=None, *args, **kwargs):
             OUIAMixin.__init__(self, klass.PF_NAME, component_id)
             if issubclass(klass, GenericLocatorWidget):
                 super(klass, self).__init__(parent, self.locator, logger=logger)
             elif issubclass(klass, Table):
                 super(klass, self).__init__(parent, self.locator, logger=logger, **kwargs)
+            elif issubclass(klass, Dropdown):
+                Widget.__init__(self, parent, logger=logger)
             else:
                 super(klass, self).__init__(parent, logger=logger)
 
