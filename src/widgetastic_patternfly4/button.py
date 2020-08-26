@@ -22,6 +22,7 @@ class Button(Widget, ClickableMixin):
         assert not button.disabled
     """
 
+    PF_NAME = "Button"
     ROOT = ParametrizedLocator("{@locator}")
 
     CHECK_VISIBILITY = True

@@ -2,6 +2,7 @@ from .dropdown import Dropdown
 
 
 class OptionsMenu(Dropdown):
+    PF_NAME = "OptionsMenu"
     BUTTON_LOCATOR = (
         ".//button[contains(@class, 'pf-c-options-menu__toggle') or "
         "contains(@class, 'pf-c-options-menu__toggle-button')]"

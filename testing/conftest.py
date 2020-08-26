@@ -59,7 +59,7 @@ def selenium_url(pytestconfig, worker_id):
 
         yield f"http://{host}:4444/wd/hub"
         container_id = ps.stdout.decode("utf-8").strip()
-        subprocess.run(["podman", "kill", container_id])
+        subprocess.run(["podman", "kill", container_id], stdout=subprocess.DEVNULL)
     else:
         yield f"http://{forced_host}:4444/wd/hub"
 
@@ -85,14 +85,16 @@ def browser(selenium, request):
     try:
         page = module.SUBPAGE
     except AttributeError:
-
         page = name = module.__name__.split("_")[1]
         category = getattr(module, "CATEGORY", "components")
         page = f"{category}/{name}"
 
     name = request.module.__name__.split("_")[1]
     category = getattr(request.module, "CATEGORY", "components")
-    url = f"https://patternfly-react.surge.sh/documentation/react/{page}"
+    if "ouia" in request.module.__file__:
+        url = f"https://patternfly-docs-ouia.netlify.app/documentation/react/{page}"
+    else:
+        url = f"https://patternfly-react.surge.sh/documentation/react/{page}"
     selenium.maximize_window()
     selenium.get(url)
     return Browser(selenium)

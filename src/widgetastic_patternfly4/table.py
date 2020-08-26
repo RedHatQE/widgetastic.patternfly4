@@ -101,6 +101,7 @@ class PatternflyTable(Table):
     https://www.patternfly.org/v4/documentation/react/components/table
     """
 
+    PF_NAME = "Table"
     ROWS = "./tbody/tr[./td]"
     HEADERS = "./thead/tr/th|./tr/th|./thead/tr/td"
 

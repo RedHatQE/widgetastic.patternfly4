@@ -21,6 +21,7 @@ class Navigation(Widget):
     https://www.patternfly.org/v4/documentation/react/components/nav
     """
 
+    PF_NAME = "Nav"
     LOCATOR_START = './/nav[@class="pf-c-nav"{}]'
     ROOT = ParametrizedLocator("{@locator}")
     CURRENTLY_SELECTED = (
@@ -35,22 +36,18 @@ class Navigation(Widget):
     @property
     def loaded(self):
         """Returns a boolean detailing if the nav is loaded."""
-        if self._loaded:
-            return True
-        else:
-            out = self.browser.element(".").get_attribute("data-ouia-safe")
-            if out == "false":
-                self.logger.info("Navigation not ready yet")
-                wait_for(
-                    lambda: self.browser.element(".").get_attribute("data-ouia-safe") == "true",
-                    num_sec=10,
-                )
-            elif not out:
-                self.logger.info("Navigation doesn't have 'data-ouia-safe' property")
-            return True
+        out = self.browser.element(".").get_attribute("data-ouia-safe")
+        if out == "false":
+            self.logger.info("Navigation not ready yet")
+            wait_for(
+                lambda: self.browser.element(".").get_attribute("data-ouia-safe") == "true",
+                num_sec=10,
+            )
+        elif not out:
+            self.logger.info("Navigation doesn't have 'data-ouia-safe' property")
+        return True
 
     def __init__(self, parent, label=None, id=None, locator=None, logger=None):
-        self._loaded = False
         Widget.__init__(self, parent, logger=logger)
 
         quoted_label = quote(label) if label else ""
