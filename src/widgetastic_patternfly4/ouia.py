@@ -2,6 +2,7 @@ import sys
 
 from widgetastic.utils import ParametrizedLocator
 from widgetastic.widget import GenericLocatorWidget
+from widgetastic.widget import Table
 from widgetastic.xpath import quote
 
 import widgetastic_patternfly4
@@ -40,6 +41,8 @@ def generate_ouia_compat_class(name):
             OUIAMixin.__init__(self, klass.PF_NAME, component_id)
             if issubclass(klass, GenericLocatorWidget):
                 super(klass, self).__init__(parent, self.locator, logger=logger)
+            elif issubclass(klass, Table):
+                super(klass, self).__init__(parent, self.locator, logger=logger, **kwargs)
             else:
                 super(klass, self).__init__(parent, logger=logger)
 
