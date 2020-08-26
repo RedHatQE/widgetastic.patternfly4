@@ -41,7 +41,14 @@ class Pagination(View):
         if not locator:
             locator = self.DEFAULT_LOCATOR
         self.locator = locator
-        self._cached_per_page_value = None
+
+    @property
+    def cached_per_page_value(self):
+        return getattr(self, "_cached_per_page_value", None)
+
+    @cached_per_page_value.setter
+    def cached_per_page_value(self, value):
+        self._cached_per_page_value = value
 
     @property
     def is_first_disabled(self):
@@ -126,8 +133,8 @@ class Pagination(View):
     @property
     def current_per_page(self):
         """Returns an integer detailing how many items are shown per page."""
-        if self._cached_per_page_value:
-            return self._cached_per_page_value
+        if self.cached_per_page_value:
+            return self.cached_per_page_value
 
         if self.no_items:
             return 0
@@ -143,10 +150,10 @@ class Pagination(View):
         assume that the "per page" setting is not going to change and it's not necessary to
         re-read it from the browser repeatedly.
         """
-        self._cached_per_page_value = None
-        self._cached_per_page_value = self.current_per_page
+        self.cached_per_page_value = None
+        self.cached_per_page_value = self.current_per_page
         yield
-        self._cached_per_page_value = None
+        self.cached_per_page_value = None
 
     def set_per_page(self, count):
         """Sets the number of items per page. (Will cast to str)"""
