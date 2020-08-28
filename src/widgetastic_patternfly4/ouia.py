@@ -69,6 +69,8 @@ class ImportHack:
             return self.cache[name]
         if name == "__path__":
             return
+        if name == "__all__":
+            return [key for key in self.objs.keys()]
         return self.objs[name]
 
 

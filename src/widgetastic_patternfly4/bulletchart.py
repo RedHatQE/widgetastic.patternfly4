@@ -117,7 +117,8 @@ class BulletChart(View):
 
     def get_legend(self, label):
         """Get specific Legend object.
-        Arg:
+
+        Args:
             label: Name of legend label.
         """
         try:
@@ -153,7 +154,8 @@ class BulletChart(View):
 
     def get_data_point(self, label):
         """Get specific data point object.
-        Arg:
+
+        Args:
             label: Name of respective data point label.
         """
         try:

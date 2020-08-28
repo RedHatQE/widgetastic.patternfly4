@@ -19,7 +19,7 @@ sys.path.insert(0, modules_path)
 # -- Project information -----------------------------------------------------
 
 project = "widgetastic.patternfly4"
-copyright = "2019, Insights QE Team"
+copyright = "2020, Insights QE Team"
 author = "Insights QE Team"
 
 

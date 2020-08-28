@@ -109,9 +109,6 @@ class Chip(ParametrizedView, _BaseChip):
     @property
     def read_only(self):
         """Returns a boolean detailing if the chip is read only"""
-        """
-        Return whether or not this chip is read-only
-        """
         return not self.button.is_displayed
 
 
@@ -217,7 +214,7 @@ class ChipGroup(View):
             chip.remove()
 
     def read(self):
-        print(self.get_chips())
+        self.logger.info(self.get_chips())
         return [chip.text for chip in self]
 
 
