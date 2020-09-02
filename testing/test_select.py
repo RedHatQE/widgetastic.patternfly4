@@ -1,4 +1,5 @@
 import pytest
+from widgetastic.widget import View
 
 from widgetastic_patternfly4 import CheckboxSelect
 from widgetastic_patternfly4 import Select
@@ -7,10 +8,11 @@ from widgetastic_patternfly4 import SelectItemNotFound
 
 @pytest.fixture
 def select(browser):
-    return Select(
-        browser,
-        locator=('.//div[@id="ws-react-c-select-single"]//div[contains(@class, "pf-c-select")]'),
-    )
+    class TestView(View):
+        ROOT = ".//div[@id='ws-react-c-select-single']"
+        select = Select(locator=".//div[contains(@class, 'pf-c-select')]")
+
+    return TestView(browser).select
 
 
 def test_select_is_displayed(select):
@@ -43,13 +45,11 @@ def test_select_item_select(select):
 
 @pytest.fixture
 def checkbox_select(browser):
-    return CheckboxSelect(
-        browser,
-        locator=(
-            './/div[@id="ws-react-c-select-checkbox-input"]'
-            '//div[contains(@class, "pf-c-select")]'
-        ),
-    )
+    class TestView(View):
+        ROOT = './/div[@id="ws-react-c-select-checkbox-input"]'
+        checkbox_select = CheckboxSelect(locator=".//div[contains(@class, 'pf-c-select')]")
+
+    return TestView(browser).checkbox_select
 
 
 def test_checkbox_select_is_displayed(checkbox_select):

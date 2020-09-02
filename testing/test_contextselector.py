@@ -8,8 +8,9 @@ from widgetastic_patternfly4 import SelectItemNotFound
 @pytest.fixture
 def view(browser):
     class TestView(View):
+        ROOT = ".//div[@id='ws-react-c-contextselector-basic']"
         contextselector = ContextSelector(
-            locator='.//div[contains(@class, "pf-c-context-selector")]'
+            locator=".//*[@data-ouia-component-type='PF4/ContextSelector']"
         )
 
     return TestView(browser)
