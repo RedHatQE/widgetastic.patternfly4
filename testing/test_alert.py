@@ -1,4 +1,5 @@
 import pytest
+from widgetastic.widget import View
 
 from widgetastic_patternfly4 import Alert
 
@@ -8,7 +9,11 @@ ALERT_TYPES = ["success", "danger", "warning", "info"]
 
 @pytest.fixture(params=ALERT_TYPES)
 def alert(browser, request):
-    return Alert(browser, locator=f".//div[@class='pf-c-alert pf-m-{request.param}'][1]")
+    class TestView(View):
+        ROOT = ".//div[@id='ws-react-c-alert-types']"
+        alert = Alert(locator=f".//div[@class='pf-c-alert pf-m-{request.param}'][1]")
+
+    return TestView(browser).alert
 
 
 def test_alert_is_displayed(alert):

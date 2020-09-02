@@ -1,13 +1,21 @@
-from widgetastic_patternfly4 import DonutChart
+import pytest
+from widgetastic.widget import View
 
+from widgetastic_patternfly4 import DonutChart
 
 CATEGORY = "charts"
 
 
-def test_donut(browser):
-    donut_chart = DonutChart(
-        browser, locator=".//div[@id='ws-react-c-chartdonut-right-aligned-legend']/div"
-    )
+@pytest.fixture
+def donut_chart(browser):
+    class TestView(View):
+        ROOT = ".//div[@id='ws-react-c-chartdonut-right-aligned-legend']"
+        donut_chart = DonutChart(locator="./div")
+
+    return TestView(browser).donut_chart
+
+
+def test_donut(donut_chart):
     assert donut_chart.donut.labels == ["100", "Pets"]
     assert donut_chart.legend.all_items == [
         {"label": "Cats", "value": "35"},

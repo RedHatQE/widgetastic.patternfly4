@@ -2,21 +2,22 @@ import contextlib
 
 import pytest
 from wait_for import wait_for
+from widgetastic.widget import View
 
 from widgetastic_patternfly4 import CompactPagination
 from widgetastic_patternfly4 import Pagination
 from widgetastic_patternfly4 import PaginationNavDisabled
 
 
-# Locates a paginator under a specific header
-LOCATOR = ".//div[@id='ws-react-c-pagination-{}']/div[contains(@class, 'pf-c-pagination')]"
-
-
 @contextlib.contextmanager
 def _paginator(browser, request, reset_elements_per_page=True):
-    paginator_cls, kwargs = request.param
+    paginator_cls, kind = request.param
 
-    paginator = paginator_cls(browser, **kwargs)
+    class TestView(View):
+        ROOT = f".//div[@id='ws-react-c-pagination-{kind}']"
+        paginator = paginator_cls(locator="./div")
+
+    paginator = TestView(browser).paginator
     wait_for(lambda: paginator.is_displayed, num_sec=10)
     yield paginator
     try:
@@ -29,10 +30,7 @@ def _paginator(browser, request, reset_elements_per_page=True):
 
 
 @pytest.fixture(
-    params=[
-        (Pagination, {"locator": LOCATOR.format("top")}),
-        (CompactPagination, {"locator": LOCATOR.format("compact")}),
-    ],
+    params=[(Pagination, "top"), (CompactPagination, "compact")],
     ids=["Pagination", "CompactPagination"],
 )
 def paginator(browser, request):
@@ -42,7 +40,7 @@ def paginator(browser, request):
 
 @pytest.fixture(
     params=[
-        (Pagination, {"locator": LOCATOR.format("one-page")}),
+        (Pagination, "one-page"),
         # there is no compact paginator of this type on the demo page
     ],
     ids=["Pagination"],
@@ -54,7 +52,7 @@ def one_page_paginator(browser, request):
 
 @pytest.fixture(
     params=[
-        (Pagination, {"locator": LOCATOR.format("no-items")}),
+        (Pagination, "no-items"),
         # there is no compact paginator of this type on the demo page
     ],
     ids=["Pagination"],
