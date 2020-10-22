@@ -1,22 +1,28 @@
 import pytest
 from widgetastic.widget import Text
+from widgetastic.widget import View
 
-from widgetastic_patternfly4.button import Button
-from widgetastic_patternfly4.modal import Modal
 from widgetastic_patternfly4.modal import ModalItemNotFound
+from widgetastic_patternfly4.ouia import ButtonOUIA
+from widgetastic_patternfly4.ouia import ModalOUIA
 
 
 @pytest.fixture()
 def modal(browser):
-    show_modal = Button(browser, "Show Modal")
-    show_modal.click()
-    modal = Modal(browser)
+    class ModalTestView(View):
+        ROOT = ".//div[@id='ws-react-c-modal-ouia']"
+        show_modal = ButtonOUIA("Show Modal")
+
+    modal = ModalOUIA(browser, "Simple modal")
+
+    view = ModalTestView(browser)
+    view.show_modal.click()
     yield modal
     if modal.is_displayed:
         modal.close()
 
 
-class CustomModal(Modal):
+class CustomModal(ModalOUIA):
     """Model use as view and enhance with widgets"""
 
     custom_body = Text(".//div[contains(@class, 'pf-c-modal-box__body')]")
@@ -60,6 +66,6 @@ def test_footer_item_invalid(modal):
 
 
 def test_modal_as_view(browser, modal):
-    view = CustomModal(browser)
+    view = CustomModal(browser, "Simple modal")
     assert view.is_displayed
     assert view.custom_body.text == modal.body.text

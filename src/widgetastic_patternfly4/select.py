@@ -1,3 +1,5 @@
+from widgetastic.exceptions import NoSuchElementException
+
 from .dropdown import Dropdown
 from .dropdown import DropdownItemDisabled
 from .dropdown import DropdownItemNotFound
@@ -17,9 +19,10 @@ class Select(Dropdown):
     https://www.patternfly.org/v4/documentation/react/components/select
     """
 
+    PF_NAME = "Select"
     BUTTON_LOCATOR = "./button"
     ITEMS_LOCATOR = ".//ul[@class='pf-c-select__menu']/li"
-    ITEM_LOCATOR = ".//button[contains(@class, 'pf-c-select__menu-item') and normalize-space(.)={}]"
+    ITEM_LOCATOR = ".//*[contains(@class, 'pf-c-select__menu-item') and normalize-space(.)={}]"
     SELECTED_ITEM_LOCATOR = (
         ".//span[contains(@class, 'ins-c-conditional-filter') and normalize-space(.)={}]"
     )
@@ -133,12 +136,14 @@ class CheckboxSelect(Select):
     def read(self):
         """Returns a dictionary containing the selected status as bools."""
         selected = {}
-        try:
-            for item in self._get_items():
-                element = self.item_element(item, close=False)
-                selected[item] = self.browser.is_selected(element)
-        finally:
-            self.close()
+        with self.opened():
+            for el in self.browser.elements(self.ITEMS_LOCATOR):
+                item = self.browser.text(el)
+                try:
+                    # get the child element of the label
+                    selected[item] = el.find_element_by_xpath("./input").is_selected()
+                except NoSuchElementException:
+                    selected[item] = False
 
         return selected
 

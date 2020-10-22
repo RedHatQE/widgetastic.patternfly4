@@ -12,24 +12,29 @@ class Switch(GenericLocatorWidget):
     https://www.patternfly.org/v4/documentation/react/components/switch
     """
 
+    PF_NAME = "Switch"
     CHECKBOX_LOCATOR = "./input"
-    LABEL = (
-        "./span[contains(@class, 'pf-m-on') and preceding-sibling::input[@checked] or "
-        "contains(@class, 'pf-m-off') and preceding-sibling::input[not(@checked)]]"
-    )
+    LABEL_ON = "./span[contains(@class, 'pf-m-on')]"
+    LABEL_OFF = "./span[contains(@class, 'pf-m-off')]"
 
     @property
     def selected(self):
         """Returns a boolean detailing if the Switch is on (True) of off (False)."""
         return self.browser.get_attribute("checked", self.CHECKBOX_LOCATOR) is not None
 
+    def _read_locator(self, locator):
+        try:
+            return self.browser.text(locator)
+        except NoSuchElementException:
+            return None
+
     @property
     def label(self):
         """Returns the label of the Switch."""
-        try:
-            return self.browser.text(self.LABEL)
-        except NoSuchElementException:
-            return None
+        if self.selected:
+            return self._read_locator(self.LABEL_ON)
+        else:
+            return self._read_locator(self.LABEL_OFF)
 
     @property
     def is_enabled(self):

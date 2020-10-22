@@ -2,9 +2,11 @@ from .select import Select
 
 
 class ContextSelector(Select):
+
+    PF_NAME = "ContextSelector"
     ITEMS_LOCATOR = ".//ul[@class='pf-c-context-selector__menu-list']/li"
     ITEM_LOCATOR = (
-        ".//button[contains(@class, 'pf-c-context-selector__menu-list-item')"
+        ".//*[contains(@class, 'pf-c-context-selector__menu-list-item')"
         " and normalize-space(.)={}]"
     )
     SEARCH_INPUT_LOCATOR = ".//input[@type='search']"

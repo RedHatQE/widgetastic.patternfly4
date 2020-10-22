@@ -1,8 +1,10 @@
 from contextlib import contextmanager
 
+from wait_for import wait_for_decorator
 from widgetastic.exceptions import NoSuchElementException
 from widgetastic.exceptions import UnexpectedAlertPresentException
 from widgetastic.utils import ParametrizedLocator
+from widgetastic.widget import Checkbox
 from widgetastic.widget import Widget
 from widgetastic.xpath import quote
 
@@ -29,13 +31,11 @@ class Dropdown(Widget):
 
     """
 
+    PF_NAME = "Dropdown"
     ROOT = ParametrizedLocator("{@locator}")
     BUTTON_LOCATOR = ".//button[contains(@class, 'pf-c-dropdown__toggle')]"
     ITEMS_LOCATOR = ".//ul[contains(@class, 'pf-c-dropdown__menu')]/li"
-    ITEM_LOCATOR = (
-        ".//*[self::a or self::span or self::button][contains(@class, 'pf-c-dropdown__menu-item')"
-        " and normalize-space(.)={}]"
-    )
+    ITEM_LOCATOR = ".//*[contains(@class, 'pf-c-dropdown__menu-item') and normalize-space(.)={}]"
     TEXT_LOCATOR = (
         ".//div[contains(@class, 'pf-c-dropdown') and child::button[normalize-space(.)={}]]"
     )
@@ -80,8 +80,13 @@ class Dropdown(Widget):
     def open(self):
         """Opens a dropdown."""
         self._verify_enabled()
-        if not self.is_open:
+        if self.is_open:
+            return
+
+        @wait_for_decorator(timeout=3)
+        def _click():
             self.browser.click(self.BUTTON_LOCATOR)
+            return self.is_open
 
     def close(self, ignore_nonpresent=False):
         """Close the dropdown
@@ -92,7 +97,7 @@ class Dropdown(Widget):
         try:
             self._verify_enabled()
             if self.is_open:
-                self.browser.click(self)
+                self.browser.click(self.BUTTON_LOCATOR)
         except (NoSuchElementException, DropdownDisabled):
             if ignore_nonpresent:
                 self.logger.info("%r hid so it was not possible to close it. But ignoring.", self)
@@ -192,6 +197,9 @@ class Dropdown(Widget):
         """Returns a string of the current dropdown name."""
         return self.browser.text(self.BUTTON_LOCATOR)
 
+    def read(self):
+        return self.button_text
+
     def __repr__(self):
         return "{}({!r})".format(type(self).__name__, getattr(self, "text", None) or self.locator)
 
@@ -238,3 +246,28 @@ class GroupDropdown(Dropdown):
             DropdownItemDisabled
         """
         return super().item_select(item, handle_alert=handle_alert, group_name=group_name)
+
+
+class SplitButtonDropdown(Dropdown):
+    """Represents the Patternfly Split Button Dropdown.
+
+    https://www.patternfly.org/v4/documentation/react/components/dropdown#split-button-with-text
+    """
+
+    toggle_check = Checkbox(locator=".//input[@type='checkbox']")
+
+    def check(self):
+        """Check toggle checkbox."""
+        return self.toggle_check.fill(True)
+
+    def uncheck(self):
+        """Uncheck toggle checkbox."""
+        return self.toggle_check.fill(False)
+
+    @property
+    def selected(self):
+        """Returns selected or not"""
+        return self.toggle_check.selected
+
+    def read(self):
+        return self.browser.text(self)

@@ -1,7 +1,7 @@
 import pytest
 from widgetastic.widget import View
 
-from widgetastic_patternfly4 import Alert
+from widgetastic_patternfly4.ouia import AlertOUIA
 
 
 ALERT_TYPES = ["success", "danger", "warning", "info"]
@@ -10,10 +10,11 @@ ALERT_TYPES = ["success", "danger", "warning", "info"]
 @pytest.fixture(params=ALERT_TYPES)
 def alert(browser, request):
     class TestView(View):
-        ROOT = ".//div[@id='ws-react-c-alert-types']"
-        alert = Alert(locator=f".//div[@class='pf-c-alert pf-m-{request.param}'][1]")
+        ROOT = ".//div[@id='ws-react-c-alert-ouia']"
+        alert = AlertOUIA(request.param)
 
-    return TestView(browser).alert
+    view = TestView(browser)
+    return view.alert
 
 
 def test_alert_is_displayed(alert):

@@ -8,6 +8,7 @@ class Alert(Widget):
     https://www.patternfly.org/v4/documentation/react/components/alert
     """
 
+    PF_NAME = "Alert"
     ROOT = ParametrizedLocator("{@locator}")
     TITLE = './/h4[@class="pf-c-alert__title"]'
     DESCRIPTION = './/div[@class="pf-c-alert__description"]'
@@ -65,15 +66,14 @@ class Alert(Widget):
         else:
             raise ValueError(
                 "Could not find a proper alert type."
-                " Available classes: {!r} Alert has: {!r}".format(
-                    self.TYPE_MAPPING, self.browser.classes(self)
-                )
+                f"\nAvailable classes: {self.TYPE_MAPPING!r} "
+                f"\nAlert has: {self.browser.classes(self)!r}"
             )
 
     def assert_no_error(self):
         """Asserts that the warning is not of the error type."""
         if self.type == "error":
-            raise AssertionError("assert_no_error: {}".format(self.body))
+            raise AssertionError(f"assert_no_error: {self.body}")
 
     def __repr__(self):
-        return "{}({!r})".format(type(self).__name__, self.locator)
+        return f"{type(self).__name__}({self.locator!r})"

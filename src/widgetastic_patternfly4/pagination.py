@@ -1,6 +1,7 @@
 import math
 from contextlib import contextmanager
 
+from selenium.webdriver.common.keys import Keys
 from widgetastic.utils import ParametrizedLocator
 from widgetastic.widget import GenericLocatorWidget
 from widgetastic.widget import Text
@@ -20,6 +21,7 @@ class Pagination(View):
     https://www.patternfly.org/v4/documentation/react/components/pagination
     """
 
+    PF_NAME = "Pagination"
     ROOT = ParametrizedLocator("{@locator}")
     DEFAULT_LOCATOR = (
         ".//div[contains(@class, 'pf-c-pagination') and not(contains(@class, 'pf-m-compact'))]"
@@ -39,7 +41,14 @@ class Pagination(View):
         if not locator:
             locator = self.DEFAULT_LOCATOR
         self.locator = locator
-        self._cached_per_page_value = None
+
+    @property
+    def cached_per_page_value(self):
+        return getattr(self, "_cached_per_page_value", None)
+
+    @cached_per_page_value.setter
+    def cached_per_page_value(self, value):
+        self._cached_per_page_value = value
 
     @property
     def is_first_disabled(self):
@@ -123,9 +132,9 @@ class Pagination(View):
 
     @property
     def current_per_page(self):
-        """Returns an integer detailing how many items are cshown per page."""
-        if self._cached_per_page_value:
-            return self._cached_per_page_value
+        """Returns an integer detailing how many items are shown per page."""
+        if self.cached_per_page_value:
+            return self.cached_per_page_value
 
         if self.no_items:
             return 0
@@ -141,10 +150,10 @@ class Pagination(View):
         assume that the "per page" setting is not going to change and it's not necessary to
         re-read it from the browser repeatedly.
         """
-        self._cached_per_page_value = None
-        self._cached_per_page_value = self.current_per_page
+        self.cached_per_page_value = None
+        self.cached_per_page_value = self.current_per_page
         yield
-        self._cached_per_page_value = None
+        self.cached_per_page_value = None
 
     def set_per_page(self, count):
         """Sets the number of items per page. (Will cast to str)"""
@@ -159,6 +168,11 @@ class Pagination(View):
             raise ValueError(
                 "count '{}' is not a valid option in the pagination dropdown".format(count)
             )
+
+    def go_to_page(self, value):
+        """Navigate to custom page number."""
+        self._current_page.fill(value)
+        self.browser.send_keys(Keys.RETURN, self._current_page)
 
     def __iter__(self):
         if self.current_page > 1:

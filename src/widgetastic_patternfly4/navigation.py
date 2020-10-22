@@ -21,34 +21,33 @@ class Navigation(Widget):
     https://www.patternfly.org/v4/documentation/react/components/nav
     """
 
+    PF_NAME = "Nav"
     LOCATOR_START = './/nav[@class="pf-c-nav"{}]'
     ROOT = ParametrizedLocator("{@locator}")
     CURRENTLY_SELECTED = (
-        './/a[contains(@class, "pf-m-current") or parent::li[contains(@class, "pf-m-current")]]'
+        './/*[self::a or self::button][contains(@class, "pf-m-current") or '
+        'parent::li[contains(@class, "pf-m-current")]]'
     )
-    ITEMS = "./ul/li/a"
+    ITEMS = "./ul/li/*[self::a or self::button]"
     SUB_ITEMS_ROOT = "./section"
-    ITEM_MATCHING = "./ul/li[.//a[normalize-space(.)={}]]"
+    ITEM_MATCHING = "./ul/li[.//*[self::a or self::button][normalize-space(.)={}]]"
+    ITEM_MATCHING_OUIA = "./ul/li[@ouia-nav-group={text} or .//a[@ouia-nav-item={text}]]"
 
     @property
     def loaded(self):
         """Returns a boolean detailing if the nav is loaded."""
-        if self._loaded:
-            return True
-        else:
-            out = self.browser.element(".").get_attribute("data-ouia-safe")
-            if out == "false":
-                self.logger.info("Navigation not ready yet")
-                wait_for(
-                    lambda: self.browser.element(".").get_attribute("data-ouia-safe") == "true",
-                    num_sec=10,
-                )
-            elif not out:
-                self.logger.info("Navigation doesn't have 'data-ouia-safe' property")
-            return True
+        out = self.browser.element(".").get_attribute("data-ouia-safe")
+        if out == "false":
+            self.logger.info("Navigation not ready yet")
+            wait_for(
+                lambda: self.browser.element(".").get_attribute("data-ouia-safe") == "true",
+                num_sec=10,
+            )
+        elif not out:
+            self.logger.info("Navigation doesn't have 'data-ouia-safe' property")
+        return True
 
     def __init__(self, parent, label=None, id=None, locator=None, logger=None):
-        self._loaded = False
         Widget.__init__(self, parent, logger=logger)
 
         quoted_label = quote(label) if label else ""
@@ -74,7 +73,7 @@ class Navigation(Widget):
     def nav_links(self, *levels):
         """Returns a list of all navigation items."""
         if not levels:
-            return [self.browser.text(el) for el in self.browser.elements(self.ITEMS)]
+            return [el.get_property("textContent") for el in self.browser.elements(self.ITEMS)]
         current_item = self
         for i, level in enumerate(levels):
             li = self.browser.element(self.ITEM_MATCHING.format(quote(level)), parent=current_item)
@@ -86,9 +85,9 @@ class Navigation(Widget):
                     return []
                 else:
                     raise
-
         return [
-            self.browser.text(el) for el in self.browser.elements(self.ITEMS, parent=current_item)
+            el.get_property("textContent")
+            for el in self.browser.elements(self.ITEMS, parent=current_item)
         ]
 
     @check_nav_loaded
@@ -124,7 +123,14 @@ class Navigation(Widget):
             return
         current_item = self
         for i, level in enumerate(levels, 1):
-            li = self.browser.element(self.ITEM_MATCHING.format(quote(level)), parent=current_item)
+            try:
+                li = self.browser.element(
+                    self.ITEM_MATCHING.format(quote(level)), parent=current_item
+                )
+            except NoSuchElementException:
+                li = self.browser.element(
+                    self.ITEM_MATCHING_OUIA.format(text=quote(level)), parent=current_item
+                )
             if "pf-m-expanded" not in li.get_attribute("class").split():
                 self.browser.click(li)
             if i == len(levels):

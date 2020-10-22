@@ -1,6 +1,6 @@
 from widgetastic.exceptions import NoSuchElementException
 from widgetastic.utils import ParametrizedLocator
-from widgetastic.widget import Widget
+from widgetastic.widget import View
 from widgetastic.xpath import quote
 
 
@@ -8,23 +8,24 @@ class ModalItemNotFound(Exception):
     pass
 
 
-class Modal(Widget):
+class Modal(View):
     """Represents the Patternfly Modal.
 
     https://www.patternfly.org/v4/documentation/react/components/modal
     """
 
+    PF_NAME = "ModalContent"
     ROOT = ParametrizedLocator("{@locator}")
     BODY = ".//div[contains(@class, 'pf-c-modal-box__body')]"
-    FOOTER = ".//div[contains(@class, 'pf-c-modal-box__footer')]/child::node()"
+    FOOTER = ".//*[contains(@class, 'pf-c-modal-box__footer')]/child::node()"
     FOOTER_ITEM = (
-        ".//div[contains(@class, 'pf-c-modal-box__footer')]" "/button[normalize-space(.)={}]"
+        ".//*[contains(@class, 'pf-c-modal-box__footer')]" "/button[normalize-space(.)={}]"
     )
-    TITLE = ".//h1[contains(@class, 'pf-c-title')]"
+    TITLE = ".//h1[contains(@class, 'pf-c-title') or contains(@class, 'pf-c-modal-box__title')]"
     CLOSE = ".//button[@aria-label='Close']"
 
-    def __init__(self, parent, locator=None, logger=None):
-        super().__init__(parent, logger=logger)
+    def __init__(self, parent, locator=None, logger=None, **kwargs):
+        View.__init__(self, parent, logger=logger, **kwargs)
         self.locator = locator or ".//div[contains(@class, 'pf-c-modal-box')]"
 
     @property

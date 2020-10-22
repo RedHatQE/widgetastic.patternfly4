@@ -1,15 +1,33 @@
+import pytest
 from widgetastic.widget import View
 
 from widgetastic_patternfly4 import Button
 
 
-def test_button_click(browser):
+@pytest.fixture
+def variations_view(browser):
     class TestView(View):
+        ROOT = ".//div[@id='ws-react-c-button-variations']"
         any_button = Button()
         button1 = Button("Primary")
-        button2 = Button("Link to Core Docs")
 
-    view = TestView(browser)
-    assert view.any_button.is_displayed
-    assert view.button1.is_displayed
-    assert view.button2.is_displayed
+    return TestView(browser)
+
+
+@pytest.fixture
+def disabled_view(browser):
+    class TestView(View):
+        ROOT = ".//div[@id='ws-react-c-button-disabled']"
+        button = Button("Primary disabled")
+
+    return TestView(browser)
+
+
+def test_button_click(variations_view):
+    assert variations_view.any_button.is_displayed
+    assert variations_view.button1.is_displayed
+
+
+def test_disabled_button(disabled_view):
+    assert disabled_view.button.is_displayed
+    assert disabled_view.button.disabled

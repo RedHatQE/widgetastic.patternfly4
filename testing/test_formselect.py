@@ -8,7 +8,7 @@ from widgetastic_patternfly4 import FormSelectOptionNotFound
 
 
 class FormSelectTestView(View):
-    ROOT = ".//main[@role='main']"
+    ROOT = ".//main"
 
     input = FormSelect(locator=".//div[@id='ws-react-c-formselect-basic']/select")
     input_grouping = FormSelect(locator=".//div[@id='ws-react-c-formselect-grouped']/select")
@@ -39,7 +39,7 @@ def test_formselect_validity(view):
     assert view.input.is_valid
     assert view.input_grouping.is_valid
     assert view.input_disabled.is_valid
-    assert not view.input_invalid.is_valid
+    assert view.input_invalid.is_valid
     view.input_invalid.fill("One")
     assert view.input_invalid.is_valid
     view.input_invalid.fill("Choose a number")

@@ -1,21 +1,16 @@
-import contextlib
-
 import pytest
 from wait_for import wait_for
 from widgetastic.widget import View
 
-from widgetastic_patternfly4 import CompactPagination
-from widgetastic_patternfly4 import Pagination
 from widgetastic_patternfly4 import PaginationNavDisabled
+from widgetastic_patternfly4.ouia import PaginationOUIA
 
 
-@contextlib.contextmanager
-def _paginator(browser, request, reset_elements_per_page=True):
-    paginator_cls, kind = request.param
-
+@pytest.fixture
+def paginator(browser, request):
     class TestView(View):
-        ROOT = f".//div[@id='ws-react-c-pagination-{kind}']"
-        paginator = paginator_cls(locator="./div")
+        ROOT = ".//div[@id='ws-react-c-pagination-ouia']"
+        paginator = PaginationOUIA("pagination-options-menu-top")
 
     paginator = TestView(browser).paginator
     wait_for(lambda: paginator.is_displayed, num_sec=10)
@@ -25,63 +20,6 @@ def _paginator(browser, request, reset_elements_per_page=True):
     except PaginationNavDisabled:
         # We are already at the first page...
         pass
-    if reset_elements_per_page:
-        paginator.set_per_page(20)
-
-
-@pytest.fixture(
-    params=[(Pagination, "top"), (CompactPagination, "compact")],
-    ids=["Pagination", "CompactPagination"],
-)
-def paginator(browser, request):
-    with _paginator(browser, request) as result:
-        yield result
-
-
-@pytest.fixture(
-    params=[
-        (Pagination, "one-page"),
-        # there is no compact paginator of this type on the demo page
-    ],
-    ids=["Pagination"],
-)
-def one_page_paginator(browser, request):
-    with _paginator(browser, request) as result:
-        yield result
-
-
-@pytest.fixture(
-    params=[
-        (Pagination, "no-items"),
-        # there is no compact paginator of this type on the demo page
-    ],
-    ids=["Pagination"],
-)
-def no_elements_paginator(browser, request):
-    with _paginator(browser, request, reset_elements_per_page=False) as result:
-        yield result
-
-
-# Can't parametrize fixtures:
-# https://github.com/pytest-dev/pytest/issues/349
-# @pytest.mark.parametrize('params', [ { "paginator": one_page_paginator, "expected_pages": 1}])
-
-
-def _page_iteration_asserts(paginator, expected_pages):
-    page_counter = 0
-
-    with paginator.cache_per_page_value():
-        for page in paginator:
-            page_counter += 1
-    assert page_counter == expected_pages
-
-
-def test_one_page_iteration(one_page_paginator):
-    _page_iteration_asserts(paginator=one_page_paginator, expected_pages=1)
-
-
-def test_no_elements_iteration(no_elements_paginator):
-    _page_iteration_asserts(paginator=no_elements_paginator, expected_pages=0)
 
 
 def test_first_page(paginator):
@@ -176,8 +114,6 @@ def test_bad_paginator_page_value(paginator):
 
 
 def test_custom_page(paginator):
-    if isinstance(paginator, CompactPagination):
-        pytest.skip("Cannot insert custom page number into CompactPagination")
     disp_items = paginator.displayed_items
     paginator.go_to_page(2)
     assert paginator.current_page == 2

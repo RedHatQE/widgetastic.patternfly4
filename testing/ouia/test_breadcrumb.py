@@ -4,13 +4,13 @@ import pytest
 from widgetastic.exceptions import WidgetOperationFailed
 from widgetastic.widget import View
 
-from widgetastic_patternfly4 import BreadCrumb
+from widgetastic_patternfly4.ouia import BreadCrumbOUIA
 
 
 def test_breadcrumb(browser):
     class TestView(View):
-        ROOT = ".//main"
-        breadcrumb = BreadCrumb()
+        ROOT = ".//div[@id='ws-react-c-breadcrumb-ouia']"
+        breadcrumb = BreadCrumbOUIA("basic")
 
     view = TestView(browser)
     assert view.breadcrumb.is_displayed

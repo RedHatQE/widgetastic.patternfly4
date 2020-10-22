@@ -2,13 +2,14 @@ from .dropdown import Dropdown
 
 
 class OptionsMenu(Dropdown):
+    PF_NAME = "OptionsMenu"
     BUTTON_LOCATOR = (
         ".//button[contains(@class, 'pf-c-options-menu__toggle') or "
         "contains(@class, 'pf-c-options-menu__toggle-button')]"
     )
     ITEMS_LOCATOR = ".//ul[contains(@class, 'pf-c-options-menu__menu')]/li"
     ITEM_LOCATOR = (
-        ".//button[contains(@class, 'pf-c-options-menu__menu-item') and normalize-space(.)={}]"
+        ".//*[contains(@class, 'pf-c-options-menu__menu-item') and normalize-space(.)={}]"
     )
     TEXT_LOCATOR = (
         './/div[contains(@class, "pf-c-options-menu") and '
@@ -18,7 +19,7 @@ class OptionsMenu(Dropdown):
     DEFAULT_LOCATOR = './/div[contains(@class, "pf-c-options-menu")][1]'
 
     SELECTED_ITEMS_LOCATOR = (
-        f"{ITEMS_LOCATOR}/button[*[name()='svg'] or descendant::i[not(@hidden)]]"
+        f"{ITEMS_LOCATOR}/button[.//*[name()='svg'] or descendant::i[not(@hidden)]]"
     )
 
     @property
