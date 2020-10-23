@@ -4,6 +4,10 @@ from widgetastic.widget import View
 from widgetastic_patternfly4 import FormSelectOptionNotFound
 from widgetastic_patternfly4.ouia import FormSelectOUIA
 
+TESTING_PAGE_URL = (
+    "https://patternfly-docs-ouia.netlify.app/documentation/react/components/formselect"  # noqa
+)
+
 
 @pytest.fixture
 def view(browser):

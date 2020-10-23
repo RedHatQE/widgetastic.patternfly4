@@ -8,6 +8,7 @@ from widgetastic_patternfly4 import ExpandableTable
 from widgetastic_patternfly4 import PatternflyTable
 from widgetastic_patternfly4 import RowNotExpandable
 
+TESTING_PAGE_URL = "https://patternfly-react.surge.sh/components/table"
 
 SORT = [
     ("Repositories", "ascending", ["a", "one", "p"]),
@@ -77,7 +78,7 @@ def test_expandable_table(browser):
     row2_expected_content = "child - 2"
     row3_expected_content = "child - 3"
 
-    table = ExpandableTable(browser, ".//div[@id='ws-react-c-table-collapsible']/table")
+    table = ExpandableTable(browser, ".//div[@id='ws-react-c-table-expandable']/table")
 
     assert table.read() == expected_read
 

@@ -6,7 +6,7 @@ from widgetastic_patternfly4 import BulletChart
 from widgetastic_patternfly4.bulletchart import DataPoint
 from widgetastic_patternfly4.bulletchart import Legend
 
-CATEGORY = "charts"
+TESTING_PAGE_URL = "https://patternfly-react.surge.sh/charts/bullet-chart"
 
 TEST_DATA = {
     "dot": {

@@ -21,7 +21,9 @@ class Select(Dropdown):
 
     PF_NAME = "Select"
     BUTTON_LOCATOR = "./button"
-    ITEMS_LOCATOR = ".//ul[@class='pf-c-select__menu']/li"
+    ITEMS_LOCATOR = (
+        ".//ul[@class='pf-c-select__menu']/li[contains(@class, 'pf-c-select__menu-wrapper')]"
+    )
     ITEM_LOCATOR = ".//*[contains(@class, 'pf-c-select__menu-item') and normalize-space(.)={}]"
     SELECTED_ITEM_LOCATOR = (
         ".//span[contains(@class, 'ins-c-conditional-filter') and normalize-space(.)={}]"

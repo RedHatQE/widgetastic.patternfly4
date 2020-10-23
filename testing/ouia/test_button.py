@@ -3,6 +3,8 @@ from widgetastic.widget import View
 
 from widgetastic_patternfly4.ouia import ButtonOUIA
 
+TESTING_PAGE_URL = "https://patternfly-docs-ouia.netlify.app/documentation/react/components/button"
+
 
 @pytest.fixture
 def view(browser):

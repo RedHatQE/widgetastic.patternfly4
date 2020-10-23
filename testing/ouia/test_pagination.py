@@ -5,6 +5,10 @@ from widgetastic.widget import View
 from widgetastic_patternfly4 import PaginationNavDisabled
 from widgetastic_patternfly4.ouia import PaginationOUIA
 
+TESTING_PAGE_URL = (
+    "https://patternfly-docs-ouia.netlify.app/documentation/react/components/pagination"  # noqa
+)
+
 
 @pytest.fixture
 def paginator(browser, request):

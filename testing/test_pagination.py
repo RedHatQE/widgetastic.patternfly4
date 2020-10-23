@@ -8,6 +8,8 @@ from widgetastic_patternfly4 import CompactPagination
 from widgetastic_patternfly4 import Pagination
 from widgetastic_patternfly4 import PaginationNavDisabled
 
+TESTING_PAGE_URL = "https://patternfly-react.surge.sh/components/pagination"
+
 
 @contextlib.contextmanager
 def _paginator(browser, request, reset_elements_per_page=True):

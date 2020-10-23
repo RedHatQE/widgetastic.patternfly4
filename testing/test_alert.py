@@ -3,7 +3,7 @@ from widgetastic.widget import View
 
 from widgetastic_patternfly4 import Alert
 
-
+TESTING_PAGE_URL = "https://patternfly-react.surge.sh/components/alert"
 ALERT_TYPES = ["success", "danger", "warning", "info"]
 
 

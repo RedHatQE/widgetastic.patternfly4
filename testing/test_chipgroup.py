@@ -7,11 +7,13 @@ from widgetastic_patternfly4 import Chip
 from widgetastic_patternfly4 import ChipGroup
 from widgetastic_patternfly4 import ChipReadOnlyError
 
+TESTING_PAGE_URL = "https://patternfly-react.surge.sh/components/chip-group"
+
 
 @pytest.fixture(scope="module")
 def chips_view(browser):
     class TestView(View):
-        ROOT = ".//div[@id='ws-react-c-chipgroup-single']"
+        ROOT = ".//div[@id='ws-react-c-chip-group-single']"
         chips = ParametrizedView.nested(Chip)
 
     return TestView(browser)
@@ -20,7 +22,7 @@ def chips_view(browser):
 @pytest.fixture(scope="module")
 def chip_group_view(browser):
     class TestView(View):
-        ROOT = ".//div[@id='ws-react-c-chipgroup-simple-inline-chip-group']"
+        ROOT = ".//div[@id='ws-react-c-chip-group-simple-inline-chip-group']"
 
         non_existent_chip_group = ChipGroup(locator="foobar-locator")
         chip_group = ChipGroup()
@@ -35,7 +37,7 @@ def chip_group_view(browser):
 @pytest.fixture(scope="module")
 def category_chip_group_view(browser):
     class TestView(View):
-        ROOT = ".//div[@id='ws-react-c-chipgroup-chip-groups-with-categories-removable']"
+        ROOT = ".//div[@id='ws-react-c-chip-group-chip-groups-with-categories-removable']"
         category_one = CategoryChipGroup(label="Category one")
         category_two = CategoryChipGroup(label="Category two has a very long name")
 

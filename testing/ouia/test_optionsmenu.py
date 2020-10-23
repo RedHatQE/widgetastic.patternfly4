@@ -4,6 +4,10 @@ from widgetastic.widget import View
 from widgetastic_patternfly4 import DropdownItemNotFound
 from widgetastic_patternfly4.ouia import OptionsMenuOUIA
 
+TESTING_PAGE_URL = (
+    "https://patternfly-docs-ouia.netlify.app/documentation/react/components/optionsmenu"  # noqa
+)
+
 
 @pytest.fixture
 def options_menu(browser):

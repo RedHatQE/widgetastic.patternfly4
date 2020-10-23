@@ -1,18 +1,21 @@
+import os
+
 import pytest
 from widgetastic.widget import View
 
 from widgetastic_patternfly4 import Navigation
 
+TESTING_PAGE_URL = "https://patternfly-react.surge.sh/components/navigation"
 
 NAVS = [
     (
-        ".//div[@id='ws-react-c-nav-default']",
+        ".//div[@id='ws-react-c-navigation-default']",
         ["Link 1", "Link 2", "Link 3", "Link 4"],
         ["Link 1"],
         "default",
     ),
     (
-        ".//div[@id='ws-react-c-nav-expandable']",
+        ".//div[@id='ws-react-c-navigation-expandable']",
         {
             "Link 1": ["Subnav Link 1", "Subnav Link 2", "Subnav Link 3"],
             "Link 2": ["Custom onClick", "Subnav Link 1", "Subnav Link 2", "Subnav Link 3"],
@@ -21,7 +24,7 @@ NAVS = [
         "expandable",
     ),
     (
-        ".//div[@id='ws-react-c-nav-mixed']",
+        ".//div[@id='ws-react-c-navigation-mixed']",
         {
             "Link 1 (not expandable)": None,
             "Link 2 - expandable": ["Link 1", "Link 2", "Link 3"],
@@ -51,9 +54,13 @@ def test_navigation(browser, data):
     assert nav.nav_item_tree() == tree
 
 
+@pytest.mark.xfail(
+    os.environ.get("BROWSER") == "firefox",
+    reason="Requires https://github.com/RedHatQE/widgetastic.core/pull/182",
+)
 def test_navigation_select(browser):
     class TestView(View):
-        ROOT = ".//div[@id='ws-react-c-nav-mixed']"
+        ROOT = ".//div[@id='ws-react-c-navigation-mixed']"
         nav = Navigation(locator="./nav")
 
     nav = TestView(browser).nav

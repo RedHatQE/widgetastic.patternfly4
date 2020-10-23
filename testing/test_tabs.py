@@ -3,6 +3,8 @@ from widgetastic.widget import View
 
 from widgetastic_patternfly4 import Tab
 
+TESTING_PAGE_URL = "https://patternfly-react.surge.sh/components/tabs"
+
 
 class TabsTestView(View):
     @View.nested
@@ -86,7 +88,7 @@ def test_secondary_tabs(browser):
     view.secondary.tab1.secondary2.select()
     assert not view.secondary.tab1.secondary1.is_active()
     assert view.secondary.tab1.secondary2.is_active()
-    assert view.secondary.tab1.secondary2.content.text == "> Secondary tab item 2 section"
+    assert view.secondary.tab1.secondary2.content.text == "Secondary tab item 2 section"
 
 
 def test_auto_selected(browser):
