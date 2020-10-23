@@ -13,7 +13,7 @@ class ChipReadOnlyError(Exception):
         self.chip = chip
 
 
-CHIP_ROOT = ".//div[contains(@class, 'pf-c-chip') and not(contains(@class, 'pf-m-overflow'))]"
+CHIP_ROOT = ".//div[@class='pf-c-chip' and not(contains(@class, 'pf-m-overflow'))]"
 CHIP_TEXT = ".//span[contains(@class, 'pf-c-chip__text')]"
 CHIP_BADGE = ".//span[contains(@class, 'pf-c-badge')]"
 GROUP_ROOT = ".//div[contains(@class, 'pf-c-chip-group')]"
