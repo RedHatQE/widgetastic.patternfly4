@@ -3,6 +3,8 @@ from widgetastic.widget import View
 
 from widgetastic_patternfly4.ouia import NavigationOUIA
 
+TESTING_PAGE_URL = "https://patternfly-docs-ouia.netlify.app/documentation/react/components/nav"
+
 
 @pytest.fixture
 def view(browser):

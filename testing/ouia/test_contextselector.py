@@ -4,6 +4,8 @@ from widgetastic.widget import View
 from widgetastic_patternfly4 import SelectItemNotFound
 from widgetastic_patternfly4.ouia import ContextSelectorOUIA
 
+TESTING_PAGE_URL = "https://patternfly-docs-ouia.netlify.app/documentation/react/components/contextselector"  # noqa
+
 
 @pytest.fixture
 def view(browser):

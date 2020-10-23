@@ -5,6 +5,10 @@ from widgetastic_patternfly4 import DropdownItemDisabled
 from widgetastic_patternfly4 import DropdownItemNotFound
 from widgetastic_patternfly4.ouia import DropdownOUIA
 
+TESTING_PAGE_URL = (
+    "https://patternfly-docs-ouia.netlify.app/documentation/react/components/dropdown"  # noqa
+)
+
 
 @pytest.fixture
 def dropdown(browser):

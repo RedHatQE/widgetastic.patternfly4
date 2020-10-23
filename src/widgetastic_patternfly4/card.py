@@ -13,7 +13,7 @@ class Card(GenericLocatorWidget):
     ROOT = ParametrizedLocator("{@locator}")
 
 
-class CardForCardGroup(ParametrizedView, Card):
+class CardForCardGroup(ParametrizedView):
     def __init__(self, parent, locator=None, logger=None, **kwargs):
         View.__init__(self, parent, logger=logger, **kwargs)
         self.locator = locator or ".//article[contains(@class, 'pf-c-card')]"

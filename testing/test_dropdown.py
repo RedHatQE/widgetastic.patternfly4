@@ -7,6 +7,8 @@ from widgetastic_patternfly4 import DropdownItemNotFound
 from widgetastic_patternfly4 import GroupDropdown
 from widgetastic_patternfly4 import SplitButtonDropdown
 
+TESTING_PAGE_URL = "https://patternfly-react.surge.sh/components/dropdown"
+
 
 @pytest.fixture
 def view(browser):

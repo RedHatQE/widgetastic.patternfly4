@@ -4,6 +4,8 @@ from widgetastic.widget import View
 from widgetastic_patternfly4 import SelectItemNotFound
 from widgetastic_patternfly4.ouia import SelectOUIA
 
+TESTING_PAGE_URL = "https://patternfly-docs-ouia.netlify.app/documentation/react/components/select"
+
 
 @pytest.fixture
 def select(browser):
@@ -18,6 +20,7 @@ def test_select_is_displayed(select):
     assert select.is_displayed
 
 
+@pytest.mark.xfail
 def test_select_items(select):
     assert set(select.items) == {"Choose...", "Mr", "Miss", "Mrs", "Ms", "Dr", "Other"}
     assert select.has_item("Mr")

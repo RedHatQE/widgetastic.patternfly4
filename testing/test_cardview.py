@@ -9,8 +9,7 @@ from widgetastic_patternfly4 import CardForCardGroup
 from widgetastic_patternfly4 import CardGroup
 from widgetastic_patternfly4 import Dropdown
 
-
-SUBPAGE = "demos/cardview/basic"
+TESTING_PAGE_URL = "https://patternfly-react.surge.sh/components/card/react-demos/card-view"
 
 
 class PageCard(CardForCardGroup,):

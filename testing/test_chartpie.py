@@ -6,7 +6,7 @@ from widgetastic_patternfly4 import PieChart
 from widgetastic_patternfly4.bulletchart import DataPoint
 from widgetastic_patternfly4.bulletchart import Legend
 
-CATEGORY = "charts"
+TESTING_PAGE_URL = "https://patternfly-react.surge.sh/charts/pie-chart"
 
 DATA = {"Cats": 35, "Dogs": 55, "Birds": 10}
 LEGENDS = [Legend(label, value) for label, value in DATA.items()]
@@ -16,11 +16,11 @@ DATA_POINTES = [DataPoint(label, value) for label, value in DATA.items()]
 @pytest.fixture(
     params=[
         {
-            "id": "ws-react-c-chartpie-multi-color-ordered-with-bottom-aligned-legend",
+            "id": "ws-react-c-pie-chart-multi-color-ordered-with-bottom-aligned-legend",
             "anchor": "#basic-with-right-aligned-legend",
         },
         {
-            "id": "ws-react-c-chartpie-basic-with-right-aligned-legend",
+            "id": "ws-react-c-pie-chart-basic-with-right-aligned-legend",
             "anchor": "#orange-with-right-aligned-legend",
         },
     ],

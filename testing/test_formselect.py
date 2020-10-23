@@ -6,14 +6,16 @@ from widgetastic_patternfly4 import FormSelectDisabled
 from widgetastic_patternfly4 import FormSelectOptionDisabled
 from widgetastic_patternfly4 import FormSelectOptionNotFound
 
+TESTING_PAGE_URL = "https://patternfly-react.surge.sh/components/form-select"
+
 
 class FormSelectTestView(View):
     ROOT = ".//main"
 
-    input = FormSelect(locator=".//div[@id='ws-react-c-formselect-basic']/select")
-    input_grouping = FormSelect(locator=".//div[@id='ws-react-c-formselect-grouped']/select")
-    input_invalid = FormSelect(locator=".//div[@id='ws-react-c-formselect-invalid']/select")
-    input_disabled = FormSelect(locator=".//div[@id='ws-react-c-formselect-disabled']/select")
+    input = FormSelect(locator=".//div[@id='ws-react-c-form-select-basic']/select")
+    input_grouping = FormSelect(locator=".//div[@id='ws-react-c-form-select-grouped']/select")
+    input_invalid = FormSelect(locator=".//div[@id='ws-react-c-form-select-invalid']/select")
+    input_disabled = FormSelect(locator=".//div[@id='ws-react-c-form-select-disabled']/select")
 
 
 @pytest.fixture

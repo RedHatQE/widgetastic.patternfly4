@@ -6,6 +6,8 @@ from widgetastic_patternfly4.modal import ModalItemNotFound
 from widgetastic_patternfly4.ouia import ButtonOUIA
 from widgetastic_patternfly4.ouia import ModalOUIA
 
+TESTING_PAGE_URL = "https://patternfly-docs-ouia.netlify.app/documentation/react/components/modal"
+
 
 @pytest.fixture()
 def modal(browser):

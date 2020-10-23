@@ -3,13 +3,13 @@ from widgetastic.widget import View
 
 from widgetastic_patternfly4 import DonutChart
 
-CATEGORY = "charts"
+TESTING_PAGE_URL = "https://patternfly-react.surge.sh/charts/donut-chart"
 
 
 @pytest.fixture
 def donut_chart(browser):
     class TestView(View):
-        ROOT = ".//div[@id='ws-react-c-chartdonut-right-aligned-legend']"
+        ROOT = ".//div[@id='ws-react-c-donut-chart-right-aligned-legend']"
         donut_chart = DonutChart(locator="./div")
 
     return TestView(browser).donut_chart

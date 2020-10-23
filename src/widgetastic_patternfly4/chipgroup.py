@@ -20,7 +20,7 @@ GROUP_ROOT = ".//div[contains(@class, 'pf-c-chip-group')]"
 CATEGORY_GROUP_ROOT = (
     ".//div[contains(@class, 'pf-c-chip-group') and contains(@class, 'pf-m-category')]"
 )
-CATEGORY_LABEL = "./span[contains(@class, 'pf-c-chip-group__label')]"
+CATEGORY_LABEL = ".//span[contains(@class, 'pf-c-chip-group__label')]"
 CATEGORY_CLOSE = "./div[contains(@class, 'pf-c-chip-group__close')]/button"
 # For backwards compatibility
 OLD_GROUP_ROOT = ".//ul[contains(@class, 'pf-c-chip-group')]"
@@ -196,7 +196,8 @@ class ChipGroup(View):
         return self.is_displayed
 
     def __iter__(self):
-        for chip in self.get_chips():
+        chips = self.get_chips()
+        for chip in chips:
             yield chip
 
     def remove_chip_by_name(self, name):

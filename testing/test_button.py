@@ -3,6 +3,8 @@ from widgetastic.widget import View
 
 from widgetastic_patternfly4 import Button
 
+TESTING_PAGE_URL = "https://patternfly-react.surge.sh/components/button"
+
 
 @pytest.fixture
 def variations_view(browser):
