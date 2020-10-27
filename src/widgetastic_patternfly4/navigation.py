@@ -76,7 +76,9 @@ class Navigation(Widget):
             return [el.get_property("textContent") for el in self.browser.elements(self.ITEMS)]
         current_item = self
         for i, level in enumerate(levels):
-            li = self.browser.element(self.ITEM_MATCHING.format(quote(level)), parent=current_item)
+            li = self.browser.element(
+                self.ITEM_MATCHING.format(quote(level.strip())), parent=current_item
+            )
 
             try:
                 current_item = self.browser.element(self.SUB_ITEMS_ROOT, parent=li)
