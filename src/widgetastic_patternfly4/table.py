@@ -29,8 +29,12 @@ class HeaderColumn(TableColumn):
         """Sorts the column according to the supplied "ascending" or "descending"."""
         if order not in ("ascending", "descending"):
             raise ValueError("order should be either 'ascending' or 'descending'")
-        while self.sorting_order != order:
+        for _ in range(10):
+            if self.sorting_order == order:
+                break
             self.click()
+        else:
+            raise AssertionError(f"Could not set sorting order to `{order}` after 10 tries.")
 
 
 class HeaderRow(TableRow):
