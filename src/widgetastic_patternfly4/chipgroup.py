@@ -247,6 +247,11 @@ class CategoryChipGroup(ChipGroup):
     def close(self):
         self.close_button.click()
 
+    @classmethod
+    def all(cls, browser):
+        """Returns a list of all category labels."""
+        return [browser.text(el) for el in browser.elements(CATEGORY_LABEL)]
+
 
 # For backwards compatibility
 class OldChip(Chip):
