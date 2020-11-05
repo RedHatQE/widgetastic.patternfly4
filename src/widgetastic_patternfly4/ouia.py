@@ -20,22 +20,23 @@ from widgetastic_patternfly4.select import BaseCheckboxSelect
 from widgetastic_patternfly4.select import BaseSelect
 from widgetastic_patternfly4.switch import BaseSwitch
 from widgetastic_patternfly4.table import BaseExpandableTable
+from widgetastic_patternfly4.table import BasePatternflyTable
 
 
 class Alert(BaseAlert, OUIAGenericWidget):
-    OUIA_NAMESPACE = "PF4"
+    OUIA_COMPONENT_TYPE = "PF4/Alert"
 
 
 class BreadCrumb(BaseBreadCrumb, OUIAGenericWidget):
-    OUIA_NAMESPACE = "PF4"
+    OUIA_COMPONENT_TYPE = "PF4/Breadcrumb"
 
 
 class Button(BaseButton, OUIAGenericWidget):
-    OUIA_NAMESPACE = "PF4"
+    OUIA_COMPONENT_TYPE = "PF4/Button"
 
 
 class Dropdown(BaseDropdown, OUIAGenericWidget):
-    OUIA_NAMESPACE = "PF4"
+    OUIA_COMPONENT_TYPE = "PF4/Dropdown"
 
 
 class GroupDropdown(BaseGroupDropdown, Dropdown):
@@ -47,19 +48,19 @@ class SplitButtonDropdown(BaseSplitButtonDropdown, Dropdown):
 
 
 class FormSelect(BaseFormSelect, OUIAGenericWidget):
-    OUIA_NAMESPACE = "PF4"
+    OUIA_COMPONENT_TYPE = "PF4/FormSelect"
 
 
 class Modal(BaseModal, OUIAGenericView):
-    OUIA_NAMESPACE = "PF4"
+    OUIA_COMPONENT_TYPE = "PF4/ModalContent"
 
 
 class Navigation(BaseNavigation, OUIAGenericWidget):
-    OUIA_NAMESPACE = "PF4"
+    OUIA_COMPONENT_TYPE = "PF4/Nav"
 
 
 class Pagination(BasePagination, OUIAGenericView):
-    OUIA_NAMESPACE = "PF4"
+    OUIA_COMPONENT_TYPE = "PF4/Pagination"
 
 
 class CompactPagination(BaseCompactPagination, Pagination):
@@ -67,14 +68,14 @@ class CompactPagination(BaseCompactPagination, Pagination):
 
 
 class CheckboxSelect(BaseCheckboxSelect, Dropdown):
-    pass
+    OUIA_COMPONENT_TYPE = "PF4/Select"
 
 
 class Switch(BaseSwitch, OUIAGenericWidget):
-    OUIA_NAMESPACE = "PF4"
+    OUIA_COMPONENT_TYPE = "PF4/Switch"
 
 
-class PatternflyTable(Table):
+class PatternflyTable(BasePatternflyTable, Table):
     def __init__(
         self,
         parent,
@@ -110,12 +111,12 @@ class ExpandableTable(BaseExpandableTable, PatternflyTable):
 
 
 class Select(BaseSelect, Dropdown):
-    pass
+    OUIA_COMPONENT_TYPE = "PF4/Select"
 
 
 class ContextSelector(BaseContextSelector, Select):
-    pass
+    OUIA_COMPONENT_TYPE = "PF4/ContextSelector"
 
 
 class OptionsMenu(BaseOptionsMenu, Dropdown):
-    OUIA_NAMESPACE = "PF4"
+    OUIA_COMPONENT_TYPE = "PF4/OptionsMenu"

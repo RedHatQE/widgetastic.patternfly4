@@ -99,7 +99,7 @@ class PatternflyTableRow(TableRow):
         return super(PatternflyTableRow, self).__getitem__(index)
 
 
-class PatternflyTable(Table):
+class BasePatternflyTable:
     """Represents the Patternfly table.
 
     https://www.patternfly.org/v4/documentation/react/components/table
@@ -137,6 +137,10 @@ class PatternflyTable(Table):
     def deselect_all(self, column=0):
         """Deselects all the rows."""
         self._toggle_select_all(False, column)
+
+
+class PatternflyTable(BasePatternflyTable, Table):
+    pass
 
 
 class ExpandableTableHeaderColumn(TableColumn):
