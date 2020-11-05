@@ -287,7 +287,7 @@ class BaseExpandableTable:
         elif not column_widgets:
             kwargs["column_widgets"] = {0: col_widget}
 
-        super(ExpandableTable, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def _create_row(self, parent, index, logger=None):
         return self.Row(parent, index, self.content_view, logger)
