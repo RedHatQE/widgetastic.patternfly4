@@ -13,13 +13,12 @@ class SelectItemNotFound(DropdownItemNotFound):
     pass
 
 
-class Select(Dropdown):
+class BaseSelect:
     """Represents the Patternfly Select.
 
     https://www.patternfly.org/v4/documentation/react/components/select
     """
 
-    PF_NAME = "Select"
     BUTTON_LOCATOR = "./button"
     ITEMS_LOCATOR = (
         ".//ul[@class='pf-c-select__menu']/li[contains(@class, 'pf-c-select__menu-wrapper')]"
@@ -31,7 +30,6 @@ class Select(Dropdown):
     TEXT_LOCATOR = (
         ".//div[contains(@class, 'pf-c-select') and child::button[normalize-space(.)={}]]"
     )
-    DEFAULT_LOCATOR = './/div[contains(@class, "pf-c-select")][1]'
 
     def item_element(self, item, close=True):
         """Returns a WebElement for given item name."""
@@ -72,7 +70,11 @@ class Select(Dropdown):
         return self.browser.text(self.BUTTON_LOCATOR)
 
 
-class CheckboxSelect(Select):
+class Select(BaseSelect, Dropdown):
+    DEFAULT_LOCATOR = './/div[contains(@class, "pf-c-select")][1]'
+
+
+class BaseCheckboxSelect(BaseSelect):
     """Represents the Patternfly Checkbox Select.
 
     https://www.patternfly.org/v4/documentation/react/components/select
@@ -167,3 +169,7 @@ class CheckboxSelect(Select):
     def items(self):
         """Returns a list of all CheckboxSelect items as strings."""
         return self._get_items(close=True)
+
+
+class CheckboxSelect(BaseCheckboxSelect, Dropdown):
+    DEFAULT_LOCATOR = './/div[contains(@class, "pf-c-select")][1]'

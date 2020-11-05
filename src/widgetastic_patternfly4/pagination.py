@@ -2,6 +2,7 @@ import math
 from contextlib import contextmanager
 
 from selenium.webdriver.common.keys import Keys
+from widgetastic.ouia import OUIAGenericView
 from widgetastic.utils import ParametrizedLocator
 from widgetastic.widget import GenericLocatorWidget
 from widgetastic.widget import Text
@@ -15,14 +16,12 @@ class PaginationNavDisabled(Exception):
     pass
 
 
-class Pagination(View):
+class BasePagination:
     """Represents the Patternfly pagination.
 
     https://www.patternfly.org/v4/documentation/react/components/pagination
     """
 
-    PF_NAME = "Pagination"
-    ROOT = ParametrizedLocator("{@locator}")
     DEFAULT_LOCATOR = (
         ".//div[contains(@class, 'pf-c-pagination') and not(contains(@class, 'pf-m-compact'))]"
     )
@@ -35,12 +34,6 @@ class Pagination(View):
     _items = Text(".//span[@class='pf-c-options-menu__toggle-text']")
     _current_page = TextInput(locator=".//input[@aria-label='Current page']")
     _total_pages = Text(".//div[@class='pf-c-pagination__nav-page-select']/span")
-
-    def __init__(self, parent, locator=None, logger=None):
-        View.__init__(self, parent=parent, logger=logger)
-        if not locator:
-            locator = self.DEFAULT_LOCATOR
-        self.locator = locator
 
     @property
     def cached_per_page_value(self):
@@ -190,11 +183,21 @@ class Pagination(View):
             raise StopIteration
 
 
-class CompactPagination(Pagination):
-    DEFAULT_LOCATOR = (
-        ".//div[contains(@class, 'pf-c-pagination') and contains(@class, 'pf-m-compact')]"
-    )
+class Pagination(BasePagination, View):
+    ROOT = ParametrizedLocator("{@locator}")
 
+    def __init__(self, parent, locator=None, logger=None):
+        super().__init__(parent=parent, logger=logger)
+        if not locator:
+            locator = self.DEFAULT_LOCATOR
+        self.locator = locator
+
+
+class PaginationOUIA(BasePagination, OUIAGenericView):
+    OUIA_NAMESPACE = "PF4"
+
+
+class BaseCompactPagination:
     @property
     def is_first_disabled(self):
         """Compact paginator has no 'first' button."""
@@ -245,3 +248,13 @@ class CompactPagination(Pagination):
             return 0
         else:
             return math.ceil(self.total_items / self.current_per_page)
+
+
+class CompactPagination(BaseCompactPagination, Pagination):
+    DEFAULT_LOCATOR = (
+        ".//div[contains(@class, 'pf-c-pagination') and contains(@class, 'pf-m-compact')]"
+    )
+
+
+class CompactPaginationOUIA(BaseCompactPagination, PaginationOUIA):
+    pass

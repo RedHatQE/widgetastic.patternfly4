@@ -1,4 +1,5 @@
 from widgetastic.exceptions import NoSuchElementException
+from widgetastic.ouia import OUIAGenericView
 from widgetastic.utils import ParametrizedLocator
 from widgetastic.widget import View
 from widgetastic.xpath import quote
@@ -8,14 +9,12 @@ class ModalItemNotFound(Exception):
     pass
 
 
-class Modal(View):
+class BaseModal:
     """Represents the Patternfly Modal.
 
     https://www.patternfly.org/v4/documentation/react/components/modal
     """
 
-    PF_NAME = "ModalContent"
-    ROOT = ParametrizedLocator("{@locator}")
     BODY = ".//div[contains(@class, 'pf-c-modal-box__body')]"
     FOOTER = ".//*[contains(@class, 'pf-c-modal-box__footer')]/child::node()"
     FOOTER_ITEM = (
@@ -23,10 +22,6 @@ class Modal(View):
     )
     TITLE = ".//h1[contains(@class, 'pf-c-title') or contains(@class, 'pf-c-modal-box__title')]"
     CLOSE = ".//button[@aria-label='Close']"
-
-    def __init__(self, parent, locator=None, logger=None, **kwargs):
-        View.__init__(self, parent, logger=logger, **kwargs)
-        self.locator = locator or ".//div[contains(@class, 'pf-c-modal-box')]"
 
     @property
     def title(self):
@@ -56,3 +51,15 @@ class Modal(View):
 
     def __repr__(self):
         return f"{type(self).__name__}({self.locator!r})"
+
+
+class Modal(BaseModal, View):
+    ROOT = ParametrizedLocator("{@locator}")
+
+    def __init__(self, parent, locator=None, logger=None, **kwargs):
+        super().__init__(parent, logger=logger, **kwargs)
+        self.locator = locator or ".//div[contains(@class, 'pf-c-modal-box')]"
+
+
+class ModalOUIA(BaseModal, OUIAGenericView):
+    OUIA_NAMESPACE = "PF4"

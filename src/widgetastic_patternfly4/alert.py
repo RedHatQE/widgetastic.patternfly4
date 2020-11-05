@@ -2,14 +2,12 @@ from widgetastic.utils import ParametrizedLocator
 from widgetastic.widget import Widget
 
 
-class Alert(Widget):
+class BaseAlert:
     """Represents alert block.
 
     https://www.patternfly.org/v4/documentation/react/components/alert
     """
 
-    PF_NAME = "Alert"
-    ROOT = ParametrizedLocator("{@locator}")
     TITLE = './/h4[@class="pf-c-alert__title"]'
     DESCRIPTION = './/div[@class="pf-c-alert__description"]'
     ACTION = './/div[contains(@class, "pf-c-alert__action")]'
@@ -19,10 +17,6 @@ class Alert(Widget):
         "pf-m-danger": "error",
         "pf-m-info": "info",
     }
-
-    def __init__(self, parent, locator, logger=None):
-        super(Alert, self).__init__(parent, logger=logger)
-        self.locator = locator
 
     def read(self):
         """Returns the text of the body of the alert as a string."""
@@ -77,3 +71,11 @@ class Alert(Widget):
 
     def __repr__(self):
         return f"{type(self).__name__}({self.locator!r})"
+
+
+class Alert(BaseAlert, Widget):
+    ROOT = ParametrizedLocator("{@locator}")
+
+    def __init__(self, parent, locator, logger=None):
+        super().__init__(parent, logger=logger)
+        self.locator = locator

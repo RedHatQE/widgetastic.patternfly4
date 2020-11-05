@@ -2,14 +2,12 @@ from widgetastic.exceptions import WidgetOperationFailed
 from widgetastic.widget import Widget
 
 
-class BreadCrumb(Widget):
+class BaseBreadCrumb:
     """Represents the Patternfly BreadCrumb.
 
     https://www.patternfly.org/v4/documentation/react/components/breadcrumb
     """
 
-    PF_NAME = "Breadcrumb"
-    ROOT = './/nav[contains(@class, "pf-c-breadcrumb")]/ol'
     ELEMENTS = ".//li"
 
     @property
@@ -56,3 +54,7 @@ class BreadCrumb(Widget):
     def read(self):
         """Return the active location of the breadcrumb."""
         return self.active_location
+
+
+class BreadCrumb(BaseBreadCrumb, Widget):
+    ROOT = './/nav[contains(@class, "pf-c-breadcrumb")]/ol'

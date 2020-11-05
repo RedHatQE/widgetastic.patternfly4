@@ -1,8 +1,7 @@
 from .dropdown import Dropdown
 
 
-class OptionsMenu(Dropdown):
-    PF_NAME = "OptionsMenu"
+class BaseOptionsMenu:
     BUTTON_LOCATOR = (
         ".//button[contains(@class, 'pf-c-options-menu__toggle') or "
         "contains(@class, 'pf-c-options-menu__toggle-button')]"
@@ -29,3 +28,7 @@ class OptionsMenu(Dropdown):
             return [
                 self.browser.text(el) for el in self.browser.elements(self.SELECTED_ITEMS_LOCATOR)
             ]
+
+
+class OptionsMenu(BaseOptionsMenu, Dropdown):
+    pass

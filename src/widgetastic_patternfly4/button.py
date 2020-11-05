@@ -5,7 +5,46 @@ from widgetastic.widget import Widget
 from widgetastic.xpath import quote
 
 
-class Button(Widget, ClickableMixin):
+class BaseButton:
+    CHECK_VISIBILITY = True
+
+    # Classes usable in the constructor
+    # Button types
+    PRIMARY = "pf-m-primary"
+    SECONDARY = "pf-m-secondary"
+    TETRIARY = "pf-m-tertiary"
+    DANGER = "pf-m-danger"
+    LINK = "pf-m-link"
+    PLAIN = "pf-m-plain"
+
+    # Shape
+    BLOCK = "pf-m-block"
+
+    def read(self):
+        """Returns the string of the button."""
+        return self.browser.text(self)
+
+    @property
+    def active(self):
+        """Returns a boolean detailing if the button is active."""
+        return "pf-m-active" in self.browser.classes(self)
+
+    @property
+    def disabled(self):
+        """Returns a boolean detailing if the button is disabled."""
+        check1 = "pf-m-disabled" in self.browser.classes(self)
+        return check1 or self.browser.get_attribute("disabled", self)
+
+    def __repr__(self):
+        return "{}{}".format(type(self).__name__, call_sig(self.args, self.kwargs))
+
+    @property
+    def title(self):
+        """Returns the title of the button as a string."""
+        return self.browser.get_attribute("title", self)
+
+
+class Button(BaseButton, Widget, ClickableMixin):
     """A Patternfly button
 
     You can match by text, partial text or by attributes, you can also add the patternfly classes
@@ -22,22 +61,7 @@ class Button(Widget, ClickableMixin):
         assert not button.disabled
     """
 
-    PF_NAME = "Button"
     ROOT = ParametrizedLocator("{@locator}")
-
-    CHECK_VISIBILITY = True
-
-    # Classes usable in the constructor
-    # Button types
-    PRIMARY = "pf-m-primary"
-    SECONDARY = "pf-m-secondary"
-    TETRIARY = "pf-m-tertiary"
-    DANGER = "pf-m-danger"
-    LINK = "pf-m-link"
-    PLAIN = "pf-m-plain"
-
-    # Shape
-    BLOCK = "pf-m-block"
 
     def _generate_locator(self, *text, **kwargs):
         classes = kwargs.pop("classes", [])
@@ -72,35 +96,7 @@ class Button(Widget, ClickableMixin):
         )
 
     def __init__(self, parent, *text, **kwargs):
-        logger = kwargs.pop("logger", None)
-        Widget.__init__(self, parent, logger=logger)
+        super().__init__(parent, logger=kwargs.pop("logger", None))
         self.args = text
         self.kwargs = kwargs
-        locator = kwargs.pop("locator", None)
-        if locator:
-            self.locator = locator
-        else:
-            self.locator = self._generate_locator(*text, **kwargs)
-
-    def read(self):
-        """Returns the string of the button."""
-        return self.browser.text(self)
-
-    @property
-    def active(self):
-        """Returns a boolean detailing if the button is active."""
-        return "pf-m-active" in self.browser.classes(self)
-
-    @property
-    def disabled(self):
-        """Returns a boolean detailing if the button is disabled."""
-        check1 = "pf-m-disabled" in self.browser.classes(self)
-        return check1 or self.browser.get_attribute("disabled", self)
-
-    def __repr__(self):
-        return "{}{}".format(type(self).__name__, call_sig(self.args, self.kwargs))
-
-    @property
-    def title(self):
-        """Returns the title of the button as a string."""
-        return self.browser.get_attribute("title", self)
+        self.locator = kwargs.pop("locator", self._generate_locator(*text, **kwargs))

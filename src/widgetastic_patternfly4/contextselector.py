@@ -1,9 +1,8 @@
 from .select import Select
 
 
-class ContextSelector(Select):
+class BaseContextSelector:
 
-    PF_NAME = "ContextSelector"
     ITEMS_LOCATOR = ".//ul[@class='pf-c-context-selector__menu-list']/li"
     ITEM_LOCATOR = (
         ".//*[contains(@class, 'pf-c-context-selector__menu-list-item')"
@@ -25,3 +24,7 @@ class ContextSelector(Select):
                 self.browser.send_keys(item, self.SEARCH_INPUT_LOCATOR)
                 self.browser.click(self.SEARCH_BUTTON_LOCATOR)
             self.browser.click(self.item_element(item, close=False))
+
+
+class ContextSelector(BaseContextSelector, Select):
+    pass
