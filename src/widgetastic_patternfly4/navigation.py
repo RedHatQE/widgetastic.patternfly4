@@ -2,7 +2,6 @@ from collections import OrderedDict
 
 from wait_for import wait_for
 from widgetastic.exceptions import NoSuchElementException
-from widgetastic.ouia import OUIAGenericWidget
 from widgetastic.utils import ParametrizedLocator
 from widgetastic.widget import Widget
 from widgetastic.xpath import quote
@@ -144,7 +143,3 @@ class Navigation(BaseNavigation, Widget):
             self.locator = self.LOCATOR_START.format(label_part + id_part)
         else:
             raise TypeError("You need to specify either, id, label or locator for Navigation")
-
-
-class NavigationOUIA(BaseNavigation, OUIAGenericWidget):
-    OUIA_NAMESPACE = "PF4"

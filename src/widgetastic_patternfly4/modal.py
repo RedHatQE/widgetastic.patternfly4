@@ -1,5 +1,4 @@
 from widgetastic.exceptions import NoSuchElementException
-from widgetastic.ouia import OUIAGenericView
 from widgetastic.utils import ParametrizedLocator
 from widgetastic.widget import View
 from widgetastic.xpath import quote
@@ -59,7 +58,3 @@ class Modal(BaseModal, View):
     def __init__(self, parent, locator=None, logger=None, **kwargs):
         super().__init__(parent, logger=logger, **kwargs)
         self.locator = locator or ".//div[contains(@class, 'pf-c-modal-box')]"
-
-
-class ModalOUIA(BaseModal, OUIAGenericView):
-    OUIA_NAMESPACE = "PF4"

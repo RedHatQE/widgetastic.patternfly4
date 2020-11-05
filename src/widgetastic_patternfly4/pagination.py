@@ -2,7 +2,6 @@ import math
 from contextlib import contextmanager
 
 from selenium.webdriver.common.keys import Keys
-from widgetastic.ouia import OUIAGenericView
 from widgetastic.utils import ParametrizedLocator
 from widgetastic.widget import GenericLocatorWidget
 from widgetastic.widget import Text
@@ -193,10 +192,6 @@ class Pagination(BasePagination, View):
         self.locator = locator
 
 
-class PaginationOUIA(BasePagination, OUIAGenericView):
-    OUIA_NAMESPACE = "PF4"
-
-
 class BaseCompactPagination:
     @property
     def is_first_disabled(self):
@@ -254,7 +249,3 @@ class CompactPagination(BaseCompactPagination, Pagination):
     DEFAULT_LOCATOR = (
         ".//div[contains(@class, 'pf-c-pagination') and contains(@class, 'pf-m-compact')]"
     )
-
-
-class CompactPaginationOUIA(BaseCompactPagination, PaginationOUIA):
-    pass
