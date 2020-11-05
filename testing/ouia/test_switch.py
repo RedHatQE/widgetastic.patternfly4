@@ -1,7 +1,7 @@
 import pytest
 from widgetastic.widget import View
 
-from widgetastic_patternfly4.ouia import SwitchOUIA
+from widgetastic_patternfly4.ouia import Switch
 
 TESTING_PAGE_URL = "https://patternfly-docs-ouia.netlify.app/documentation/react/components/switch"
 
@@ -10,7 +10,7 @@ TESTING_PAGE_URL = "https://patternfly-docs-ouia.netlify.app/documentation/react
 def view(browser):
     class TestView(View):
         ROOT = ".//div[@id='ws-react-c-switch-ouia']"
-        switch = SwitchOUIA("Simple Switch")
+        switch = Switch("Simple Switch")
 
     return TestView(browser)
 

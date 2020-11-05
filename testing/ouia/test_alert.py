@@ -1,7 +1,7 @@
 import pytest
 from widgetastic.widget import View
 
-from widgetastic_patternfly4.ouia import AlertOUIA
+from widgetastic_patternfly4.ouia import Alert
 
 TESTING_PAGE_URL = "https://patternfly-docs-ouia.netlify.app/documentation/react/components/alert"
 
@@ -12,7 +12,7 @@ ALERT_TYPES = ["success", "danger", "warning", "info"]
 def alert(browser, request):
     class TestView(View):
         ROOT = ".//div[@id='ws-react-c-alert-ouia']"
-        alert = AlertOUIA(request.param)
+        alert = Alert(request.param)
 
     view = TestView(browser)
     return view.alert

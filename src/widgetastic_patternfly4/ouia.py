@@ -1,77 +1,122 @@
-import sys
-
-from widgetastic.utils import ParametrizedLocator
-from widgetastic.widget import GenericLocatorWidget
-from widgetastic.widget import Table
-from widgetastic.widget import Widget
+from widgetastic.ouia import OUIAGenericView
+from widgetastic.ouia import OUIAGenericWidget
+from widgetastic.widget.table import Table
 from widgetastic.xpath import quote
 
-import widgetastic_patternfly4
-from .dropdown import Dropdown
+from widgetastic_patternfly4.alert import BaseAlert
+from widgetastic_patternfly4.breadcrumb import BaseBreadCrumb
+from widgetastic_patternfly4.button import BaseButton
+from widgetastic_patternfly4.contextselector import BaseContextSelector
+from widgetastic_patternfly4.dropdown import BaseDropdown
+from widgetastic_patternfly4.dropdown import BaseGroupDropdown
+from widgetastic_patternfly4.dropdown import BaseSplitButtonDropdown
+from widgetastic_patternfly4.formselect import BaseFormSelect
+from widgetastic_patternfly4.modal import BaseModal
+from widgetastic_patternfly4.navigation import BaseNavigation
+from widgetastic_patternfly4.optionsmenu import BaseOptionsMenu
+from widgetastic_patternfly4.pagination import BaseCompactPagination
+from widgetastic_patternfly4.pagination import BasePagination
+from widgetastic_patternfly4.select import BaseCheckboxSelect
+from widgetastic_patternfly4.select import BaseSelect
+from widgetastic_patternfly4.switch import BaseSwitch
+from widgetastic_patternfly4.table import BaseExpandableTable
+from widgetastic_patternfly4.table import BasePatternflyTable
 
 
-class OUIAMixin:
-
-    ROOT = ParametrizedLocator(
-        ".//*[@data-ouia-component-type={@component_type} and "
-        "@data-ouia-component-id={@component_id}]"
-    )
-
-    def __init__(self, component_type, component_id):
-        self.component_type = quote(f"PF4/{component_type}")
-        self.component_id = quote(component_id)
-        self.locator = self.ROOT.locator
-
-    @property
-    def is_safe(self):
-        return "true" in self.browser.get_attribute("data-ouia-safe", self)
+class Alert(BaseAlert, OUIAGenericWidget):
+    OUIA_COMPONENT_TYPE = "PF4/Alert"
 
 
-def generate_ouia_compat_class(name):
-    klass_name = name.rstrip("OUIA")
-    try:
-        klass = getattr(widgetastic_patternfly4, klass_name)
-    except AttributeError:
-        raise ImportError(f"cannot import name '{klass_name}'")
-    if not hasattr(klass, "PF_NAME"):
-        raise ValueError(f"{klass_name} is not OUIA ready")
-
-    class WidgetWithOUIA(OUIAMixin, klass):
-        def __init__(self, parent, component_id, logger=None, *args, **kwargs):
-            OUIAMixin.__init__(self, klass.PF_NAME, component_id)
-            if issubclass(klass, GenericLocatorWidget):
-                super(klass, self).__init__(parent, self.locator, logger=logger)
-            elif issubclass(klass, Table):
-                super(klass, self).__init__(parent, self.locator, logger=logger, **kwargs)
-            elif issubclass(klass, Dropdown):
-                Widget.__init__(self, parent, logger=logger)
-            else:
-                super(klass, self).__init__(parent, logger=logger)
-
-    WidgetWithOUIA.__name__ = WidgetWithOUIA.__qualname__ = name
-    return WidgetWithOUIA
+class BreadCrumb(BaseBreadCrumb, OUIAGenericWidget):
+    OUIA_COMPONENT_TYPE = "PF4/Breadcrumb"
 
 
-class WidgetsClassesCache(dict):
-    def __missing__(self, key):
-        klass = generate_ouia_compat_class(key)
-        self[key] = klass
-        return klass
+class Button(BaseButton, OUIAGenericWidget):
+    OUIA_COMPONENT_TYPE = "PF4/Button"
 
 
-class ImportHack:
-
-    cache = WidgetsClassesCache()
-    objs = {name: getattr(sys.modules[__name__], name) for name in dir(sys.modules[__name__])}
-
-    def __getattr__(self, name):
-        if name.endswith("OUIA"):
-            return self.cache[name]
-        if name == "__path__":
-            return
-        if name == "__all__":
-            return [key for key in self.objs.keys()]
-        return self.objs[name]
+class Dropdown(BaseDropdown, OUIAGenericWidget):
+    OUIA_COMPONENT_TYPE = "PF4/Dropdown"
 
 
-sys.modules[__name__] = ImportHack()
+class GroupDropdown(BaseGroupDropdown, Dropdown):
+    pass
+
+
+class SplitButtonDropdown(BaseSplitButtonDropdown, Dropdown):
+    pass
+
+
+class FormSelect(BaseFormSelect, OUIAGenericWidget):
+    OUIA_COMPONENT_TYPE = "PF4/FormSelect"
+
+
+class Modal(BaseModal, OUIAGenericView):
+    OUIA_COMPONENT_TYPE = "PF4/ModalContent"
+
+
+class Navigation(BaseNavigation, OUIAGenericWidget):
+    OUIA_COMPONENT_TYPE = "PF4/Nav"
+
+
+class Pagination(BasePagination, OUIAGenericView):
+    OUIA_COMPONENT_TYPE = "PF4/Pagination"
+
+
+class CompactPagination(BaseCompactPagination, Pagination):
+    pass
+
+
+class CheckboxSelect(BaseCheckboxSelect, Dropdown):
+    OUIA_COMPONENT_TYPE = "PF4/Select"
+
+
+class Switch(BaseSwitch, OUIAGenericWidget):
+    OUIA_COMPONENT_TYPE = "PF4/Switch"
+
+
+class PatternflyTable(BasePatternflyTable, Table):
+    def __init__(
+        self,
+        parent,
+        component_id,
+        column_widgets=None,
+        assoc_column=None,
+        rows_ignore_top=None,
+        rows_ignore_bottom=None,
+        top_ignore_fill=False,
+        bottom_ignore_fill=False,
+        logger=None,
+    ):
+        self.component_type = "PF4/Table"
+        self.component_id = component_id
+        super().__init__(
+            parent,
+            locator=(
+                f".//*[@data-ouia-component-type={quote(self.component_type)} "
+                f"and @data-ouia-component-id={quote(self.component_id)}]"
+            ),
+            column_widgets=column_widgets,
+            assoc_column=assoc_column,
+            rows_ignore_top=rows_ignore_top,
+            rows_ignore_bottom=rows_ignore_bottom,
+            top_ignore_fill=top_ignore_fill,
+            bottom_ignore_fill=bottom_ignore_fill,
+            logger=logger,
+        )
+
+
+class ExpandableTable(BaseExpandableTable, PatternflyTable):
+    pass
+
+
+class Select(BaseSelect, Dropdown):
+    OUIA_COMPONENT_TYPE = "PF4/Select"
+
+
+class ContextSelector(BaseContextSelector, Select):
+    OUIA_COMPONENT_TYPE = "PF4/ContextSelector"
+
+
+class OptionsMenu(BaseOptionsMenu, Dropdown):
+    OUIA_COMPONENT_TYPE = "PF4/OptionsMenu"

@@ -4,7 +4,7 @@ import pytest
 from widgetastic.exceptions import WidgetOperationFailed
 from widgetastic.widget import View
 
-from widgetastic_patternfly4.ouia import BreadCrumbOUIA
+from widgetastic_patternfly4.ouia import BreadCrumb
 
 TESTING_PAGE_URL = (
     "https://patternfly-docs-ouia.netlify.app/documentation/react/components/breadcrumb"  # noqa
@@ -14,7 +14,7 @@ TESTING_PAGE_URL = (
 def test_breadcrumb(browser):
     class TestView(View):
         ROOT = ".//div[@id='ws-react-c-breadcrumb-ouia']"
-        breadcrumb = BreadCrumbOUIA("basic")
+        breadcrumb = BreadCrumb("basic")
 
     view = TestView(browser)
     assert view.breadcrumb.is_displayed

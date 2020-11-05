@@ -6,13 +6,12 @@ class SwitchDisabled(Exception):
     pass
 
 
-class Switch(GenericLocatorWidget):
+class BaseSwitch:
     """Represents the Patternfly Switch.
 
     https://www.patternfly.org/v4/documentation/react/components/switch
     """
 
-    PF_NAME = "Switch"
     CHECKBOX_LOCATOR = "./input"
     LABEL_ON = "./span[contains(@class, 'pf-m-on')]"
     LABEL_OFF = "./span[contains(@class, 'pf-m-off')]"
@@ -57,3 +56,7 @@ class Switch(GenericLocatorWidget):
 
     def __repr__(self):
         return "{}({!r})".format(type(self).__name__, self.locator)
+
+
+class Switch(BaseSwitch, GenericLocatorWidget):
+    pass

@@ -3,8 +3,8 @@ from widgetastic.widget import Text
 from widgetastic.widget import View
 
 from widgetastic_patternfly4.modal import ModalItemNotFound
-from widgetastic_patternfly4.ouia import ButtonOUIA
-from widgetastic_patternfly4.ouia import ModalOUIA
+from widgetastic_patternfly4.ouia import Button
+from widgetastic_patternfly4.ouia import Modal
 
 TESTING_PAGE_URL = "https://patternfly-docs-ouia.netlify.app/documentation/react/components/modal"
 
@@ -13,9 +13,9 @@ TESTING_PAGE_URL = "https://patternfly-docs-ouia.netlify.app/documentation/react
 def modal(browser):
     class ModalTestView(View):
         ROOT = ".//div[@id='ws-react-c-modal-ouia']"
-        show_modal = ButtonOUIA("Show Modal")
+        show_modal = Button("Show Modal")
 
-    modal = ModalOUIA(browser, "Simple modal")
+    modal = Modal(browser, "Simple modal")
 
     view = ModalTestView(browser)
     view.show_modal.click()
@@ -24,7 +24,7 @@ def modal(browser):
         modal.close()
 
 
-class CustomModal(ModalOUIA):
+class CustomModal(Modal):
     """Model use as view and enhance with widgets"""
 
     custom_body = Text(".//div[contains(@class, 'pf-c-modal-box__body')]")

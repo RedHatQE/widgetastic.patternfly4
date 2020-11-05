@@ -99,13 +99,12 @@ class PatternflyTableRow(TableRow):
         return super(PatternflyTableRow, self).__getitem__(index)
 
 
-class PatternflyTable(Table):
+class BasePatternflyTable:
     """Represents the Patternfly table.
 
     https://www.patternfly.org/v4/documentation/react/components/table
     """
 
-    PF_NAME = "Table"
     ROWS = "./tbody/tr[./td]"
     HEADERS = "./thead/tr/th|./tr/th|./thead/tr/td"
 
@@ -138,6 +137,10 @@ class PatternflyTable(Table):
     def deselect_all(self, column=0):
         """Deselects all the rows."""
         self._toggle_select_all(False, column)
+
+
+class PatternflyTable(BasePatternflyTable, Table):
+    pass
 
 
 class ExpandableTableHeaderColumn(TableColumn):
@@ -234,7 +237,7 @@ class ExpandableTableRow(PatternflyTableRow):
         return result
 
 
-class ExpandableTable(PatternflyTable):
+class BaseExpandableTable:
     """
     The patternfly 4 expandable table has the following outline:
 
@@ -284,10 +287,14 @@ class ExpandableTable(PatternflyTable):
         elif not column_widgets:
             kwargs["column_widgets"] = {0: col_widget}
 
-        super(ExpandableTable, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def _create_row(self, parent, index, logger=None):
         return self.Row(parent, index, self.content_view, logger)
+
+
+class ExpandableTable(BaseExpandableTable, PatternflyTable):
+    pass
 
 
 class ExpandableColumn(TableColumn):

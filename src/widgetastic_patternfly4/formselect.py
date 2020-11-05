@@ -21,13 +21,12 @@ class FormSelectOptionNotFound(Exception):
     pass
 
 
-class FormSelect(GenericLocatorWidget):
+class BaseFormSelect:
     """Represents the Patternfly FormSelect.
 
     https://www.patternfly.org/v4/documentation/react/components/formselect
     """
 
-    PF_NAME = "FormSelect"
     ALL_OPTIONS_LOCATOR = ".//option"
     PARENT_OPTION_GROUP = "./parent::optgroup"
 
@@ -103,3 +102,7 @@ class FormSelect(GenericLocatorWidget):
 
     def __repr__(self):
         return "{}({!r})".format(type(self).__name__, self.locator)
+
+
+class FormSelect(BaseFormSelect, GenericLocatorWidget):
+    pass

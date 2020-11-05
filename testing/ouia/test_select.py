@@ -2,7 +2,7 @@ import pytest
 from widgetastic.widget import View
 
 from widgetastic_patternfly4 import SelectItemNotFound
-from widgetastic_patternfly4.ouia import SelectOUIA
+from widgetastic_patternfly4.ouia import Select
 
 TESTING_PAGE_URL = "https://patternfly-docs-ouia.netlify.app/documentation/react/components/select"
 
@@ -11,7 +11,7 @@ TESTING_PAGE_URL = "https://patternfly-docs-ouia.netlify.app/documentation/react
 def select(browser):
     class TestView(View):
         ROOT = ".//div[@id='ws-react-c-select-ouia']"
-        select = SelectOUIA("Single")
+        select = Select("Single")
 
     return TestView(browser).select
 

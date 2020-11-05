@@ -21,7 +21,7 @@ class DropdownItemNotFound(Exception):
     pass
 
 
-class Dropdown(Widget):
+class BaseDropdown:
     """Represents the Patternfly dropdown.
 
     https://www.patternfly.org/v4/documentation/react/components/dropdown
@@ -31,26 +31,9 @@ class Dropdown(Widget):
 
     """
 
-    PF_NAME = "Dropdown"
-    ROOT = ParametrizedLocator("{@locator}")
     BUTTON_LOCATOR = ".//button[contains(@class, 'pf-c-dropdown__toggle')]"
     ITEMS_LOCATOR = ".//ul[contains(@class, 'pf-c-dropdown__menu')]/li"
     ITEM_LOCATOR = ".//*[contains(@class, 'pf-c-dropdown__menu-item') and normalize-space(.)={}]"
-    TEXT_LOCATOR = (
-        ".//div[contains(@class, 'pf-c-dropdown') and child::button[normalize-space(.)={}]]"
-    )
-    DEFAULT_LOCATOR = './/div[contains(@class, "pf-c-dropdown")][1]'
-
-    def __init__(self, parent, text=None, locator=None, logger=None):
-        Widget.__init__(self, parent, logger=logger)
-        if locator and text:
-            raise ValueError("Either text or locator should be provided")
-        if text:
-            self.locator = self.TEXT_LOCATOR.format(quote(text))
-        elif locator:
-            self.locator = locator
-        else:
-            self.locator = self.DEFAULT_LOCATOR
 
     @contextmanager
     def opened(self):
@@ -204,7 +187,26 @@ class Dropdown(Widget):
         return "{}({!r})".format(type(self).__name__, getattr(self, "text", None) or self.locator)
 
 
-class GroupDropdown(Dropdown):
+class Dropdown(BaseDropdown, Widget):
+    ROOT = ParametrizedLocator("{@locator}")
+    TEXT_LOCATOR = (
+        ".//div[contains(@class, 'pf-c-dropdown') and child::button[normalize-space(.)={}]]"
+    )
+    DEFAULT_LOCATOR = './/div[contains(@class, "pf-c-dropdown")][1]'
+
+    def __init__(self, parent, text=None, locator=None, logger=None):
+        super().__init__(parent, logger=logger)
+        if locator and text:
+            raise ValueError("Either text or locator should be provided")
+        if text:
+            self.locator = self.TEXT_LOCATOR.format(quote(text))
+        elif locator:
+            self.locator = locator
+        else:
+            self.locator = self.DEFAULT_LOCATOR
+
+
+class BaseGroupDropdown:
     """Dropdown with grouped items in it."""
 
     ITEMS_LOCATOR = ".//section[@class='pf-c-dropdown__group']/ul/li"
@@ -248,7 +250,11 @@ class GroupDropdown(Dropdown):
         return super().item_select(item, handle_alert=handle_alert, group_name=group_name)
 
 
-class SplitButtonDropdown(Dropdown):
+class GroupDropdown(BaseGroupDropdown, Dropdown):
+    pass
+
+
+class BaseSplitButtonDropdown:
     """Represents the Patternfly Split Button Dropdown.
 
     https://www.patternfly.org/v4/documentation/react/components/dropdown#split-button-with-text
@@ -271,3 +277,7 @@ class SplitButtonDropdown(Dropdown):
 
     def read(self):
         return self.browser.text(self)
+
+
+class SplitButtonDropdown(BaseSplitButtonDropdown, Dropdown):
+    pass

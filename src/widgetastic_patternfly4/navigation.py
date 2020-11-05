@@ -15,15 +15,12 @@ def check_nav_loaded(fn):
     return inner
 
 
-class Navigation(Widget):
+class BaseNavigation:
     """The Patternfly navigation.
 
     https://www.patternfly.org/v4/documentation/react/components/nav
     """
 
-    PF_NAME = "Nav"
-    LOCATOR_START = './/nav[@class="pf-c-nav"{}]'
-    ROOT = ParametrizedLocator("{@locator}")
     CURRENTLY_SELECTED = (
         './/*[self::a or self::button][contains(@class, "pf-m-current") or '
         'parent::li[contains(@class, "pf-m-current")]]'
@@ -46,23 +43,6 @@ class Navigation(Widget):
         elif not out:
             self.logger.info("Navigation doesn't have 'data-ouia-safe' property")
         return True
-
-    def __init__(self, parent, label=None, id=None, locator=None, logger=None):
-        Widget.__init__(self, parent, logger=logger)
-
-        quoted_label = quote(label) if label else ""
-        if label:
-            label_part = " and @label={} or @aria-label={}".format(quoted_label, quoted_label)
-        else:
-            label_part = ""
-
-        id_part = " and @id={}".format(quote(id)) if id else ""
-        if locator is not None:
-            self.locator = locator
-        elif label_part or id_part:
-            self.locator = self.LOCATOR_START.format(label_part + id_part)
-        else:
-            raise TypeError("You need to specify either, id, label or locator for Navigation")
 
     @check_nav_loaded
     def read(self):
@@ -141,3 +121,25 @@ class Navigation(Widget):
 
     def __repr__(self):
         return "{}({!r})".format(type(self).__name__, self.ROOT)
+
+
+class Navigation(BaseNavigation, Widget):
+    ROOT = ParametrizedLocator("{@locator}")
+    LOCATOR_START = './/nav[@class="pf-c-nav"{}]'
+
+    def __init__(self, parent, label=None, id=None, locator=None, logger=None):
+        super().__init__(parent, logger=logger)
+
+        quoted_label = quote(label) if label else ""
+        if label:
+            label_part = " and @label={} or @aria-label={}".format(quoted_label, quoted_label)
+        else:
+            label_part = ""
+
+        id_part = " and @id={}".format(quote(id)) if id else ""
+        if locator is not None:
+            self.locator = locator
+        elif label_part or id_part:
+            self.locator = self.LOCATOR_START.format(label_part + id_part)
+        else:
+            raise TypeError("You need to specify either, id, label or locator for Navigation")

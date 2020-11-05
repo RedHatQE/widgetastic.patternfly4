@@ -1,7 +1,7 @@
 import pytest
 from widgetastic.widget import View
 
-from widgetastic_patternfly4.ouia import PatternflyTableOUIA
+from widgetastic_patternfly4.ouia import PatternflyTable
 
 TESTING_PAGE_URL = "https://patternfly-docs-ouia.netlify.app/documentation/react/components/table"
 
@@ -19,7 +19,7 @@ def test_sortable_table(browser, sample):
 
     class TestView(View):
         ROOT = ".//div[@id='ws-react-c-table-ouia']"
-        table = PatternflyTableOUIA("Sortable Table")
+        table = PatternflyTable("Sortable Table")
 
     view = TestView(browser)
     view.table.sort_by(header, order)
