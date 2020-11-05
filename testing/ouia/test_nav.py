@@ -1,7 +1,7 @@
 import pytest
 from widgetastic.widget import View
 
-from widgetastic_patternfly4.ouia import NavigationOUIA
+from widgetastic_patternfly4.ouia import Navigation
 
 TESTING_PAGE_URL = "https://patternfly-docs-ouia.netlify.app/documentation/react/components/nav"
 
@@ -10,7 +10,7 @@ TESTING_PAGE_URL = "https://patternfly-docs-ouia.netlify.app/documentation/react
 def view(browser):
     class TestView(View):
         ROOT = ".//div[@id='ws-react-c-nav-ouia']"
-        nav = NavigationOUIA("Nav Default")
+        nav = Navigation("Nav Default")
 
     return TestView(browser)
 

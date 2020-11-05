@@ -3,7 +3,7 @@ from widgetastic.widget import View
 
 from widgetastic_patternfly4 import DropdownItemDisabled
 from widgetastic_patternfly4 import DropdownItemNotFound
-from widgetastic_patternfly4.ouia import DropdownOUIA
+from widgetastic_patternfly4.ouia import Dropdown
 
 TESTING_PAGE_URL = (
     "https://patternfly-docs-ouia.netlify.app/documentation/react/components/dropdown"  # noqa
@@ -14,7 +14,7 @@ TESTING_PAGE_URL = (
 def dropdown(browser):
     class TestView(View):
         ROOT = ".//div[@id='ws-react-c-dropdown-ouia']"
-        dropdown = DropdownOUIA("Dropdown")
+        dropdown = Dropdown("Dropdown")
 
     view = TestView(browser)
     return view.dropdown

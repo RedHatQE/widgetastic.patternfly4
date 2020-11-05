@@ -2,7 +2,7 @@ import pytest
 from widgetastic.widget import View
 
 from widgetastic_patternfly4 import DropdownItemNotFound
-from widgetastic_patternfly4.ouia import OptionsMenuOUIA
+from widgetastic_patternfly4.ouia import OptionsMenu
 
 TESTING_PAGE_URL = (
     "https://patternfly-docs-ouia.netlify.app/documentation/react/components/optionsmenu"  # noqa
@@ -13,7 +13,7 @@ TESTING_PAGE_URL = (
 def options_menu(browser):
     class TestView(View):
         ROOT = ".//div[@id='ws-react-c-optionsmenu-ouia']"
-        options_menu = OptionsMenuOUIA("Simple Options Menu")
+        options_menu = OptionsMenu("Simple Options Menu")
 
     return TestView(browser).options_menu
 

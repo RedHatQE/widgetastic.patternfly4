@@ -2,7 +2,7 @@ import pytest
 from widgetastic.widget import View
 
 from widgetastic_patternfly4 import SelectItemNotFound
-from widgetastic_patternfly4.ouia import ContextSelectorOUIA
+from widgetastic_patternfly4.ouia import ContextSelector
 
 TESTING_PAGE_URL = "https://patternfly-docs-ouia.netlify.app/documentation/react/components/contextselector"  # noqa
 
@@ -11,7 +11,7 @@ TESTING_PAGE_URL = "https://patternfly-docs-ouia.netlify.app/documentation/react
 def view(browser):
     class TestView(View):
         ROOT = ".//div[@id='ws-react-c-contextselector-ouia']"
-        contextselector = ContextSelectorOUIA("Basic")
+        contextselector = ContextSelector("Basic")
 
     return TestView(browser)
 

@@ -3,7 +3,7 @@ from wait_for import wait_for
 from widgetastic.widget import View
 
 from widgetastic_patternfly4 import PaginationNavDisabled
-from widgetastic_patternfly4.ouia import PaginationOUIA
+from widgetastic_patternfly4.ouia import Pagination
 
 TESTING_PAGE_URL = (
     "https://patternfly-docs-ouia.netlify.app/documentation/react/components/pagination"  # noqa
@@ -14,7 +14,7 @@ TESTING_PAGE_URL = (
 def paginator(browser, request):
     class TestView(View):
         ROOT = ".//div[@id='ws-react-c-pagination-ouia']"
-        paginator = PaginationOUIA("pagination-options-menu-top")
+        paginator = Pagination("pagination-options-menu-top")
 
     paginator = TestView(browser).paginator
     wait_for(lambda: paginator.is_displayed, num_sec=10)

@@ -2,7 +2,7 @@ import pytest
 from widgetastic.widget import View
 
 from widgetastic_patternfly4 import FormSelectOptionNotFound
-from widgetastic_patternfly4.ouia import FormSelectOUIA
+from widgetastic_patternfly4.ouia import FormSelect
 
 TESTING_PAGE_URL = (
     "https://patternfly-docs-ouia.netlify.app/documentation/react/components/formselect"  # noqa
@@ -13,7 +13,7 @@ TESTING_PAGE_URL = (
 def view(browser):
     class FormSelectTestView(View):
         ROOT = ".//div[@id='ws-react-c-formselect-ouia']"
-        input = FormSelectOUIA("FormSelect Input")
+        input = FormSelect("FormSelect Input")
 
     return FormSelectTestView(browser)
 
