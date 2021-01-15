@@ -21,7 +21,9 @@ SORT = [
 @pytest.mark.parametrize("sample", SORT, ids=lambda sample: "{}-{}".format(sample[0], sample[1]))
 def test_sortable_table(browser, sample):
     header, order, expected_result = sample
-    table = PatternflyTable(browser, ".//div[@id='ws-react-c-table-sortable']/table")
+    table = PatternflyTable(
+        browser, ".//div[@id='ws-react-c-table-sortable--wrapping-headers']/table"
+    )
     table.sort_by(header, order)
     column = [row[header] for row in table.read()]
     assert column == expected_result
