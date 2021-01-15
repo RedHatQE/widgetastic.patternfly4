@@ -27,7 +27,7 @@ class PageCard(CardForCardGroup,):
 class Cards(CardGroup):
     def __init__(self, parent, locator=None, logger=None, **kwargs):
         View.__init__(self, parent, logger=logger, **kwargs)
-        self.locator = locator or './/section[@class="pf-c-page__main-section"]/div'
+        self.locator = locator or './/div[contains(@class, "pf-l-gallery")]'
 
     cards = ParametrizedView.nested(PageCard)
 
