@@ -10,7 +10,7 @@ on:
 
 jobs:
   lint:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
@@ -22,7 +22,7 @@ jobs:
           pre-commit run --all
 
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     needs: lint
     strategy:
       matrix:
@@ -53,7 +53,7 @@ jobs:
           path: ${{ strategy.job-index }}_coverage
 
   submit_coverage:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     needs: test
     steps:
       - uses: actions/setup-python@v2

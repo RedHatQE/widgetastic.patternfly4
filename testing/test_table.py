@@ -21,7 +21,9 @@ SORT = [
 @pytest.mark.parametrize("sample", SORT, ids=lambda sample: "{}-{}".format(sample[0], sample[1]))
 def test_sortable_table(browser, sample):
     header, order, expected_result = sample
-    table = PatternflyTable(browser, ".//div[@id='ws-react-c-table-sortable']/table")
+    table = PatternflyTable(
+        browser, ".//div[@id='ws-react-c-table-sortable--wrapping-headers']/table"
+    )
     table.sort_by(header, order)
     column = [row[header] for row in table.read()]
     assert column == expected_result
@@ -44,39 +46,18 @@ def test_selectable_table(browser, sample):
 
 def test_expandable_table(browser):
     expected_read = [
-        {
-            "Header cell": "one",
-            "Branches": "two",
-            "Pull requests": "three",
-            "Workspaces": "four",
-            "Last Commit": "five",
-        },
-        {
-            "Header cell": "parent - 1",
-            "Branches": "two",
-            "Pull requests": "three",
-            "Workspaces": "four",
-            "Last Commit": "five",
-        },
-        {
-            "Header cell": "parent - 2",
-            "Branches": "two",
-            "Pull requests": "three",
-            "Workspaces": "four",
-            "Last Commit": "five",
-        },
-        {
-            "Header cell": "parent - 3",
-            "Branches": "two",
-            "Pull requests": "three",
-            "Workspaces": "four",
-            "Last Commit": "five",
-        },
+        {"ID": "one", "Branches": "two", "Pull requests": "three", 4: "four"},
+        {"ID": "parent - 1", "Branches": "two", "Pull requests": "three", 4: "four"},
+        {"ID": "parent - 2", "Branches": "two", "Pull requests": "three", 4: "four"},
+        {"ID": "parent - 3", "Branches": "two", "Pull requests": "three", 4: "four"},
+        {"ID": "parent - 4", "Branches": "two", "Pull requests": "three", 4: "four"},
+        {"ID": "parent - 5", "Branches": "two", "Pull requests": "three", 4: "four"},
+        {"ID": "parent - 6", "Branches": "two", "Pull requests": "three", 4: "four"},
     ]
 
-    row1_expected_content = "child - 1"
-    row2_expected_content = "child - 2"
-    row3_expected_content = "child - 3"
+    row1_expected_content = "single cell"
+    row2_expected_content = "single cell - fullWidth"
+    row3_expected_content = "single cell - noPadding"
 
     table = ExpandableTable(browser, ".//div[@id='ws-react-c-table-expandable']/table")
 
