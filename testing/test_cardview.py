@@ -13,6 +13,13 @@ TESTING_PAGE_URL = "https://patternfly-react.surge.sh/components/card/react-demo
 
 
 class PageCard(CardForCardGroup,):
+    def __init__(self, parent, locator=None, logger=None, **kwargs):
+        super().__init__(parent, locator=locator, logger=logger, **kwargs)
+        # workaround for overlapping bottom paginator
+        # TODO fix it in widgetastic.core
+        self.browser.execute_script(
+            "arguments[0].scrollIntoView({block: 'center'});", self.__element__()
+        )
 
     dropdown = Dropdown()
 
