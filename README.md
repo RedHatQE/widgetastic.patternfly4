@@ -9,43 +9,45 @@ Library of Patternfly v4 (aka Next) components for [Widgetastic](https://github.
 
 ## Components list
 
-Alert - https://www.patternfly.org/v4/documentation/react/components/alert
+Alert - <https://www.patternfly.org/v4/components/alert>
 
-Breadcrumb - https://www.patternfly.org/v4/documentation/react/components/breadcrumb
+Breadcrumb - <https://www.patternfly.org/v4/components/breadcrumb>
 
-Button - https://www.patternfly.org/v4/documentation/react/components/button
+Button - <https://www.patternfly.org/v4/components/button>
 
-Bullet Chart - https://www.patternfly.org/v4/documentation/react/charts/chartbullet
+Bullet Chart - <https://www.patternfly.org/v4/charts/chartbullet>
 
-Card - https://www.patternfly.org/v4/documentation/react/components/card
+Card - <https://www.patternfly.org/v4/components/card>
 
-Chip Group - https://www.patternfly.org/v4/documentation/react/components/chipgroup
+Chip Group - <https://www.patternfly.org/v4/components/chipgroup>
 
-Context Selector - https://www.patternfly.org/v4/documentation/react/components/contextselector
+Context Selector - <https://www.patternfly.org/v4/components/contextselector>
 
-Donut Chart - https://www.patternfly.org/v4/documentation/react/charts/chartdonut
+Donut Chart - <https://www.patternfly.org/v4/charts/chartdonut>
 
-Dropdown - https://www.patternfly.org/v4/documentation/react/components/dropdown
+Dropdown - <https://www.patternfly.org/v4/components/dropdown>
 
-FormSelect - https://www.patternfly.org/v4/documentation/react/components/formselect
+FormSelect - <https://www.patternfly.org/v4/components/formselect>
 
-Modal - https://patternfly-react.surge.sh/v4/documentation/react/components/modal
+Modal - <https://patternfly-react.surge.sh/v4/components/modal>
 
-Nav - https://www.patternfly.org/v4/documentation/react/components/nav
+Nav - <https://www.patternfly.org/v4/components/nav>
 
-Options Menu - https://www.patternfly.org/v4/documentation/react/components/optionsmenu
+Options Menu - <https://www.patternfly.org/v4/components/optionsmenu>
 
-Pagination - https://www.patternfly.org/v4/documentation/react/components/pagination
+Pagination - <https://www.patternfly.org/v4/components/pagination>
 
-Pie Chart - https://www.patternfly.org/v4/documentation/react/charts/chartpie
+Pie Chart - <https://www.patternfly.org/v4/charts/chartpie>
 
-Select - https://www.patternfly.org/v4/documentation/react/components/select
+Popover - <https://www.patternfly.org/v4/components/popover>
 
-Switch - https://www.patternfly.org/v4/documentation/react/components/switch
+Select - <https://www.patternfly.org/v4/components/select>
 
-Table - https://www.patternfly.org/v4/documentation/react/components/table
+Switch - <https://www.patternfly.org/v4/components/switch>
 
-Tabs - https://www.patternfly.org/v4/documentation/react/components/tabs
+Table - <https://www.patternfly.org/v4/components/table>
+
+Tabs - <https://www.patternfly.org/v4/components/tabs>
 
 ## Contribution guide
 
