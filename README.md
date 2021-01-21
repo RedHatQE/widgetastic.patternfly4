@@ -41,6 +41,8 @@ Pie Chart - <https://www.patternfly.org/v4/charts/chartpie>
 
 Popover - <https://www.patternfly.org/v4/components/popover>
 
+Progress - <https://www.patternfly.org/v4/components/progress>
+
 Select - <https://www.patternfly.org/v4/components/select>
 
 Switch - <https://www.patternfly.org/v4/components/switch>
