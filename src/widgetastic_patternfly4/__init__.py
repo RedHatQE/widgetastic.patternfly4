@@ -33,6 +33,7 @@ from .pagination import Pagination
 from .pagination import PaginationNavDisabled
 from .piechart import PieChart
 from .popover import Popover
+from .progress import Progress
 from .select import CheckboxSelect
 from .select import Select
 from .select import SelectItemDisabled
@@ -84,6 +85,7 @@ __all__ = [
     "PaginationNavDisabled",
     "PieChart",
     "Popover",
+    "Progress",
     "Select",
     "SelectItemDisabled",
     "SelectItemNotFound",
