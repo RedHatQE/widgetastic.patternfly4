@@ -25,10 +25,10 @@ class BaseNavigation:
         './/*[self::a or self::button][contains(@class, "pf-m-current") or '
         'parent::li[contains(@class, "pf-m-current")]]'
     )
-    ITEMS = "./ul/li/*[self::a or self::button]"
+    ITEMS = ".//ul/li/*[self::a or self::button]"
     SUB_ITEMS_ROOT = "./section"
-    ITEM_MATCHING = "./ul/li[.//*[self::a or self::button][normalize-space(.)={}]]"
-    ITEM_MATCHING_OUIA = "./ul/li[@ouia-nav-group={text} or .//a[@ouia-nav-item={text}]]"
+    ITEM_MATCHING = ".//ul/li[.//*[self::a or self::button][normalize-space(.)={}]]"
+    ITEM_MATCHING_OUIA = ".//ul/li[@ouia-nav-group={text} or .//a[@ouia-nav-item={text}]]"
 
     @property
     def loaded(self):
