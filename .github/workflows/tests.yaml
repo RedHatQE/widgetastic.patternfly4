@@ -41,9 +41,9 @@ jobs:
         env:
           BROWSER: ${{ matrix.browser }}
         run: |
-          pytest -v -n 5 testing/ --no-cov-on-fail \
-                                                  --cov=widgetastic_patternfly4 \
-                                                  --cov-append
+          pytest -v -n 5 --no-cov-on-fail \
+                         --cov=widgetastic_patternfly4 \
+                         --cov-append
           mv .coverage ${{ strategy.job-index }}_coverage
       - name: Upload coverage artifact
         uses: "actions/upload-artifact@v2"

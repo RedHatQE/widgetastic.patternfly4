@@ -1,5 +1,3 @@
-import os
-
 import pytest
 from widgetastic.widget import View
 
@@ -54,10 +52,6 @@ def test_navigation(browser, data):
     assert nav.nav_item_tree() == tree
 
 
-@pytest.mark.xfail(
-    os.environ.get("BROWSER") == "firefox",
-    reason="Requires https://github.com/RedHatQE/widgetastic.core/pull/182",
-)
 def test_navigation_select(browser):
     class TestView(View):
         ROOT = ".//div[@id='ws-react-c-navigation-mixed']"
