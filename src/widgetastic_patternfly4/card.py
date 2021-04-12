@@ -5,7 +5,11 @@ from widgetastic.widget import ParametrizedView
 from widgetastic.widget import View
 
 
-class Card(GenericLocatorWidget):
+class BaseCard:
+    pass
+
+
+class Card(BaseCard, GenericLocatorWidget):
     def __init__(self, parent, locator=None, logger=None, **kwargs):
         View.__init__(self, parent, logger=logger, **kwargs)
         self.locator = locator or ".//article[contains(@class, 'pf-c-card')]"

@@ -6,6 +6,7 @@ from widgetastic.xpath import quote
 from widgetastic_patternfly4.alert import BaseAlert
 from widgetastic_patternfly4.breadcrumb import BaseBreadCrumb
 from widgetastic_patternfly4.button import BaseButton
+from widgetastic_patternfly4.card import BaseCard
 from widgetastic_patternfly4.contextselector import BaseContextSelector
 from widgetastic_patternfly4.dropdown import BaseDropdown
 from widgetastic_patternfly4.dropdown import BaseGroupDropdown
@@ -33,6 +34,10 @@ class BreadCrumb(BaseBreadCrumb, OUIAGenericWidget):
 
 class Button(BaseButton, OUIAGenericWidget):
     OUIA_COMPONENT_TYPE = "PF4/Button"
+
+
+class Card(BaseCard, OUIAGenericWidget):
+    OUIA_COMPONENT_TYPE = "PF4/Card"
 
 
 class Dropdown(BaseDropdown, OUIAGenericWidget):
