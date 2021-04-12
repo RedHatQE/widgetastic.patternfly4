@@ -27,7 +27,6 @@ jobs:
     strategy:
       matrix:
         browser: ["firefox", "chrome"]
-        tests_path: ["testing/ouia/", "testing/"]
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
@@ -42,7 +41,7 @@ jobs:
         env:
           BROWSER: ${{ matrix.browser }}
         run: |
-          pytest -v -n 5 ${{ matrix.tests_path }} --no-cov-on-fail \
+          pytest -v -n 5 testing/ --no-cov-on-fail \
                                                   --cov=widgetastic_patternfly4 \
                                                   --cov-append
           mv .coverage ${{ strategy.job-index }}_coverage
