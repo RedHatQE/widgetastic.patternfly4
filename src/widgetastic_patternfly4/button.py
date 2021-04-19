@@ -33,7 +33,8 @@ class BaseButton:
     def disabled(self):
         """Returns a boolean detailing if the button is disabled."""
         check1 = "pf-m-disabled" in self.browser.classes(self)
-        return check1 or self.browser.get_attribute("disabled", self)
+        check2 = "pf-m-aria-disabled" in self.browser.classes(self)
+        return check1 or check2 or self.browser.get_attribute("disabled", self) is not None
 
     def __repr__(self):
         return "{}{}".format(type(self).__name__, call_sig(self.args, self.kwargs))
