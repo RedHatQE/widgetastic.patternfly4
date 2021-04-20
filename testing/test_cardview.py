@@ -9,18 +9,10 @@ from widgetastic_patternfly4 import CardForCardGroup
 from widgetastic_patternfly4 import CardGroup
 from widgetastic_patternfly4 import Dropdown
 
-TESTING_PAGE_URL = "https://patternfly-react.surge.sh/components/card/react-demos/card-view"
+TESTING_PAGE_URL = "https://patternfly-react.surge.sh/demos/card-view/react-demos/card-view/"
 
 
 class PageCard(CardForCardGroup,):
-    def __init__(self, parent, locator=None, logger=None, **kwargs):
-        super().__init__(parent, locator=locator, logger=logger, **kwargs)
-        # workaround for overlapping bottom paginator
-        # TODO fix it in widgetastic.core
-        self.browser.execute_script(
-            "arguments[0].scrollIntoView({block: 'center'});", self.__element__()
-        )
-
     dropdown = Dropdown()
 
     def delete_action(self):
@@ -47,30 +39,31 @@ def cards(browser):
     return cards
 
 
-def test_read_and_drop_first_card(cards):
+def test_read_and_drop_second_card(cards):
+    second = list(cards)[1]
 
-    first = next(iter(cards))
+    assert second.header_text.read() == "Patternfly"
 
-    assert first.header_text.read() == "Patternfly"
+    second.delete_action()
 
-    first.delete_action()
+    new_second = list(cards)[1]
 
-    new_first = next(iter(cards))
-
-    assert new_first.header_text.read() != "Patternfly"
+    assert new_second.header_text.read() != "Patternfly"
 
 
 def read_cards_2_checkmap(cards):
     data = cards.cards.read()
-    return {card["header_text"]: card["checked"] for card in data.values()}
+    return {card["header_text"]: card["checked"] for card in list(data.values())[1:]}
 
 
-def test_select_all_cards(cards):
+def test_select_all_cards(browser, cards):
 
     name2checked = read_cards_2_checkmap(cards)
     assert not any(name2checked.values())
 
-    for card in cards:
+    # first card doesn't have header and checkbox
+    for card in list(cards)[1:]:
+        browser.execute_script("arguments[0].scrollIntoView({block: 'center'});", card.checked)
         card.checked.fill(True)
 
     name2checked_after = read_cards_2_checkmap(cards)
