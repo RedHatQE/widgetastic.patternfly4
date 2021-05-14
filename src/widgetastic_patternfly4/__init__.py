@@ -27,6 +27,7 @@ from .formselect import FormSelectOptionDisabled
 from .formselect import FormSelectOptionNotFound
 from .modal import Modal
 from .navigation import Navigation
+from .navigation import NavSelectionNotFound
 from .optionsmenu import OptionsMenu
 from .pagination import CompactPagination
 from .pagination import Pagination
@@ -80,6 +81,7 @@ __all__ = [
     "FormSelectOptionNotFound",
     "Modal",
     "Navigation",
+    "NavSelectionNotFound",
     "OptionsMenu",
     "Pagination",
     "PaginationNavDisabled",

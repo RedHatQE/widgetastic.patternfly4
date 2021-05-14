@@ -2,6 +2,7 @@ import pytest
 from widgetastic.widget import View
 
 from widgetastic_patternfly4 import Navigation
+from widgetastic_patternfly4 import NavSelectionNotFound
 
 TESTING_PAGE_URL = "https://patternfly-react.surge.sh/components/navigation"
 
@@ -62,3 +63,7 @@ def test_navigation_select(browser):
     assert nav.currently_selected == ["Link 3 - expandable", "Link 2"]
     nav.select("Link 1 (not expandable)")
     assert nav.currently_selected == ["Link 1 (not expandable)"]
+
+    # try to select some bogus location and make sure proper exception is raised
+    with pytest.raises(NavSelectionNotFound):
+        nav.select("This location does not exist")
