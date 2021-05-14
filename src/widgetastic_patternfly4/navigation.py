@@ -15,6 +15,10 @@ def check_nav_loaded(fn):
     return inner
 
 
+class NavSelectionNotFound(Exception):
+    pass
+
+
 class BaseNavigation:
     """The Patternfly navigation.
 
@@ -28,7 +32,6 @@ class BaseNavigation:
     ITEMS = "./ul/li/*[self::a or self::button]"
     SUB_ITEMS_ROOT = "./section"
     ITEM_MATCHING = "./ul/li[.//*[self::a or self::button][normalize-space(.)={}]]"
-    ITEM_MATCHING_OUIA = "./ul/li[@ouia-nav-group={text} or .//a[@ouia-nav-item={text}]]"
 
     @property
     def loaded(self):
@@ -112,8 +115,9 @@ class BaseNavigation:
                     self.ITEM_MATCHING.format(quote(level)), parent=current_item
                 )
             except NoSuchElementException:
-                li = self.browser.element(
-                    self.ITEM_MATCHING_OUIA.format(text=quote(level)), parent=current_item
+                raise NavSelectionNotFound(
+                    f"{levels} not found in navigation tree. "
+                    f"Could not find element: '{self.ITEM_MATCHING.format(quote(level))}'"
                 )
             if "pf-m-expanded" not in li.get_attribute("class").split():
                 self.browser.click(li)
