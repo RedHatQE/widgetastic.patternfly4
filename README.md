@@ -51,6 +51,8 @@ Table - <https://www.patternfly.org/v4/components/table>
 
 Tabs - <https://www.patternfly.org/v4/components/tabs>
 
+Wizard - <https://www.patternfly.org/v4/components/wizard>
+
 ## Contribution guide
 
 ```bash
