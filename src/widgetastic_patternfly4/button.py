@@ -1,4 +1,3 @@
-from widgetastic.log import call_sig
 from widgetastic.utils import ParametrizedLocator
 from widgetastic.widget import ClickableMixin
 from widgetastic.widget import Widget
@@ -37,7 +36,7 @@ class BaseButton:
         return check1 or check2 or self.browser.get_attribute("disabled", self) is not None
 
     def __repr__(self):
-        return "{}{}".format(type(self).__name__, call_sig(self.args, self.kwargs))
+        return "{}{}".format(type(self).__name__, self.locator)
 
     @property
     def title(self):

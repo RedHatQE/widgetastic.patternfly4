@@ -16,5 +16,6 @@ def view(browser):
 
 
 def test_button_click(view):
+    view.button.__repr__()
     assert view.button.is_displayed
     view.button.click()
