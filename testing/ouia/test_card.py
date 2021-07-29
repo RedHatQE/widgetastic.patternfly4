@@ -9,13 +9,11 @@ TESTING_PAGE_URL = "https://patternfly-docs-ouia.netlify.app/documentation/react
 @pytest.fixture
 def view(browser):
     class TestView(View):
-        ROOT = ".//div[@id='ws-react-c-card-ouia']"
-        card = Card("Primary")
+        ROOT = ".//div[@id='ws-react-c-card-basic']"
+        card = Card("352")
 
     return TestView(browser)
 
 
 def test_card_displayed(view):
-    # TODO actually assert
-    # assert view.card.is_displayed
-    pass
+    assert view.card.is_displayed

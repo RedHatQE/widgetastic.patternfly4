@@ -10,9 +10,9 @@ class BaseCard:
 
 
 class Card(BaseCard, GenericLocatorWidget):
-    def __init__(self, parent, locator=None, logger=None, **kwargs):
-        View.__init__(self, parent, logger=logger, **kwargs)
-        self.locator = locator or ".//article[contains(@class, 'pf-c-card')]"
+    def __init__(self, parent, locator=None, logger=None):
+        locator = locator or ".//article[contains(@class, 'pf-c-card')]"
+        super().__init__(parent, locator, logger=logger)
 
     ROOT = ParametrizedLocator("{@locator}")
 
