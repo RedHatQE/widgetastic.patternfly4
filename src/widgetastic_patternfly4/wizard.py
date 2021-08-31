@@ -62,18 +62,17 @@ class WizardHeaderView(View, TitledContentMixin):
 
 class WizardFooterView(View):
 
-    ROOT = ".//footer[contains(@class, 'pf-c-wizard__footer')] "
+    ROOT = (
+        ".//div[@data-ouia-component-type='PF4/ModalContent']"
+        "//footer[contains(@class, 'pf-c-wizard__footer')]"
+    )
 
-    next_button = None
-    back_button = None
-    cancel_button = None
-    finish_button = None
-
-    def __init__(self, parent, finish_widget):
-        self.finish_button = finish_widget
-        self.next_button = Button(parent, "Next")
-        self.back_button = Button(parent, "Back")
-        self.cancel_button = Button(parent, "Cancel")
+    def __init__(self, parent, footer_widgets, logger=None):
+        self.next_button = footer_widgets["Next"]
+        self.back_button = footer_widgets["Back"]
+        self.cancel_button = footer_widgets["Cancel"]
+        self.finish_button = footer_widgets["Finish"]
+        super(WizardFooterView, self).__init__(parent, logger=logger)
 
     @property
     def is_displayed(self):
@@ -94,22 +93,17 @@ class WizardContentView(View):
 
 class WizardMainView(View):
 
-    ROOT = "(.//div[contains(@class, 'pf-c-wizard')])[1]"
-    _content_views = {}
+    ROOT = (
+        ".//div[@data-ouia-component-type='PF4/ModalContent']/div[contains(@class, 'pf-c-wizard')]"
+    )
 
     steps_view = View.nested(WizardSteps)
     header_view = View.nested(WizardHeaderView)
-    footer_view = None
-    finished_view = None
-
-    # TODO: Add title and subtitle
 
     def __init__(
-        self, parent, content_views=None, finished_view=None, finish_widget=None, logger=None
+        self, parent, content_views=None, finished_view=None, footer_widgets=None, logger=None
     ):
-        content_views = content_views or {}
-        finished_view = finished_view or {}
-        self.footer_view = WizardFooterView(parent, finish_widget)
+        self.footer_view = WizardFooterView(parent, footer_widgets)
         super(WizardMainView, self).__init__(parent, logger=logger)
 
         self._content_views = {
@@ -170,25 +164,21 @@ class WizardMainView(View):
 
 
 class Wizard(Widget):
-
-    _main_view = None
-    _views = {}
-
     def __init__(
         self,
         parent,
         start_widget,
-        finish_widget,
+        footer_widgets,
         step_view_config=None,
         finished_view_config=None,
         logger=None,
     ):
-        step_view_config = step_view_config or {}
         super(Wizard, self).__init__(parent, logger=logger)
         self._main_view = WizardMainView(
-            self.browser, step_view_config, finished_view_config, finish_widget
+            self.browser, step_view_config, finished_view_config, footer_widgets
         )
         self._start_widget = start_widget
+        self._finished_view_config = finished_view_config
 
     @property
     def title(self):
@@ -243,7 +233,9 @@ class Wizard(Widget):
     def start(self, wait_for_view=True):
         self._click_button("start", wait_for_view=wait_for_view)
 
-    def finish(self, wait_for_view=True):
+    def finish(self, wait_for_view=False):
+        if self._finished_view_config:
+            wait_for_view = True
         self._click_button("finish", wait_for_view=wait_for_view)
 
     def next(self, wait_for_view=True):
@@ -252,10 +244,10 @@ class Wizard(Widget):
     def back(self, wait_for_view=True):
         self._click_button("back", wait_for_view=wait_for_view)
 
-    def cancel(self, wait_for_view=True):
+    def cancel(self, wait_for_view=False):
         self._click_button("cancel", wait_for_view=wait_for_view)
 
-    def close(self, wait_for_view=True):
+    def close(self, wait_for_view=False):
         self._click_button("close", wait_for_view=wait_for_view)
 
 
@@ -264,24 +256,31 @@ class WizardMixin(WTMixin):
     START_BUTTON = None
     STEPS = None
     FINISHED_VIEW = None
-    FINISH_BUTTON = None
+    FOOTER_NEXT_BUTTON = Button("Next")
+    FOOTER_BACK_BUTTON = Button("Back")
+    FOOTER_CANCEL_BUTTON = Button("Cancel")
+    FOOTER_FINISH_BUTTON = Button("Finish")
 
     @property
     def wizard(self):
+        if not isinstance(self.START_BUTTON, Widget):
+            raise ValueError(
+                "Start button should be specified as a Widget, not as a %s",
+                type(self.START_BUTTON),
+            )
 
-        start_wizard_widget = (
-            self.START_BUTTON
-            if isinstance(self.START_BUTTON, Widget)
-            else Button(self.browser, self.START_BUTTON)
-        )
-        finish_wizard_widget = (
-            self.FINISH_BUTTON
-            if isinstance(self.FINISH_BUTTON, Widget)
-            else Button(self.browser, self.FINISH_BUTTON)
-        )
+        footer_buttons = {
+            "Next": self.FOOTER_NEXT_BUTTON,
+            "Back": self.FOOTER_BACK_BUTTON,
+            "Cancel": self.FOOTER_CANCEL_BUTTON,
+            "Finish": self.FOOTER_FINISH_BUTTON,
+        }
+
+        if not isinstance(self.STEPS, dict):
+            raise ValueError("Wizard steps should be specified")
 
         wizard = Wizard(
-            self.browser, start_wizard_widget, finish_wizard_widget, self.STEPS, self.FINISHED_VIEW
+            self.browser, self.START_BUTTON, footer_buttons, self.STEPS, self.FINISHED_VIEW
         )
 
         return wizard

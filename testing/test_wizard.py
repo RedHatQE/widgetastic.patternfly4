@@ -15,13 +15,12 @@ class StepView(WizardContentView, TitledContentMixin):
     content = Text(locator=".//p")
 
 
-#
-# class ReviewView(StepView):
-#     pass
+class ReviewView(StepView):
+    pass
 
 
 @pytest.fixture
-def wizard(browser):
+def view(browser):
     class TestView(View, WizardMixin):
         START_BUTTON = Button(locator=".//button[contains(text(), 'Show Modal')]")
         STEPS = {
@@ -29,34 +28,84 @@ def wizard(browser):
             "Second step": StepView,
             "Third step": StepView,
             "Fourth step": StepView,
-            "Review": StepView,
+            "Review": ReviewView,
         }
-        FINISH_BUTTON = "Finish"
-        wizard = WizardMixin().wizard
+        FOOTER_NEXT_BUTTON = Button(
+            locator=".//div[@data-ouia-component-type='PF4/ModalContent']"
+            "//button[contains(text(), 'Next')]"
+        )
+        FOOTER_BACK_BUTTON = Button(
+            locator=".//div[@data-ouia-component-type='PF4/ModalContent']"
+            "//button[contains(text(), 'Back')]"
+        )
+        FOOTER_CANCEL_BUTTON = Button(
+            locator=".//div[@data-ouia-component-type='PF4/ModalContent']"
+            "//button[contains(text(), 'Cancel')]"
+        )
+        FOOTER_FINISH_BUTTON = Button(
+            locator=".//div[@data-ouia-component-type='PF4/ModalContent']"
+            "//button[contains(text(), 'Finish')]"
+        )
 
-    return TestView(browser).wizard
+    return TestView(browser)
 
 
-def test_wizard_is_displayed(wizard):
+def test_wizard_is_displayed(view):
+    wizard = view.wizard
     wizard.start()
-    assert wizard.is_displayed
+    wizard.wait_displayed()
+    assert wizard.title == "Wizard in modal"
+    assert wizard.subtitle == "Simple Wizard Description"
+    assert wizard.steps == ["First step", "Second step", "Third step", "Fourth step", "Review"]
     wizard.close()
-    assert not wizard.is_displayed
+    view.wait_displayed()
 
 
-def test_wizard_navigation_until_finish(wizard):
+def test_wizard_navigation_until_finish(view, request):
+    @request.addfinalizer
+    def finalizer():
+        view.browser.refresh()
+
+    wizard = view.wizard
     wizard.start()
+    assert wizard.active_step == "First step"
     assert wizard.view.content.text == "Step 1 content"
     wizard.next()
+    assert wizard.active_step == "Second step"
     assert wizard.view.content.text == "Step 2 content"
     wizard.next()
+    assert wizard.active_step == "Third step"
     assert wizard.view.content.text == "Step 3 content"
     wizard.next()
+    assert wizard.active_step == "Fourth step"
     assert wizard.view.content.text == "Step 4 content"
     wizard.next()
+    assert wizard.active_step == "Review"
     assert wizard.view.content.text == "Review step content"
     wizard.finish()
+    view.wait_displayed()
 
 
-def test_wizard_back_and_cancel(wizard):
+def test_wizard_back_and_cancel(view):
+    wizard = view.wizard
     wizard.start()
+    wizard.next()
+    wizard.back()
+    assert wizard.active_step == "First step"
+    assert wizard.view.content.text == "Step 1 content"
+    wizard.cancel()
+    assert view.wait_displayed()
+
+
+def test_wizard_select_step(view, request):
+    wizard = view.wizard
+    wizard.start()
+
+    @request.addfinalizer
+    def finalizer():
+        wizard.close()
+        view.browser.refresh()
+
+    wizard.select_step("Third step")
+    assert wizard.active_step == "Third step"
+    assert wizard.view.content.text == "Step 3 content"
