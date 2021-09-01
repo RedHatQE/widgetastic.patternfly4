@@ -71,6 +71,6 @@ jobs:
           coverage combine -a $(find /tmp/coverage -type f)
           coverage xml -o /tmp/coverage.xml
       - name: Publish coverage
-        uses: codecov/codecov-action@v1.4.1
+        uses: codecov/codecov-action@v1.5.2
         with:
           files: /tmp/coverage.xml
