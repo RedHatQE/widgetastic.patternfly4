@@ -11,10 +11,26 @@ from widgetastic_patternfly4 import RowNotExpandable
 TESTING_PAGE_URL = "https://patternfly-react.surge.sh/components/table"
 
 SORT = [
-    ("Repositories", "ascending", ["a", "one", "p"]),
-    ("Repositories", "descending", ["p", "one", "a"]),
-    ("Pull requests", "ascending", ["a", "b", "k"]),
-    ("Pull requests", "descending", ["k", "b", "a"]),
+    (
+        "This is a really long table header that goes on for a long time 1.",
+        "ascending",
+        ["a", "one", "p"],
+    ),
+    (
+        "This is a really long table header that goes on for a long time 1.",
+        "descending",
+        ["p", "one", "a"],
+    ),
+    (
+        "This is a really long table header that goes on for a long time 3.",
+        "ascending",
+        ["a", "b", "k"],
+    ),
+    (
+        "This is a really long table header that goes on for a long time 3.",
+        "descending",
+        ["k", "b", "a"],
+    ),
 ]
 
 
@@ -22,7 +38,8 @@ SORT = [
 def test_sortable_table(browser, sample):
     header, order, expected_result = sample
     table = PatternflyTable(
-        browser, ".//div[@id='ws-react-c-table-sortable--wrapping-headers']/table"
+        browser,
+        ".//div[@id='ws-react-composable-c-table-composable-sortable--wrapping-headers']/table",
     )
     table.sort_by(header, order)
     column = [row[header] for row in table.read()]
@@ -36,30 +53,75 @@ def test_selectable_table(browser, sample):
     method, expected_result = sample
     table = PatternflyTable(
         browser,
-        ".//div[@id='ws-react-c-table-selectable']//table",
+        ".//div[@id='ws-react-composable-c-table-composable-selectable']//table",
         column_widgets={0: Checkbox(locator=".//input")},
     )
     getattr(table, method)()
     for row in table:
-        assert expected_result == row[0].widget.selected
+        if row.index != 1:  # skip row with disabled checkbox
+            assert expected_result == row[0].widget.selected
 
 
 def test_expandable_table(browser):
     expected_read = [
-        {"ID": "one", "Branches": "two", "Pull requests": "three", 4: "four"},
-        {"ID": "parent - 1", "Branches": "two", "Pull requests": "three", 4: "four"},
-        {"ID": "parent - 2", "Branches": "two", "Pull requests": "three", 4: "four"},
-        {"ID": "parent - 3", "Branches": "two", "Pull requests": "three", 4: "four"},
-        {"ID": "parent - 4", "Branches": "two", "Pull requests": "three", 4: "four"},
-        {"ID": "parent - 5", "Branches": "two", "Pull requests": "three", 4: "four"},
-        {"ID": "parent - 6", "Branches": "two", "Pull requests": "three", 4: "four"},
+        {
+            "Repositories": "one",
+            "Branches": "two",
+            "Pull requests": "a",
+            "Workspaces": "four",
+            "Last commit": "five",
+        },
+        {
+            "Repositories": "parent 1",
+            "Branches": "two",
+            "Pull requests": "k",
+            "Workspaces": "four",
+            "Last commit": "five",
+        },
+        {
+            "Repositories": "parent 2",
+            "Branches": "two",
+            "Pull requests": "b",
+            "Workspaces": "four",
+            "Last commit": "five",
+        },
+        {
+            "Repositories": "parent 3",
+            "Branches": "2",
+            "Pull requests": "b",
+            "Workspaces": "four",
+            "Last commit": "five",
+        },
+        {
+            "Repositories": "parent 4",
+            "Branches": "2",
+            "Pull requests": "b",
+            "Workspaces": "four",
+            "Last commit": "five",
+        },
+        {
+            "Repositories": "parent 5",
+            "Branches": "2",
+            "Pull requests": "b",
+            "Workspaces": "four",
+            "Last commit": "five",
+        },
+        {
+            "Repositories": "parent 6",
+            "Branches": "2",
+            "Pull requests": "b",
+            "Workspaces": "four",
+            "Last commit": "five",
+        },
     ]
 
     row1_expected_content = "single cell"
     row2_expected_content = "single cell - fullWidth"
     row3_expected_content = "single cell - noPadding"
 
-    table = ExpandableTable(browser, ".//div[@id='ws-react-c-table-expandable']/table")
+    table = ExpandableTable(
+        browser, ".//div[@id='ws-react-composable-c-table-composable-expandable']/table"
+    )
 
     assert table.read() == expected_read
 
@@ -99,7 +161,7 @@ def test_compound_expandable_table(browser):
             "Branches": "10",
             "Pull requests": "4",
             "Workspaces": "4",
-            "Last Commit": "20 minutes",
+            "Last commit": "20 minutes",
             5: "Open in Github",
         },
         {
@@ -107,7 +169,7 @@ def test_compound_expandable_table(browser):
             "Branches": "3",
             "Pull requests": "4",
             "Workspaces": "2",
-            "Last Commit": "20 minutes",
+            "Last commit": "10 minutes",
             5: "Open in Github",
         },
     ]
@@ -190,7 +252,7 @@ def test_compound_expandable_table(browser):
     row1_branches_read = {
         "table": [
             {
-                "Repositories": "parent-4",
+                "Repositories": "parent-1",
                 "Branches": "compound-1",
                 "Pull requests": "three",
                 "Workspaces": "four",
@@ -247,6 +309,7 @@ def test_compound_expandable_table(browser):
     assert not row0.branches.is_expanded
 
     row0.pull_requests.expand()
+    row0.pull_requests.content.flush_widget_cache()
     assert row0.pull_requests.is_expanded
     assert row0.pull_requests.content.read() == row0_pull_requests_read
     row0.pull_requests.collapse()

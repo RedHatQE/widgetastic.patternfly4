@@ -64,16 +64,16 @@ def test_dropdown_items(dropdown):
     assert dropdown.items == [
         "Link",
         "Action",
-        "Disabled Link",
-        "Disabled Action",
+        "Disabled link",
+        "Disabled action",
         "",
-        "Separated Link",
-        "Separated Action",
+        "Separated link",
+        "Separated action",
     ]
     assert dropdown.has_item("Action")
     assert not dropdown.has_item("Non existing items")
     assert dropdown.item_enabled("Action")
-    assert not dropdown.item_enabled("Disabled Link")
+    assert not dropdown.item_enabled("Disabled link")
 
 
 def test_dropdown_open(dropdown):
@@ -88,7 +88,7 @@ def test_dropdown_item_select(dropdown):
     dropdown.item_select("Action")
     assert not dropdown.is_open
     with pytest.raises(DropdownItemDisabled):
-        dropdown.item_select("Disabled Link")
+        dropdown.item_select("Disabled link")
     with pytest.raises(DropdownItemNotFound):
         dropdown.item_select("Non existing items")
 
@@ -99,18 +99,18 @@ def test_group_dropdown(group_dropdown):
     assert group_dropdown.items == [
         "Link",
         "Action",
-        "Group 2 Link",
-        "Group 2 Action",
-        "Group 3 Link",
-        "Group 3 Action",
+        "Group 2 link",
+        "Group 2 action",
+        "Group 3 link",
+        "Group 3 action",
     ]
-    assert group_dropdown.has_item("Group 2 Link")
-    assert group_dropdown.item_enabled("Group 3 Action")
+    assert group_dropdown.has_item("Group 2 link")
+    assert group_dropdown.item_enabled("Group 3 action")
     assert group_dropdown.groups == ["Group 2", "Group 3"]
     group_dropdown.item_select("Link")
-    group_dropdown.item_select("Group 3 Link", group_name="Group 3")
+    group_dropdown.item_select("Group 3 link", group_name="Group 3")
     with pytest.raises(DropdownItemNotFound):
-        group_dropdown.item_select("Group 3 Link", group_name="Group 2")
+        group_dropdown.item_select("Group 3 link", group_name="Group 2")
 
 
 def test_split_button_dropdown(split_button_dropdown):

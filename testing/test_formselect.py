@@ -44,7 +44,7 @@ def test_formselect_validity(view):
     assert view.input_invalid.is_valid
     view.input_invalid.fill("One")
     assert view.input_invalid.is_valid
-    view.input_invalid.fill("Choose a number")
+    view.input_invalid.fill("Select a number")
     assert not view.input_invalid.is_valid
 
 
@@ -62,12 +62,12 @@ def test_formselect_option_enablement(view):
     assert set(view.input.all_enabled_options) == expected_enabled_options
     assert expected_disabled_options not in set(view.input.all_enabled_options)
     expected_enabled_optgroup_options = {
-        "The First Option",
+        "The first option",
         "Second option is selected by default",
-        "The Third Option",
-        "The Fourth option",
+        "The third option",
+        "The fourth option",
     }
-    expected_disabled_optgroup_options = {"The Fifth Option", "The Six option"}
+    expected_disabled_optgroup_options = {"The fifth option", "The six option"}
     assert set(view.input_grouping.all_enabled_options) == expected_enabled_optgroup_options
     assert expected_disabled_optgroup_options not in set(view.input_grouping.all_enabled_options)
 
@@ -79,7 +79,7 @@ def test_formselect_fill_disabled_select(view):
 
 def test_formselect_fill_disabled_option(view):
     with pytest.raises(FormSelectOptionDisabled):
-        view.input_grouping.fill("The Fifth Option")
+        view.input_grouping.fill("The fifth option")
 
 
 def test_formselect_fill_nonexistent_option(view):

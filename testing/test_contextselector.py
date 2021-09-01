@@ -24,12 +24,12 @@ def test_contextselector_is_displayed(view):
 
 def test_contextselector_items(view):
     assert set(view.contextselector.items) == {
-        "My Project",
-        "OpenShift Cluster",
+        "My project",
+        "OpenShift cluster",
         "Production Ansible",
         "AWS",
         "Azure",
-        "My Project 2",
+        "My project 2",
         "Production Ansible 2",
         "AWS 2",
         "Azure 2",

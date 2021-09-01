@@ -10,7 +10,7 @@ TESTING_PAGE_URL = "https://patternfly-react.surge.sh/components/modal"
 
 @pytest.fixture()
 def modal(browser):
-    show_modal = Button(browser, "Show Modal")
+    show_modal = Button(browser, "Show modal")
     show_modal.click()
     modal = Modal(browser)
     yield modal

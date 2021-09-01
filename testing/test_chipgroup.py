@@ -51,9 +51,9 @@ def test_non_existent_chips(chip_group_view):
 def test_chipgroup_chips(chips_view):
     view = chips_view
     plain_chip = view.chips("Chip 1")
-    long_chip = view.chips("Really long Chip that goes on and on")
+    long_chip = view.chips("Really long chip that goes on and on")
     chip_with_badge = view.chips("Chip")
-    read_only_chip = view.chips("Read-only Chip")
+    read_only_chip = view.chips("Read-only chip")
 
     assert plain_chip.text == "Chip 1"
     assert not plain_chip.badge
@@ -63,11 +63,11 @@ def test_chipgroup_chips(chips_view):
     plain_chip.remove()
     assert not plain_chip.is_displayed
 
-    assert long_chip.text == "Really long Chip that goes on and on"
+    assert long_chip.text == "Really long chip that goes on and on"
     assert not long_chip.badge
     assert long_chip.is_displayed
     assert not long_chip.read_only
-    assert long_chip.read() == "Really long Chip that goes on and on"
+    assert long_chip.read() == "Really long chip that goes on and on"
     long_chip.remove()
     assert not long_chip.is_displayed
 
@@ -79,12 +79,12 @@ def test_chipgroup_chips(chips_view):
     chip_with_badge.remove()
     assert not chip_with_badge.is_displayed
 
-    assert read_only_chip.text == "Read-only Chip"
+    assert read_only_chip.text == "Read-only chip"
     assert not read_only_chip.badge
     assert not read_only_chip.button.is_displayed
     assert read_only_chip.is_displayed
     assert read_only_chip.read_only
-    assert read_only_chip.read() == "Read-only Chip"
+    assert read_only_chip.read() == "Read-only chip"
     with pytest.raises(ChipReadOnlyError):
         read_only_chip.remove()
 
