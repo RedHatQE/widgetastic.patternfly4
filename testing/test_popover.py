@@ -15,7 +15,7 @@ def popover(browser):
     class TestView(View):
         ROOT = ".//body"
         popover = Popover()
-        open_button = Button("Toggle Popover")
+        open_button = Button("Toggle popover")
 
     view = TestView(browser)
     view.open_button.click()

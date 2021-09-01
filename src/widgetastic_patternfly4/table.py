@@ -299,12 +299,13 @@ class ExpandableTable(BaseExpandableTable, PatternflyTable):
 
 class ExpandableColumn(TableColumn):
     EXPAND_LOCATOR = "./button"
+    EXPANDABLE_CONTENT = "./tr[2]"
 
     def __init__(self, parent, position, content_view=None, absolute_position=None, logger=None):
         super(ExpandableColumn, self).__init__(parent, position, absolute_position, logger=logger)
 
-        expandable_content = f"./tr[{position + 1}]"
-        content_parent = Text(parent=self.row, locator=expandable_content)
+        # expandable content is always the 2nd tr
+        content_parent = Text(parent=self.row, locator=self.EXPANDABLE_CONTENT)
         if content_view:
             self.content = resolve_table_widget(content_parent, content_view)
         else:

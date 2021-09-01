@@ -22,7 +22,7 @@ def test_select_is_displayed(select):
 
 
 def test_select_items(select):
-    assert set(select.items) == {"Choose...", "Mr", "Miss", "Mrs", "Ms", "Dr", "Other"}
+    assert set(select.items) == {"Select a title", "Mr", "Miss", "Mrs", "Ms", "Dr", "Other"}
     assert select.has_item("Mr")
     assert not select.has_item("Non existing item")
     assert select.item_enabled("Miss")
