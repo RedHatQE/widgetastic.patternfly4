@@ -309,7 +309,6 @@ def test_compound_expandable_table(browser):
     assert not row0.branches.is_expanded
 
     row0.pull_requests.expand()
-    row0.pull_requests.content.flush_widget_cache()
     assert row0.pull_requests.is_expanded
     assert row0.pull_requests.content.read() == row0_pull_requests_read
     row0.pull_requests.collapse()
