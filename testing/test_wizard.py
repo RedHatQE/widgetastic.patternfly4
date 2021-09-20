@@ -22,7 +22,7 @@ class ReviewView(StepView):
 @pytest.fixture
 def view(browser):
     class TestView(View, WizardMixin):
-        START_BUTTON = Button(locator=".//button[contains(text(), 'Show Modal')]")
+        start_wizard_button = Button("Show Modal")
         STEPS = {
             "First step": StepView,
             "Second step": StepView,
@@ -52,7 +52,7 @@ def view(browser):
 
 def test_wizard_is_displayed(view):
     wizard = view.wizard
-    wizard.start()
+    view.start_wizard_button.click()
     wizard.wait_displayed()
     assert wizard.title == "Wizard in modal"
     assert wizard.subtitle == "Simple Wizard Description"
@@ -67,7 +67,7 @@ def test_wizard_navigation_until_finish(view, request):
         view.browser.refresh()
 
     wizard = view.wizard
-    wizard.start()
+    view.start_wizard_button.click()
     assert wizard.active_step == "First step"
     assert wizard.view.content.text == "Step 1 content"
     wizard.next()
@@ -88,7 +88,7 @@ def test_wizard_navigation_until_finish(view, request):
 
 def test_wizard_back_and_cancel(view):
     wizard = view.wizard
-    wizard.start()
+    view.start_wizard_button.click()
     wizard.next()
     wizard.back()
     assert wizard.active_step == "First step"
@@ -99,7 +99,7 @@ def test_wizard_back_and_cancel(view):
 
 def test_wizard_select_step(view, request):
     wizard = view.wizard
-    wizard.start()
+    view.start_wizard_button.click()
 
     @request.addfinalizer
     def finalizer():

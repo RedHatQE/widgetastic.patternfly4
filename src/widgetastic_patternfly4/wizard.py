@@ -165,19 +165,12 @@ class WizardMainView(View):
 
 class Wizard(Widget):
     def __init__(
-        self,
-        parent,
-        start_widget,
-        footer_widgets,
-        step_view_config=None,
-        finished_view_config=None,
-        logger=None,
+        self, parent, footer_widgets, step_view_config=None, finished_view_config=None, logger=None,
     ):
         super(Wizard, self).__init__(parent, logger=logger)
         self._main_view = WizardMainView(
             self.browser, step_view_config, finished_view_config, footer_widgets
         )
-        self._start_widget = start_widget
         self._finished_view_config = finished_view_config
 
     @property
@@ -212,7 +205,6 @@ class Wizard(Widget):
 
     def _click_button(self, button_type="next", wait_for_view=True):
         buttons = {
-            "start": self._start_widget,
             "next": self._main_view.footer_view.next_button,
             "finish": self._main_view.footer_view.finish_button,
             "back": self._main_view.footer_view.back_button,
@@ -229,9 +221,6 @@ class Wizard(Widget):
 
         if wait_for_view:
             self.view.wait_displayed(delay=1)
-
-    def start(self, wait_for_view=True):
-        self._click_button("start", wait_for_view=wait_for_view)
 
     def finish(self, wait_for_view=False):
         if self._finished_view_config:
@@ -253,7 +242,6 @@ class Wizard(Widget):
 
 class WizardMixin(WTMixin):
 
-    START_BUTTON = None
     STEPS = None
     FINISHED_VIEW = None
     FOOTER_NEXT_BUTTON = Button("Next")
@@ -263,11 +251,6 @@ class WizardMixin(WTMixin):
 
     @property
     def wizard(self):
-        if not isinstance(self.START_BUTTON, Widget):
-            raise ValueError(
-                "Start button should be specified as a Widget, not as a %s",
-                type(self.START_BUTTON),
-            )
 
         footer_buttons = {
             "Next": self.FOOTER_NEXT_BUTTON,
@@ -279,8 +262,6 @@ class WizardMixin(WTMixin):
         if not isinstance(self.STEPS, dict):
             raise ValueError("Wizard steps should be specified")
 
-        wizard = Wizard(
-            self.browser, self.START_BUTTON, footer_buttons, self.STEPS, self.FINISHED_VIEW
-        )
+        wizard = Wizard(self.browser, footer_buttons, self.STEPS, self.FINISHED_VIEW)
 
         return wizard
