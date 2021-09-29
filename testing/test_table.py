@@ -53,7 +53,7 @@ def test_selectable_table(browser, sample):
     method, expected_result = sample
     table = PatternflyTable(
         browser,
-        ".//div[@id='ws-react-composable-c-table-composable-selectable']//table",
+        ".//div[@id='ws-react-composable-c-table-composable-selectable-with-checkbox']//table",
         column_widgets={0: Checkbox(locator=".//input")},
     )
     getattr(table, method)()

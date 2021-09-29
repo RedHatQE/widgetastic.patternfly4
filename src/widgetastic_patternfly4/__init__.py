@@ -25,6 +25,9 @@ from .formselect import FormSelect
 from .formselect import FormSelectDisabled
 from .formselect import FormSelectOptionDisabled
 from .formselect import FormSelectOptionNotFound
+from .menu import Menu
+from .menu import MenuItemDisabled
+from .menu import MenuItemNotFound
 from .modal import Modal
 from .navigation import Navigation
 from .navigation import NavSelectionNotFound
@@ -79,6 +82,9 @@ __all__ = [
     "FormSelectDisabled",
     "FormSelectOptionDisabled",
     "FormSelectOptionNotFound",
+    "Menu",
+    "MenuItemDisabled",
+    "MenuItemNotFound",
     "Modal",
     "Navigation",
     "NavSelectionNotFound",
