@@ -12,6 +12,7 @@ from widgetastic_patternfly4.dropdown import BaseDropdown
 from widgetastic_patternfly4.dropdown import BaseGroupDropdown
 from widgetastic_patternfly4.dropdown import BaseSplitButtonDropdown
 from widgetastic_patternfly4.formselect import BaseFormSelect
+from widgetastic_patternfly4.menu import BaseCheckboxMenu
 from widgetastic_patternfly4.menu import BaseMenu
 from widgetastic_patternfly4.modal import BaseModal
 from widgetastic_patternfly4.navigation import BaseNavigation
@@ -58,6 +59,10 @@ class FormSelect(BaseFormSelect, OUIAGenericWidget):
 
 
 class Menu(BaseMenu, Dropdown):
+    OUIA_COMPONENT_TYPE = "PF4/Menu"
+
+
+class CheckboxMenu(BaseCheckboxMenu, Dropdown):
     OUIA_COMPONENT_TYPE = "PF4/Menu"
 
 

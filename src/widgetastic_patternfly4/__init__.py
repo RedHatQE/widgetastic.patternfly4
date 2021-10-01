@@ -25,6 +25,7 @@ from .formselect import FormSelect
 from .formselect import FormSelectDisabled
 from .formselect import FormSelectOptionDisabled
 from .formselect import FormSelectOptionNotFound
+from .menu import CheckboxMenu
 from .menu import Menu
 from .menu import MenuItemDisabled
 from .menu import MenuItemNotFound
@@ -56,6 +57,7 @@ __all__ = [
     "BreadCrumb",
     "Button",
     "BulletChart",
+    "CheckboxMenu",
     "CheckboxSelect",
     "Chip",
     "ChipReadOnlyError",

@@ -16,6 +16,25 @@ class MenuItemNotFound(DropdownItemNotFound):
 class BaseMenu:
     """Represents the Patternfly Menu.
 
+    Most menu's exist without a toggle to open them (e.g. all the examples in the link below).
+    That is why there is the class level constant IS_ALWAYS_OPEN which defaults to 'True'.
+
+    However, it is possible to have a menu that will only appear based on a button or toggle.
+    In these cases you should inherit from menu and set IS_ALWAYS_OPEN to 'False'. BUTTON_LOCATOR
+    will also need to be modified to point to the toggle button. It is also not guarenteed that the
+    menu will exist at the same level as the toggle button in the DOM. Therefore, you may need to
+    override the browser of your widget to point to the parent_browser. E.g.
+
+    .. code-block:: python
+
+        class PermissionsMenu(Menu):
+            IS_ALWAYS_OPEN = False
+            BUTTON_LOCATOR = ".//button[contains(@class, 'pf-c-menu-toggle')]"
+
+            @property
+            def browser(self):
+                return self.parent_browser
+
     https://www.patternfly.org/v4/documentation/react/components/menu
     """
 
@@ -23,7 +42,7 @@ class BaseMenu:
     IS_ALWAYS_OPEN = True
 
     BUTTON_LOCATOR = "./button"
-    ITEMS_LOCATOR = ".//ul[@class='pf-c-menu__list']/li[contains(@class, 'pf-c-menu__list-item')]"
+    ITEMS_LOCATOR = ".//li[contains(@class, 'pf-c-menu__list-item')]"
     SELECTED_ITEMS_LOCATOR = ".//button[contains(@class, 'pf-m-selected')]"
     ITEM_LOCATOR = ".//*[contains(@class, 'pf-c-menu__list-item') and normalize-space(.)={}]"
     TEXT_LOCATOR = ".//div[contains(@class, 'pf-c-menu') and child::button[normalize-space(.)={}]]"
@@ -49,8 +68,8 @@ class BaseMenu:
 
     @property
     def is_enabled(self):
-        """Returns if the dropdown itself is enabled and therefore interactive."""
-        return "disabled" not in self.browser.classes(self.ROOT)
+        """Returns True if the menu toggle itself is enabled and therefore interactive."""
+        return self.IS_ALWAYS_OPEN or "disabled" not in self.browser.classes(self.BUTTON_LOCATOR)
 
     def close(self, ignore_nonpresent=False):
         """Close the menu
@@ -104,7 +123,7 @@ class BaseMenu:
             )
 
     def fill(self, value):
-        """Fills a Menu with a value."""
+        """Fills a Menu with a value or values."""
         if isinstance(value, list):
             for val in value:
                 self.item_select(val)
@@ -120,4 +139,103 @@ class BaseMenu:
 
 
 class Menu(BaseMenu, Dropdown):
+    DEFAULT_LOCATOR = './/div[contains(@class, "pf-c-menu")]'
+
+
+class BaseCheckboxMenu(BaseMenu):
+    """
+    Represents a checkbox menu.
+    """
+
+    ITEM_LOCATOR = ".//label[normalize-space(.)={}]/preceding-sibling::input"  # noqa
+
+    def item_select(self, items, close=True):
+        """Opens the Checkbox and selects the desired item.
+
+        Args:
+            item: Item to be selected
+            close: Close the dropdown when finished
+        """
+        if not isinstance(items, (list, tuple, set)):
+            items = [items]
+
+        try:
+            for item in items:
+                element = self.item_element(item, close=False)
+                if not self.browser.is_selected(element):
+                    element.click()
+        finally:
+            if close:
+                self.close()
+
+    def item_deselect(self, items, close=True):
+        """Opens the Checkbox and deselects the desired item.
+
+        Args:
+            item: Item to be selected
+            close: Close the dropdown when finished
+        """
+        if not isinstance(items, (list, tuple, set)):
+            items = [items]
+
+        try:
+            for item in items:
+                element = self.item_element(item, close=False)
+                if self.browser.is_selected(element):
+                    element.click()
+        finally:
+            if close:
+                self.close()
+
+    def fill(self, items):
+        """Fills a Checkbox with all items.
+        Example dictionary: {"foo": True, "bar": False, "baz": True}
+
+        Args:
+            items: A dictionary containing what items to select (True) or deselect (False)
+        """
+        try:
+            for item, value in items.items():
+                if value:
+                    self.item_select(item, close=False)
+                else:
+                    self.item_deselect(item, close=False)
+        finally:
+            self.close()
+
+    def read(self):
+        """Returns a dictionary containing the selected status as bools."""
+        selected = {}
+        with self.opened():
+            for el in self.browser.elements(self.ITEMS_LOCATOR):
+                item = self.browser.text(el)
+                try:
+                    # get the child element of the label
+                    selected[item] = el.find_element_by_xpath("./input").is_selected()
+                except NoSuchElementException:
+                    selected[item] = False
+
+        return selected
+
+    def _get_items(self, close=False):
+        """Returns a list of all checkbox items as strings.
+
+        Args:
+            close: Close the dropdown when finished
+        """
+        self.open()
+        result = [self.browser.text(el) for el in self.browser.elements(self.ITEMS_LOCATOR)]
+
+        if close:
+            self.close()
+
+        return result
+
+    @property
+    def items(self):
+        """Returns a list of all CheckboxSelect items as strings."""
+        return self._get_items(close=True)
+
+
+class CheckboxMenu(BaseCheckboxMenu, Dropdown):
     DEFAULT_LOCATOR = './/div[contains(@class, "pf-c-menu")]'
