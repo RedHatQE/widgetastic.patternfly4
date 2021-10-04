@@ -21,19 +21,16 @@ class BaseMenu:
 
     However, it is possible to have a menu that will only appear based on a button or toggle.
     In these cases you should inherit from menu and set IS_ALWAYS_OPEN to 'False'. BUTTON_LOCATOR
-    will also need to be modified to point to the toggle button. It is also not guarenteed that the
-    menu will exist at the same level as the toggle button in the DOM. Therefore, you may need to
-    override the browser of your widget to point to the parent_browser. E.g.
+    will also need to be modified to point to the toggle button. In the DOM, the menu widget is
+    usually placed as a sibling to the toggle button. You can either override ROOT or simply pass
+    a locator when the widget is instantiated to point to the parent of the toggle button.
 
     .. code-block:: python
 
         class PermissionsMenu(Menu):
             IS_ALWAYS_OPEN = False
             BUTTON_LOCATOR = ".//button[contains(@class, 'pf-c-menu-toggle')]"
-
-            @property
-            def browser(self):
-                return self.parent_browser
+            ROOT = f"{BUTTON_LOCATOR}/.."
 
     https://www.patternfly.org/v4/documentation/react/components/menu
     """
