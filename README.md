@@ -29,7 +29,9 @@ Dropdown - <https://www.patternfly.org/v4/components/dropdown>
 
 FormSelect - <https://www.patternfly.org/v4/components/formselect>
 
-Modal - <https://patternfly-react.surge.sh/v4/components/modal>
+Menu - <https://www.patternfly.org/v4/components/menu>
+
+Modal - <https://www.patternfly.org/v4/components/modal>
 
 Nav - <https://www.patternfly.org/v4/components/nav>
 
