@@ -154,7 +154,12 @@ def test_expandable_table(browser):
     assert parent3_row.content.read() == row3_expected_content
 
 
-def test_compound_expandable_table(browser):
+@pytest.mark.parametrize(
+    "use_different_widgets",
+    [True, False],
+    ids=["diff-widgets-expandable-content", "same-widget-expandable-content"],
+)
+def test_compound_expandable_table(browser, use_different_widgets):
     table_read = [
         {
             "Repositories": "siemur/test-space",
@@ -274,14 +279,30 @@ def test_compound_expandable_table(browser):
             },
         ]
     }
+    if use_different_widgets:
+        # for the example table all the expanded tables are the same, besides the different id
+        # that we use in the locator
+        class _Branches(View):
+            table = PatternflyTable(locator=".//table[contains(@id, '_1')]")
 
-    class _ContentView(View):
-        """ View for the nested table(s) in the expandable columns."""
+        class _PullRequests(View):
+            table = PatternflyTable(locator=".//table[contains(@id, '_2')]")
 
-        table = PatternflyTable(locator=".//table[@aria-label='Sortable Table']")
+        class _Workspaces(View):
+            table = PatternflyTable(locator=".//table[contains(@id, '_3')]")
+
+        content_view = {1: _Branches(), 2: _PullRequests(), 3: _Workspaces()}
+    else:
+        # use the same content_view for all the tables
+        class _ContentView(View):
+            """ View for the nested table(s) in the expandable columns."""
+
+            table = PatternflyTable(locator=".//table[@aria-label='Sortable Table']")
+
+        content_view = _ContentView()
 
     table = CompoundExpandableTable(
-        browser, ".//table[@aria-label='Compound expandable table']", content_view=_ContentView()
+        browser, ".//table[@aria-label='Compound expandable table']", content_view=content_view
     )
 
     assert table.read() == table_read

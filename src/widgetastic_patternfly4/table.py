@@ -300,11 +300,25 @@ class ExpandableTable(BaseExpandableTable, PatternflyTable):
 class ExpandableColumn(TableColumn):
     EXPAND_LOCATOR = "./button"
 
-    def __init__(self, parent, position, content_view=None, absolute_position=None, logger=None):
+    def __init__(
+        self,
+        parent,
+        position,
+        content_view=None,
+        absolute_position=None,
+        logger=None,
+        use_index_as_parent=False,
+    ):
+
         super(ExpandableColumn, self).__init__(parent, position, absolute_position, logger=logger)
 
-        # expandable content's 'tr' index is dictated by the position
-        content_parent = Text(parent=self.row, locator=f"./tr[{position+1}]")
+        # Sometimes expandable content's 'tr' index is dictated by the position of the column
+        # Most of the time it is the second index.
+        if use_index_as_parent:
+            content_parent = Text(parent=self.row, locator=f"./tr[{position + 1}]")
+        else:
+            content_parent = Text(parent=self.row, locator="./tr[2]")
+
         if isinstance(content_view, dict):
             content_view = content_view.get(position)
 
@@ -383,7 +397,11 @@ class CompoundExpandableRow(PatternflyTableRow):
         # Typically for this widget the layout is: <th>, <td>, <td>, <td>, and so on...
         if self.has_row_header:
             return self.Column(
-                self, index, self.table.content_view, logger=create_item_logger(self.logger, item)
+                self,
+                index,
+                self.table.content_view,
+                logger=create_item_logger(self.logger, item),
+                use_index_as_parent=self.table.use_index_as_parent,
             )
 
         return super(PatternflyTableRow, self).__getitem__(index)
@@ -414,6 +432,11 @@ class CompoundExpandableTable(PatternflyTable):
 
         Provide additional kwarg for 'content_view', which is used to pass in a WidgetDescriptor
         to be used as the Widget/View for the expanded content of each column.
+
+        Provide additional kwarg for 'use_index_as_parent'. This is necessary because some
+        compound expandable tables will put each expandable column's content in a <tr> whose
+        index corresponds to the index of the column. Most of the time, the expandable column's
+        content is placed in the 2nd <tr>. If not, set this to True when defining the widget.
 
         Most of the time, the tables that display when a column is expanded are a simple
         PatternflyTable. This means that the same view can be used for multiple columns. E.g.
@@ -453,11 +476,13 @@ class CompoundExpandableTable(PatternflyTable):
                 table = CompoundExpandableTable(
                     locator=".//table[@aria-label='expandable-table']",
                     content_view={0: NestedTableOne(), 1: NestedTableTwo()},
+                    use_index_as_parent=True
                 )
 
         Here columns one and two have different locators for the table widgets.
         """
         self.content_view = kwargs.pop("content_view", None)
+        self.use_index_as_parent = kwargs.pop("use_index_as_parent", False)
         super(CompoundExpandableTable, self).__init__(*args, **kwargs)
 
     def _create_column(self, parent, position, absolute_position=None, logger=None):
@@ -468,4 +493,6 @@ class CompoundExpandableTable(PatternflyTable):
         else:
             content_view = self.content_view
 
-        return self.Row.Column(parent, position, content_view, absolute_position, logger)
+        return self.Row.Column(
+            parent, position, content_view, absolute_position, logger, self.use_index_as_parent
+        )
