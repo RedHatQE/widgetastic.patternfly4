@@ -295,7 +295,7 @@ def test_compound_expandable_table(browser, use_different_widgets):
     else:
         # use the same content_view for all the tables
         class _ContentView(View):
-            """ View for the nested table(s) in the expandable columns."""
+            """View for the nested table(s) in the expandable columns."""
 
             table = PatternflyTable(locator=".//table[@aria-label='Sortable Table']")
 
