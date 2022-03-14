@@ -337,7 +337,7 @@ class ExpandableColumn(TableColumn):
 
     @property
     def is_expandable(self):
-        """ To check to see if this column is expandable, check to see if a button is in it."""
+        """To check to see if this column is expandable, check to see if a button is in it."""
         try:
             self.browser.element(self.EXPAND_LOCATOR)
         except NoSuchElementException:

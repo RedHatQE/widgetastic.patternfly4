@@ -12,7 +12,9 @@ from widgetastic_patternfly4 import Dropdown
 TESTING_PAGE_URL = "https://patternfly-react.surge.sh/demos/card-view/react-demos/card-view/"
 
 
-class PageCard(CardForCardGroup,):
+class PageCard(
+    CardForCardGroup,
+):
     dropdown = Dropdown()
 
     def delete_action(self):
