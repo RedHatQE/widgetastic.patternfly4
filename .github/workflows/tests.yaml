@@ -9,32 +9,35 @@ on:
   create:
 
 jobs:
-  lint:
+  pre-commit:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
-      - name: Install dependencies
-        run: |
-          pip install pre-commit
-      - name: Run pre-commit
-        run: |
-          pre-commit run --all
+        with:
+          python-version: "3.8"
+      - name: Pre Commit Checks
+        uses: pre-commit/action@v2.0.0
+      - name: Analysis (git diff)
+        if: failure()
+        run: git diff
 
   test:
     runs-on: ubuntu-20.04
-    needs: lint
+    needs: pre-commit
     strategy:
       matrix:
         browser: ["firefox", "chrome"]
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
+        with:
+          python-version: "3.8"
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
-          pip install -U setuptools pytest pytest-cov pytest-xdist
-          python setup.py install
+          pip install -U pip
+          pip install -U setuptools
+          pip install -e .[dev]
       - name: Fetch selenium image
         run: podman pull quay.io/redhatqe/selenium-standalone:latest
       - name: Test with pytest
@@ -56,6 +59,8 @@ jobs:
     needs: test
     steps:
       - uses: actions/setup-python@v2
+        with:
+          python-version: "3.8"
       - uses: actions/checkout@v2
       - name: Install dependencies
         run: |
