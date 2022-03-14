@@ -21,7 +21,7 @@ class BaseBreadCrumb:
 
     @property
     def active_location(self):
-        """Returns the last location in the breadcrumb, or None if breadcrumbs are not present/set."""
+        """Returns the last location in the breadcrumb, or None if there no breadcrumbs."""
         return self.locations[-1] if self.locations else None
 
     def click_location(self, name, partial=False, handle_alert=False):
