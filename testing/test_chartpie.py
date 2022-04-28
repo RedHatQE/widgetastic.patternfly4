@@ -10,7 +10,7 @@ TESTING_PAGE_URL = "https://patternfly-react.surge.sh/charts/pie-chart"
 
 DATA = {"Cats": 35, "Dogs": 55, "Birds": 10}
 LEGENDS = [Legend(label, value) for label, value in DATA.items()]
-DATA_POINTES = [DataPoint(label, value) for label, value in DATA.items()]
+DATA_POINTS = [DataPoint(label, value) for label, value in DATA.items()]
 
 
 @pytest.fixture(
@@ -39,7 +39,12 @@ def test_pie_chart(chart):
     """Test PieChart widget."""
     assert chart.is_displayed
     assert chart.legends == LEGENDS
-    assert chart.data == DATA_POINTES
+    for i in range(3):
+        if chart.data == DATA_POINTS:
+            break
+        if i == 2:
+            assert chart.data == DATA_POINTS
+
     assert "Birds" in chart.legend_names
 
     # get data point and check values
