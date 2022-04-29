@@ -145,7 +145,9 @@ class BaseCheckboxSelect(BaseSelect):
                 item = self.browser.text(el)
                 try:
                     # get the child element of the label
-                    selected[item] = el.find_element_by_xpath("./input").is_selected()
+                    selected[item] = self.browser.element(
+                        parent=el, locator="./input"
+                    ).is_selected()
                 except NoSuchElementException:
                     selected[item] = False
 

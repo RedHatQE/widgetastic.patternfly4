@@ -12,27 +12,27 @@ jobs:
   pre-commit:
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v3
         with:
           python-version: "3.8"
       - name: Pre Commit Checks
-        uses: pre-commit/action@v2.0.0
+        uses: pre-commit/action@v2.0.3
       - name: Analysis (git diff)
         if: failure()
         run: git diff
 
   test:
     runs-on: ubuntu-20.04
-    needs: pre-commit
     strategy:
       matrix:
-        browser: ["firefox", "chrome"]
+        browser: [chrome, firefox]
+        python-version: ["3.8", "3.9", "3.10"]
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v3
         with:
-          python-version: "3.8"
+           python-version: ${{ matrix.python-version }}
       - name: Install dependencies
         run: |
           pip install -U pip
@@ -58,10 +58,10 @@ jobs:
     runs-on: ubuntu-20.04
     needs: test
     steps:
-      - uses: actions/setup-python@v2
+      - uses: actions/setup-python@v3
         with:
           python-version: "3.8"
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip

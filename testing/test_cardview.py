@@ -2,7 +2,6 @@ import pytest
 from wait_for import wait_for
 from widgetastic.widget import ParametrizedView
 from widgetastic.widget import Text
-from widgetastic.widget import View
 
 from widgetastic_patternfly4 import CardCheckBox
 from widgetastic_patternfly4 import CardForCardGroup
@@ -12,9 +11,7 @@ from widgetastic_patternfly4 import Dropdown
 TESTING_PAGE_URL = "https://patternfly-react.surge.sh/demos/card-view/react-demos/card-view/"
 
 
-class PageCard(
-    CardForCardGroup,
-):
+class PageCard(CardForCardGroup):
     dropdown = Dropdown()
 
     def delete_action(self):
@@ -27,7 +24,7 @@ class PageCard(
 
 class Cards(CardGroup):
     def __init__(self, parent, locator=None, logger=None, **kwargs):
-        View.__init__(self, parent, logger=logger, **kwargs)
+        super().__init__(parent, logger=logger, **kwargs)
         self.locator = locator or './/div[contains(@class, "pf-l-gallery")]'
 
     cards = ParametrizedView.nested(PageCard)
@@ -59,9 +56,9 @@ def read_cards_2_checkmap(cards):
 
 
 def test_select_all_cards(browser, cards):
-
     name2checked = read_cards_2_checkmap(cards)
     assert not any(name2checked.values())
+    assert all(name2checked.keys())
 
     # first card doesn't have header and checkbox
     for card in list(cards)[1:]:
@@ -70,5 +67,6 @@ def test_select_all_cards(browser, cards):
 
     name2checked_after = read_cards_2_checkmap(cards)
     assert all(name2checked_after.values())
+    assert all(name2checked_after.keys())
 
     assert name2checked.keys() == name2checked_after.keys()
