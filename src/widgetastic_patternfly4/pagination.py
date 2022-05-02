@@ -33,6 +33,16 @@ class BasePagination:
     _items = Text(".//span[@class='pf-c-options-menu__toggle-text']")
     _current_page = TextInput(locator=".//input[@aria-label='Current page']")
     _total_pages = Text(".//div[@class='pf-c-pagination__nav-page-select']/span")
+    
+    @property
+    def is_enabled(self):
+        """Overriding is_enabled property .
+        Returns True when pagination dropdown button is enabled along with next & last button"""
+        return (
+            self.browser.element(self._options.BUTTON_LOCATOR).is_enabled()
+            and self.browser.element(self._next).is_enabled()
+            and self.browser.element(self._last).is_enabled()
+        )
 
     @property
     def cached_per_page_value(self):
