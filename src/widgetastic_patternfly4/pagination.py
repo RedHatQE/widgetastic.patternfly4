@@ -33,7 +33,7 @@ class BasePagination:
     _items = Text(".//span[@class='pf-c-options-menu__toggle-text']")
     _current_page = TextInput(locator=".//input[@aria-label='Current page']")
     _total_pages = Text(".//div[@class='pf-c-pagination__nav-page-select']/span")
-    
+
     @property
     def is_enabled(self):
         """Overriding is_enabled property .
