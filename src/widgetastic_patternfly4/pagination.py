@@ -36,8 +36,10 @@ class BasePagination:
 
     @property
     def is_enabled(self):
-        """Overriding is_enabled property .
-        Returns True when pagination dropdown button is enabled along with next & last button"""
+        """Overriding is_enabled property.
+
+        Returns ``True`` when pagination dropdown button is enabled along with next & last button.
+        """
         return (
             self.browser.element(self._options.BUTTON_LOCATOR).is_enabled()
             and self.browser.element(self._next).is_enabled()
