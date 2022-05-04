@@ -184,3 +184,7 @@ def test_custom_page(paginator):
     paginator.go_to_page(2)
     assert paginator.current_page == 2
     assert disp_items != paginator.displayed_items
+    
+def test_pagination_buttons_for_first_page(paginator):
+    assert paginator.is_enabled
+
