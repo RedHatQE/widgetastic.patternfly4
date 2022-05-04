@@ -19,7 +19,7 @@ class BaseSelect:
     https://www.patternfly.org/v4/documentation/react/components/select
     """
 
-    BUTTON_LOCATOR = "./button"
+    BUTTON_LOCATOR = ".//button"
     ITEMS_LOCATOR = (
         ".//ul[@class='pf-c-select__menu']/li[contains(@class, 'pf-c-select__menu-wrapper')]"
     )
