@@ -45,7 +45,7 @@ class BaseDropdown:
     @property
     def is_enabled(self):
         """Returns if the dropdown itself is enabled and therefore interactive."""
-        return "disabled" not in self.browser.classes(self.BUTTON_LOCATOR)
+        return "disabled" not in self.browser.classes(self.BUTTON_LOCATOR) OR "pf-m-disabled" not in self.browser.classes(self.BUTTON_LOCATOR)
 
     def _verify_enabled(self):
         if not self.is_enabled:
