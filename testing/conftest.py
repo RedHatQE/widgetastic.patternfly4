@@ -45,7 +45,7 @@ def selenium_url(pytestconfig, worker_id):
                 "-p",
                 f"{host}:5999:5999",
                 "--shm-size=2g",
-                "quay.io/redhatqe/selenium-standalone:ff_91.8.0esr_chrome_101.0.4951.41",
+                "quay.io/redhatqe/selenium-standalone:latest",
             ],
             stdout=subprocess.PIPE,
         )
