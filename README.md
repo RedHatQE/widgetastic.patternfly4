@@ -15,31 +15,31 @@ Breadcrumb - <https://www.patternfly.org/v4/components/breadcrumb>
 
 Button - <https://www.patternfly.org/v4/components/button>
 
-Bullet Chart - <https://www.patternfly.org/v4/charts/chartbullet>
+Bullet Chart - <https://www.patternfly.org/v4/charts/bullet-chart>
 
 Card - <https://www.patternfly.org/v4/components/card>
 
-Chip Group - <https://www.patternfly.org/v4/components/chipgroup>
+Chip Group - <https://www.patternfly.org/v4/components/chip-group>
 
-Context Selector - <https://www.patternfly.org/v4/components/contextselector>
+Context Selector - <https://www.patternfly.org/v4/components/context-selector>
 
-Donut Chart - <https://www.patternfly.org/v4/charts/chartdonut>
+Donut Chart - <https://www.patternfly.org/v4/charts/donut-chart>
 
 Dropdown - <https://www.patternfly.org/v4/components/dropdown>
 
-FormSelect - <https://www.patternfly.org/v4/components/formselect>
+FormSelect - <https://www.patternfly.org/v4/components/form-select>
 
 Menu - <https://www.patternfly.org/v4/components/menu>
 
 Modal - <https://www.patternfly.org/v4/components/modal>
 
-Nav - <https://www.patternfly.org/v4/components/nav>
+Nav - <https://www.patternfly.org/v4/components/navigation>
 
-Options Menu - <https://www.patternfly.org/v4/components/optionsmenu>
+Options Menu - <https://www.patternfly.org/v4/components/options-menu>
 
 Pagination - <https://www.patternfly.org/v4/components/pagination>
 
-Pie Chart - <https://www.patternfly.org/v4/charts/chartpie>
+Pie Chart - <https://www.patternfly.org/v4/charts/pie-chart>
 
 Popover - <https://www.patternfly.org/v4/components/popover>
 
