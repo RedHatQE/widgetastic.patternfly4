@@ -23,9 +23,9 @@ Chip Group - <https://www.patternfly.org/v4/components/chip-group>
 
 Context Selector - <https://www.patternfly.org/v4/components/context-selector>
 
-Donut Chart - <https://www.patternfly.org/v4/charts/chartdonut>
+Donut Chart - <https://www.patternfly.org/v4/charts/donut-chart>
 
-Dropdown - <https://www.patternfly.org/v4/charts/donut-chart>
+Dropdown - <https://www.patternfly.org/v4/components/dropdown>
 
 FormSelect - <https://www.patternfly.org/v4/components/form-select>
 
