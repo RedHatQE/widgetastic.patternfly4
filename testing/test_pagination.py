@@ -187,4 +187,4 @@ def test_custom_page(paginator):
 
 
 def test_pagination_buttons_for_first_page(paginator):
-    assert paginator.is_enabled()
+    assert paginator.is_enabled
