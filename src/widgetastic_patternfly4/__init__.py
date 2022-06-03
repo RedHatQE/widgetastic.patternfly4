@@ -43,6 +43,8 @@ from .select import CheckboxSelect
 from .select import Select
 from .select import SelectItemDisabled
 from .select import SelectItemNotFound
+from .slider import InputSlider
+from .slider import Slider
 from .switch import Switch
 from .switch import SwitchDisabled
 from .table import ColumnNotExpandable
@@ -79,6 +81,7 @@ __all__ = [
     "DropdownItemDisabled",
     "DropdownItemNotFound",
     "GroupDropdown",
+    "InputSlider",
     "SplitButtonDropdown",
     "FormSelect",
     "FormSelectDisabled",
@@ -100,6 +103,7 @@ __all__ = [
     "SelectItemDisabled",
     "SelectItemNotFound",
     "ContextSelector",
+    "Slider",
     "Switch",
     "SwitchDisabled",
     "ExpandableTable",
