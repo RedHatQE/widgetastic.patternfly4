@@ -3,6 +3,11 @@ from widgetastic.widget import GenericLocatorWidget
 
 
 class BaseSlider:
+    """Represents the Patternfly-4 Slider.
+
+    https://www.patternfly.org/v4/components/slider
+    """
+
     LABELS = ".//div[contains(@class, 'pf-c-slider__step-label')]"
     THUMB = ".//div[contains(@class, 'pf-c-slider__thumb')]"
     STEPS = (
@@ -11,7 +16,9 @@ class BaseSlider:
     )
 
     def _str_num(self, value):
-        """Covert to integer if convertable. is_numeric not valid as we have negative numbers."""
+        """Covert to integer if convertable.
+        is_numeric not valid as we consider negative numbers as well.
+        """
         try:
             return int(value)
         except ValueError:

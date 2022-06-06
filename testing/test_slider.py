@@ -17,6 +17,8 @@ TEST_DATA = {
 @pytest.fixture(scope="module")
 def view(browser):
     class TestView(View):
+        # TODO: Improve testing page with ids and OUIA components;
+        # for now using indexing for locators.
         # discrete slider
         discrete_value = Text(locator="(.//h3[contains(text(), 'Slider value is')])[4]")
         discrete = Slider(locator="(.//div[@id='ws-react-c-slider-discrete']/child::div)[4]")
