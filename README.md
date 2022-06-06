@@ -47,6 +47,8 @@ Progress - <https://www.patternfly.org/v4/components/progress>
 
 Select - <https://www.patternfly.org/v4/components/select>
 
+Slider - <https://www.patternfly.org/v4/components/slider>
+
 Switch - <https://www.patternfly.org/v4/components/switch>
 
 Table - <https://www.patternfly.org/v4/components/table>
