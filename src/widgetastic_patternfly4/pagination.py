@@ -46,7 +46,7 @@ class BasePagination:
             and if self.browser.element(self._last).is_displayed():
                     self.browser.element(self._last).is_enabled()
                 else:
-                    self.browser.element(self._last).is_disabled()          
+                    self.browser.element(self._last).is_disabled()
         )
 
     @property
