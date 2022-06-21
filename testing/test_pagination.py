@@ -51,6 +51,7 @@ def one_page_paginator(browser, request):
     with _paginator(browser, request) as result:
         yield result
 
+
 @pytest.fixture(
     params=[
         (Pagination, "top"),
@@ -61,7 +62,8 @@ def one_page_paginator(browser, request):
 def disabled_paginator(browser, request):
     _, kind = request.param
     with _paginator(browser, request, reset_elements_per_page=False) as result:
-        yield result, kind        
+        yield result, kind
+
 
 @pytest.fixture(
     params=[
