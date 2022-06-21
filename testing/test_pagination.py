@@ -51,6 +51,17 @@ def one_page_paginator(browser, request):
     with _paginator(browser, request) as result:
         yield result
 
+@pytest.fixture(
+    params=[
+        (Pagination, "top"),
+        (Pagination, "disabled"),
+    ],
+    ids=["enabled", "disabled"],
+)
+def disabled_paginator(browser, request):
+    _, kind = request.param
+    with _paginator(browser, request, reset_elements_per_page=False) as result:
+        yield result, kind        
 
 @pytest.fixture(
     params=[
@@ -186,5 +197,9 @@ def test_custom_page(paginator):
     assert disp_items != paginator.displayed_items
 
 
-def test_pagination_disabled(paginator):
-    assert paginator.is_enabled
+def test_pagination_is_enabled(disabled_paginator):
+    paginator, kind = disabled_paginator
+    if kind == "disabled":
+        assert not paginator.is_enabled
+    else:
+        assert paginator.is_enabled
