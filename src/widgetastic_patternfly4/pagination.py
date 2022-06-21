@@ -41,7 +41,7 @@ class BasePagination:
         Returns ``True`` when pagination dropdown button is enabled along with next & last button.
         """
         el = self.browser.element(self._last)
-        last_flag = el.is_enabled() if el.is_displayed() else True       
+        last_flag = el.is_enabled() if el.is_displayed() else True
         return (
             self.browser.element(self._options.BUTTON_LOCATOR).is_enabled()
             and self.browser.element(self._next).is_enabled()
