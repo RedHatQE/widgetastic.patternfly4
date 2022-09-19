@@ -25,6 +25,8 @@ Context Selector - <https://www.patternfly.org/v4/components/context-selector>
 
 Donut Chart - <https://www.patternfly.org/v4/charts/donut-chart>
 
+Dual list selector - <https://www.patternfly.org/v4/components/dual-list-selector>
+
 Dropdown - <https://www.patternfly.org/v4/components/dropdown>
 
 FormSelect - <https://www.patternfly.org/v4/components/form-select>
