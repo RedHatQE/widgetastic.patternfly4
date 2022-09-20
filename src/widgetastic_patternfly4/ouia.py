@@ -22,9 +22,9 @@ from widgetastic_patternfly4.pagination import BasePagination
 from widgetastic_patternfly4.select import BaseCheckboxSelect
 from widgetastic_patternfly4.select import BaseSelect
 from widgetastic_patternfly4.switch import BaseSwitch
-from widgetastic_patternfly4.tab import BaseTab
 from widgetastic_patternfly4.table import BaseExpandableTable
 from widgetastic_patternfly4.table import BasePatternflyTable
+from widgetastic_patternfly4.tabs import BaseTab
 
 
 class Alert(BaseAlert, OUIAGenericWidget):
