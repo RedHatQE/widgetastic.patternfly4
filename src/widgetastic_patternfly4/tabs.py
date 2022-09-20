@@ -3,7 +3,7 @@ from widgetastic.utils import ParametrizedLocator
 from widgetastic.widget import View
 
 
-class Tab(View):
+class BaseTab(View):
     """Represents the Patternfly Tab widget.
 
     Selects itself automatically when any child widget gets accessed, ensuring that the widget is
@@ -19,14 +19,6 @@ class Tab(View):
     TAB_LOCATOR = ParametrizedLocator(
         './/div[contains(@class, "pf-c-tabs")]/ul'
         "/li[button[normalize-space(.)={@tab_name|quote}]]"
-    )
-
-    ROOT = ParametrizedLocator(
-        ".//section[@aria-labelledby=string("
-        "preceding-sibling::div/ul/li/button[normalize-space(.)={@tab_name|quote}]/@id)]"
-        "|"
-        ".//section[@id=string(../preceding-sibling::div/ul/li"
-        "/button[normalize-space(.)={@tab_name|quote}]/@aria-controls)]"
     )
 
     @property
@@ -63,3 +55,13 @@ class Tab(View):
 
     def __repr__(self):
         return "<Tab {!r}>".format(self.tab_name)
+
+
+class Tab(BaseTab):
+    ROOT = ParametrizedLocator(
+        ".//section[@aria-labelledby=string("
+        "preceding-sibling::div/ul/li/button[normalize-space(.)={@tab_name|quote}]/@id)]"
+        "|"
+        ".//section[@id=string(../preceding-sibling::div/ul/li"
+        "/button[normalize-space(.)={@tab_name|quote}]/@aria-controls)]"
+    )
