@@ -21,6 +21,8 @@ from .dropdown import DropdownItemDisabled
 from .dropdown import DropdownItemNotFound
 from .dropdown import GroupDropdown
 from .dropdown import SplitButtonDropdown
+from .duallistselector import DualListSelector
+from .duallistselector import SearchDualListSelector
 from .formselect import FormSelect
 from .formselect import FormSelectDisabled
 from .formselect import FormSelectOptionDisabled
@@ -80,6 +82,8 @@ __all__ = [
     "DropdownDisabled",
     "DropdownItemDisabled",
     "DropdownItemNotFound",
+    "DualListSelector",
+    "SearchDualListSelector",
     "GroupDropdown",
     "InputSlider",
     "SplitButtonDropdown",
