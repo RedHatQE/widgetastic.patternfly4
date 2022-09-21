@@ -46,6 +46,10 @@ class Dropdown(BaseDropdown, OUIAGenericWidget):
     OUIA_COMPONENT_TYPE = "PF4/Dropdown"
 
 
+class Title(BaseModal, OUIAGenericWidget):
+    OUIA_COMPONENT_TYPE = "PF4/Title"
+
+
 class GroupDropdown(BaseGroupDropdown, Dropdown):
     pass
 
