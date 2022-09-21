@@ -26,7 +26,7 @@ def test_dual_list_selector_is_displayed(view):
 
 
 def test_available(view):
-     view.dual_list_selector._available.is_displayed()
+    view.dual_list_selector._available.is_displayed()
 
 
 def test_chosen(view):
