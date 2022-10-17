@@ -197,8 +197,7 @@ class ChipGroup(View):
 
     def __iter__(self):
         chips = self.get_chips()
-        for chip in chips:
-            yield chip
+        yield from chips
 
     def remove_chip_by_name(self, name):
         """Removes a chip from the group by name"""
@@ -345,8 +344,7 @@ class ChipGroupToolbar(View):
         return self.groups
 
     def __iter__(self):
-        for group in self.get_groups():
-            yield group
+        yield from self.get_groups()
 
     def read(self):
         """Returns a dict of chips"""

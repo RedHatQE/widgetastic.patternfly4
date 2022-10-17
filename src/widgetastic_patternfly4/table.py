@@ -50,7 +50,7 @@ class HeaderRow(TableRow):
         return "{}({!r})".format(type(self).__name__, self.parent)
 
     def __getitem__(self, item):
-        if isinstance(item, six.string_types):
+        if isinstance(item, str):
             index = self.table.header_index_mapping[self.table.ensure_normal(item)]
         elif isinstance(item, int):
             index = item
@@ -77,7 +77,7 @@ class PatternflyTableRow(TableRow):
         return len(self.browser.elements(self.HEADER_IN_ROW)) > 0
 
     def __getitem__(self, item):
-        if isinstance(item, six.string_types):
+        if isinstance(item, str):
             index = self.table.header_index_mapping[self.table.ensure_normal(item)]
         elif isinstance(item, int):
             index = item
@@ -96,7 +96,7 @@ class PatternflyTableRow(TableRow):
                 # Adjust the index for td objects that exist beyond the th so xpath is valid
                 index = index - 1
         # After adjusting the index, call the original __getitem__ to get our TableColumn item
-        return super(PatternflyTableRow, self).__getitem__(index)
+        return super().__getitem__(index)
 
 
 class BasePatternflyTable:
@@ -187,7 +187,7 @@ class ExpandableTableRow(PatternflyTableRow):
     TABLE_COLUMN_CLS = ExpandableTableHeaderColumn
 
     def __init__(self, parent, index, content_view=None, logger=None):
-        super(ExpandableTableRow, self).__init__(parent, index, logger=logger)
+        super().__init__(parent, index, logger=logger)
 
         content_parent = Text(parent=self, locator=self.EXPANDABLE_CONTENT)
         if content_view:
@@ -230,7 +230,7 @@ class ExpandableTableRow(PatternflyTableRow):
 
     def read(self):
         """Returns a text representation of the table row."""
-        result = super(ExpandableTableRow, self).read()
+        result = super().read()
         # Remove the column with the "expand" button in it
         if 0 in result and not result[0]:
             del result[0]
@@ -310,7 +310,7 @@ class ExpandableColumn(TableColumn):
         use_index_as_parent=False,
     ):
 
-        super(ExpandableColumn, self).__init__(parent, position, absolute_position, logger=logger)
+        super().__init__(parent, position, absolute_position, logger=logger)
 
         # Sometimes expandable content's 'tr' index is dictated by the position of the column
         # Most of the time it is the second index.
@@ -387,7 +387,7 @@ class CompoundExpandableRow(PatternflyTableRow):
     Column = ExpandableColumn
 
     def __getitem__(self, item):
-        if isinstance(item, six.string_types):
+        if isinstance(item, str):
             index = self.table.header_index_mapping[self.table.ensure_normal(item)]
         elif isinstance(item, int):
             index = item
@@ -483,7 +483,7 @@ class CompoundExpandableTable(PatternflyTable):
         """
         self.content_view = kwargs.pop("content_view", None)
         self.use_index_as_parent = kwargs.pop("use_index_as_parent", False)
-        super(CompoundExpandableTable, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def _create_column(self, parent, position, absolute_position=None, logger=None):
         """Override this if you wish to change column behavior in a child class."""
