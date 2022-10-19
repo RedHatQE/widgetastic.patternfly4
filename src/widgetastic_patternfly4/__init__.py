@@ -55,6 +55,7 @@ from .table import ExpandableTable
 from .table import PatternflyTable
 from .table import RowNotExpandable
 from .tabs import Tab
+from .title import Title
 
 __all__ = [
     "Alert",
@@ -114,4 +115,5 @@ __all__ = [
     "PatternflyTable",
     "RowNotExpandable",
     "Tab",
+    "Title",
 ]

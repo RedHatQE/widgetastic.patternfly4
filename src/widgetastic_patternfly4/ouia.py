@@ -1,5 +1,6 @@
 from widgetastic.ouia import OUIAGenericView
 from widgetastic.ouia import OUIAGenericWidget
+from widgetastic.ouia.text import Text as BaseOuiaText
 from widgetastic.widget.table import Table
 from widgetastic.xpath import quote
 
@@ -24,6 +25,7 @@ from widgetastic_patternfly4.select import BaseSelect
 from widgetastic_patternfly4.switch import BaseSwitch
 from widgetastic_patternfly4.table import BaseExpandableTable
 from widgetastic_patternfly4.table import BasePatternflyTable
+from widgetastic_patternfly4.title import BaseTitle
 
 
 class Alert(BaseAlert, OUIAGenericWidget):
@@ -135,3 +137,11 @@ class ContextSelector(BaseContextSelector, Select):
 
 class OptionsMenu(BaseOptionsMenu, Dropdown):
     OUIA_COMPONENT_TYPE = "PF4/OptionsMenu"
+
+
+class Title(BaseTitle, OUIAGenericWidget):
+    OUIA_COMPONENT_TYPE = "PF4/Title"
+
+
+class Text(BaseOuiaText):
+    OUIA_COMPONENT_TYPE = "PF4/Text"
