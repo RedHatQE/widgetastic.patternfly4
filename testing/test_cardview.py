@@ -39,13 +39,13 @@ def cards(browser):
 
 
 def test_read_and_drop_second_card(cards):
-    second = list(cards)[1]
+    second = [*cards][1]
 
     assert second.header_text.read() == "Patternfly"
 
     second.delete_action()
 
-    new_second = list(cards)[1]
+    new_second = [*cards][1]
 
     assert new_second.header_text.read() != "Patternfly"
 
