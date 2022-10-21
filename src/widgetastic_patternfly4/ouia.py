@@ -24,6 +24,7 @@ from widgetastic_patternfly4.select import BaseSelect
 from widgetastic_patternfly4.switch import BaseSwitch
 from widgetastic_patternfly4.table import BaseExpandableTable
 from widgetastic_patternfly4.table import BasePatternflyTable
+from widgetastic_patternfly4.tabs import BaseTab
 
 
 class Alert(BaseAlert, OUIAGenericWidget):
@@ -135,3 +136,7 @@ class ContextSelector(BaseContextSelector, Select):
 
 class OptionsMenu(BaseOptionsMenu, Dropdown):
     OUIA_COMPONENT_TYPE = "PF4/OptionsMenu"
+
+
+class Tab(BaseTab, OUIAGenericWidget):
+    OUIA_COMPONENT_TYPE = "PF4/Tab"
