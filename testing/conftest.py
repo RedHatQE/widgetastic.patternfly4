@@ -6,6 +6,20 @@ import pytest
 from selenium import webdriver
 from wait_for import wait_for
 from widgetastic.browser import Browser
+from widgetastic.browser import BrowserParentWrapper
+
+
+class HighlightBrowser(Browser):
+    """Provide element highlighting during test execution"""
+
+    def move_to_element(self, locator, *args, **kwargs):
+        kwargs["highlight_element"] = True
+        if isinstance(self, BrowserParentWrapper):
+            parent = self._o
+            el = self._browser.element(locator, parent=parent)
+            return self._browser.move_to_element(el, *args, **kwargs)
+        else:
+            return super().move_to_element(locator, *args, **kwargs)
 
 
 OPTIONS = {"firefox": webdriver.FirefoxOptions(), "chrome": webdriver.ChromeOptions()}
@@ -73,5 +87,5 @@ def selenium(browser_name, wait_for_selenium, selenium_url):
 @pytest.fixture(scope="module")
 def browser(selenium, request):
     selenium.get(request.module.TESTING_PAGE_URL)
-    yield Browser(selenium)
+    yield HighlightBrowser(selenium)
     selenium.refresh()
