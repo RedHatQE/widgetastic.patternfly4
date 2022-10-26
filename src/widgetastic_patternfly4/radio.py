@@ -8,7 +8,7 @@ from widgetastic.widget import View
 
 class BaseRadio:
     ROOT_ID_LOC = ParametrizedLocator(
-        ".//div[contains(@class, 'pf-c-radio') and " ".//input[@type='radio' and @id={@id|quote}]]"
+        ".//div[contains(@class, 'pf-c-radio') and .//input[@type='radio' and @id={@id|quote}]]"
     )
     ROOT_LABEL_LOC = ParametrizedLocator(
         ".//div[contains(@class, 'pf-c-radio') and "
