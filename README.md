@@ -47,6 +47,8 @@ Popover - <https://www.patternfly.org/v4/components/popover>
 
 Progress - <https://www.patternfly.org/v4/components/progress>
 
+Radio - <https://www.patternfly.org/v4/components/radio>
+
 Select - <https://www.patternfly.org/v4/components/select>
 
 Slider - <https://www.patternfly.org/v4/components/slider>
@@ -56,6 +58,8 @@ Switch - <https://www.patternfly.org/v4/components/switch>
 Table - <https://www.patternfly.org/v4/components/table>
 
 Tabs - <https://www.patternfly.org/v4/components/tabs>
+
+Title - <https://www.patternfly.org/v4/components/title>
 
 ## Contribution guide
 
