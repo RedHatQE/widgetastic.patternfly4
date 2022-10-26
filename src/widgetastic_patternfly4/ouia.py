@@ -1,5 +1,6 @@
 from widgetastic.ouia import OUIAGenericView
 from widgetastic.ouia import OUIAGenericWidget
+from widgetastic.ouia.input import TextInput as BaseOuiaTextInput
 from widgetastic.ouia.text import Text as BaseOuiaText
 from widgetastic.widget.table import Table
 from widgetastic.xpath import quote
@@ -145,3 +146,7 @@ class Title(BaseTitle, OUIAGenericWidget):
 
 class Text(BaseOuiaText):
     OUIA_COMPONENT_TYPE = "PF4/Text"
+
+
+class TextInput(BaseOuiaTextInput):
+    OUIA_COMPONENT_TYPE = "PF4/TextInput"
