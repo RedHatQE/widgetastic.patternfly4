@@ -1,17 +1,20 @@
+from collections import namedtuple
 from time import sleep
 
 import pytest
 
 from widgetastic_patternfly4 import BulletChart
 from widgetastic_patternfly4.bulletchart import DataPoint
-from widgetastic_patternfly4.bulletchart import Legend
 
 TESTING_PAGE_URL = "https://patternfly-react.surge.sh/charts/bullet-chart"
 
+Legend = namedtuple("Legend", ["label", "value"])
+
+
 TEST_DATA = {
     "dot": {
-        "id": "ws-react-c-chartbullet-bullet-chart-with-primary-measure-dot",
-        "anchor": "#bullet-chart-with-primary-measure-dot",
+        "id": "ws-react-c-bullet-chart-primary-measure-dot",
+        "anchor": "primary-measure-dot",
         "bar_data": [
             DataPoint("Range", 75),
             DataPoint("Range", 50),
@@ -28,8 +31,8 @@ TEST_DATA = {
         ],
     },
     "tick": {
-        "id": "ws-react-c-chartbullet-error-measure-and-custom-axis-ticks",
-        "anchor": "#error-measure-and-custom-axis-ticks",
+        "id": "ws-react-c-bullet-chart-error-measure-and-custom-axis-ticks",
+        "anchor": "error-measure-and-custom-axis-ticks",
         "bar_data": [
             DataPoint("Range", 150),
             DataPoint("Range", 100),
@@ -56,7 +59,10 @@ def chart_data(browser, request):
     sleep(3)  # Stabilized graph data on testing page; specially for firefox.
     # Firefox fails the test if the chart is not fully visible therefore we click here on anchor
     # in order to properly scroll down
-    anchor = browser.element(f".//a[@href='{request.param['anchor']}']")
+
+    test_data = TEST_DATA[request.param]
+    anchor_id = test_data["anchor"]
+    anchor = browser.element(f".//h3[@id='{anchor_id}']/a")
     browser.click(anchor)
     return (
         BulletChart(browser, id=TEST_DATA[request.param]["id"]),
@@ -66,12 +72,13 @@ def chart_data(browser, request):
     )
 
 
-@pytest.mark.skip(reason="test is flaky")
 def test_bullet_chart(chart_data):
     """Test BulletChart widget."""
     chart, bar_data, legend_data, chart_type = chart_data
     assert chart.is_displayed
-    assert chart.legends == legend_data
+    for leg, expected_leg in zip(chart.legends, legend_data):
+        assert leg.label == expected_leg.label
+        assert leg.value == expected_leg.value
     assert chart.data == bar_data
     assert "Warning" in chart.legend_names
     # get bar and check values

@@ -13,11 +13,14 @@ class Legend(ParametrizedView):
     PARAMETERS = ("label_text",)
 
     LEGEND_LABEL = ParametrizedLocator(
-        ".//*[name()='text' and contains(@id, 'legend')]"
+        ".//*[name()='text' and (contains(@id, 'legend') or contains(@id, 'Legend'))]"
         "/*[name()='tspan' and contains(., {label_text|quote})]"
     )
     ROOT = ParametrizedLocator(".//*[name()='g' and {@LEGEND_LABEL}]")
-    LEGEND_LABEL_ITEMS = ".//*[name()='text' and contains(@id, 'legend')]/*[name()='tspan']"
+    LEGEND_LABEL_ITEMS = (
+        ".//*[name()='text' and (contains(@id, 'legend') or "
+        "contains(@id, 'Legend'))]/*[name()='tspan']"
+    )
     LEGEND_ICON_ITEMS = ".//*[name()='rect']/following-sibling::*[name()='path']"
 
     # Need to overwrite as per need.
