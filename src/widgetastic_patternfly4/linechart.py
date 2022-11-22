@@ -1,7 +1,8 @@
-from widgetastic.xpath import quote
-from widgetastic_patternfly4.bulletchart import Legend
-from widgetastic.widget import View
 from widgetastic.widget import ParametrizedLocator
+from widgetastic.widget import View
+from widgetastic.xpath import quote
+
+from widgetastic_patternfly4.bulletchart import Legend
 
 
 class LineChart(View):
@@ -18,8 +19,11 @@ class LineChart(View):
 
     X_AXIS_LABELS = "(.//*[name()='g' and *[name()='line'] and *[name()='g']])[1]//*[name()='text']"
     Y_AXIS_LABELS = "(.//*[name()='g' and *[name()='line'] and *[name()='g']])[2]//*[name()='text']"
-    
-    TOOLTIP = ".//*[name()='g' and .//*[name()='g' and .//*[name()='text' and contains(@id, 'legend-labels')]]]"
+
+    TOOLTIP = (
+        ".//*[name()='g' and .//*[name()='g' and "
+        ".//*[name()='text' and contains(@id, 'legend-labels')]]]"
+    )
 
     TOOLTIP_X_AXIS_LABLE = ".//*[name()='text']"
     TOOLTIP_LABLES = ".//*[name()='g']/*[name()='text' and not(contains(@id, 'legend-label'))]"
@@ -27,17 +31,15 @@ class LineChart(View):
 
     _legends = View.nested(Legend)
 
-
     def __init__(self, parent=None, id=None, locator=None, logger=None, *args, **kwargs):
         View.__init__(self, parent=parent, logger=logger)
-        
+
         assert id or locator, "Provide id or locator."
-        
+
         if id:
             self.locator = ".//div[@id={}]".format(quote(id))
         else:
             self.locator = locator
-    
 
     @property
     def legends(self):
@@ -48,7 +50,6 @@ class LineChart(View):
     def legend_names(self):
         """Return all legend names."""
         return [leg.label for leg in self.legends]
-    
 
     def get_legend(self, label):
         """Get specific Legend object.
@@ -69,26 +70,32 @@ class LineChart(View):
     def labels_x_axis(self):
         """Return X-Axis labels."""
         return list(self._x_axis_labels_map.keys())
-    
-    def read(self):
-        """Read chart data."""
+
+    def read(self, offset=(0, -100)):
+        """Read chart data.
+
+        Args:
+            offset: offset to move cursor from x-axis label so that tooltip can appear.
+        """
         _data = {}
 
         for lab_el in self._x_axis_labels_map.values():
             self.browser.move_to_element(lab_el)
             self.browser.click(lab_el)
-            self.browser.move_by_offset(0, -100)
+            self.browser.move_by_offset(*offset)
             tooltip_el = self.browser.wait_for_element(self.TOOLTIP)
-            
+
             x_axis_label = self.browser.text(self.TOOLTIP_X_AXIS_LABLE, parent=tooltip_el)
             label_data = {}
-            
-            for label_el, value_el in zip(self.browser.elements(self.TOOLTIP_LABLES, parent=tooltip_el), self.browser.elements(self.TOOLTIP_VALUES, parent=tooltip_el)):
+
+            for label_el, value_el in zip(
+                self.browser.elements(self.TOOLTIP_LABLES, parent=tooltip_el),
+                self.browser.elements(self.TOOLTIP_VALUES, parent=tooltip_el),
+            ):
                 label_data[self.browser.text(label_el)] = self.browser.text(value_el)
-            
+
             _data[x_axis_label] = label_data
 
         # Just move cursor to avoid mismatch of legend and tooltip text.
         self.root_browser.move_to_element(".//body")
         return _data
-
