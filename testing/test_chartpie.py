@@ -1,13 +1,14 @@
+from collections import namedtuple
 from time import sleep
 
 import pytest
 
 from widgetastic_patternfly4 import PieChart
 from widgetastic_patternfly4.bulletchart import DataPoint
-from widgetastic_patternfly4.bulletchart import Legend
 
 TESTING_PAGE_URL = "https://patternfly-react.surge.sh/charts/pie-chart"
 
+Legend = namedtuple("Legend", ["label", "value"])
 DATA = {"Cats": 35, "Dogs": 55, "Birds": 10}
 LEGENDS = [Legend(label, value) for label, value in DATA.items()]
 DATA_POINTS = [DataPoint(label, value) for label, value in DATA.items()]
@@ -38,7 +39,11 @@ def chart(browser, request):
 def test_pie_chart(chart):
     """Test PieChart widget."""
     assert chart.is_displayed
-    assert chart.legends == LEGENDS
+
+    for leg, expected_leg in zip(chart.legends, LEGENDS):
+        assert leg.label == expected_leg.label
+        assert leg.value == expected_leg.value
+
     for i in range(3):
         if chart.data == DATA_POINTS:
             break

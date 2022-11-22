@@ -1,5 +1,3 @@
-import re
-
 from widgetastic_patternfly4 import BulletChart
 
 
@@ -10,4 +8,3 @@ class PieChart(BulletChart):
     """
 
     APPLY_OFFSET = False
-    LEGEND_ITEM_REGEX = re.compile(r"(\d+): (\w.*)|(\w.*): (\d+)")

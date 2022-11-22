@@ -1,25 +1,93 @@
 import re
 
 from widgetastic.utils import ParametrizedLocator
+from widgetastic.widget import ParametrizedView
 from widgetastic.widget import Text
 from widgetastic.widget import View
 from widgetastic.xpath import quote
 
 
-class Legend:
+class Legend(ParametrizedView):
     """Represents Legend of chart."""
 
-    def __init__(self, label, value=None, color=None, element=None):
+    PARAMETERS = ("label_text",)
+
+    LEGEND_LABEL = ParametrizedLocator(
+        ".//*[name()='text' and (contains(@id, 'legend') or contains(@id, 'Legend'))]"
+        "/*[name()='tspan' and contains(., {label_text|quote})]"
+    )
+    ROOT = ParametrizedLocator(".//*[name()='g' and {@LEGEND_LABEL}]")
+    LEGEND_LABEL_ITEMS = (
+        ".//*[name()='text' and (contains(@id, 'legend') or "
+        "contains(@id, 'Legend'))]/*[name()='tspan']"
+    )
+    LEGEND_ICON_ITEMS = ".//*[name()='rect']/following-sibling::*[name()='path']"
+
+    # Need to overwrite as per need.
+    LEGEND_ITEM_REGEX = re.compile(r"(\d+)\s(\w.*)|(\w.*)\s(\d+)")
+
+    @property
+    def _legend_color_map(self):
+        _data = {}
+
+        for (icon, label_el) in zip(
+            self.browser.elements(self.LEGEND_ICON_ITEMS),
+            self.browser.elements(self.LEGEND_LABEL_ITEMS),
+        ):
+            color = icon.value_of_css_property("fill")
+            if not color:
+                color = icon.value_of_css_property("color")
+            _data[self.browser.text(label_el)] = color
+        return _data
+
+    @classmethod
+    def _get_legend_item(cls, text):
+        text = text.replace(":", "")
+        match = cls.LEGEND_ITEM_REGEX.match(text)
+
+        if match:
+            left_value, left_label, right_label, right_value = match.groups()
+            label = right_label or left_label if match else text
+            value = int(right_value or left_value) if match else None
+            return label, value
+        else:
+            return text, None
+
+    @property
+    def label(self):
+        """Returns the label of a Legend"""
+        return self._get_legend_item(self.browser.text(self.LEGEND_LABEL))[0]
+
+    @property
+    def value(self):
+        """Returns the value of a Legend"""
+        return self._get_legend_item(self.browser.text(self.LEGEND_LABEL))[1]
+
+    @property
+    def color(self):
+        """Returns the color of a Legend"""
+        return self._legend_color_map.get(self.browser.text(self.LEGEND_LABEL))
+
+    def click(self):
+        """Click on a Legend"""
+        self.browser.click(self.LEGEND_LABEL)
+
+    @classmethod
+    def all(cls, browser):
+        """Returns a list of all items"""
+        return [(browser.text(el),) for el in browser.elements(cls.LEGEND_LABEL_ITEMS)]
+
+    def __repr__(self):
+        return f"Legend({self.browser.text(self.LEGEND_LABEL)})"
+
+
+class DataPoint:
+    """Represents DataPoint on chart."""
+
+    def __init__(self, label, value=None, color=None):
         self.label = label
         self.value = value
         self.color = color
-        self.element = element
-
-    def click(self):
-        self.element.click()
-
-    def __repr__(self):
-        return f"Legend({self.label}: {self.value})"
 
     def __gt__(self, leg):
         return self.__class__ == leg.__class__ and self.value > leg.value
@@ -28,10 +96,6 @@ class Legend:
         return (
             self.__class__ == self.__class__ and self.label == leg.label and self.value == leg.value
         )
-
-
-class DataPoint(Legend):
-    """Represents DataPoint on chart."""
 
     def __repr__(self):
         return f"DataPoint({self.label}: {self.value})"
@@ -49,13 +113,8 @@ class BulletChart(View):
     """
 
     ROOT = ParametrizedLocator("{@locator}")
-    DEFAULT_LOCATOR = ".//div[contains(@class, 'chartbullet')]"
-    LEGEND_ICON = (
-        ".//*[name()='g' or name()='svg']/*[name()='rect']/following-sibling::*[name()='path']"
-    )
-    LEGEND_TEXT = ".//*[name()='text' and contains(@id, 'legend-labels')]"
-    LEGEND_ITEM_REGEX = re.compile(r"(\d+)\s(\w.*)|(\w.*)\s(\d+)")
 
+    DEFAULT_LOCATOR = ".//div[contains(@class, 'chartbullet')]"
     ITEMS = ".//*[name()='g']/*[name()='path' and not(contains(@style, 'type:square'))]"
     TOOLTIP_REGEX = re.compile(r"(.*?): ([\d]+)")
     APPLY_OFFSET = True
@@ -64,6 +123,7 @@ class BulletChart(View):
         ".//*[name()='svg' and contains(@aria-labelledby, 'victory-container')]/"
         "following-sibling::div[contains(@style, 'z-index')]/*[name()='svg']"
     )
+    _legends = View.nested(Legend)
 
     def __init__(self, parent=None, id=None, locator=None, logger=None, *args, **kwargs):
         View.__init__(self, parent=parent, logger=logger)
@@ -89,26 +149,7 @@ class BulletChart(View):
 
     @property
     def legends(self):
-        """Return all Legend objects."""
-
-        br = self.browser
-        _data = []
-        for (icon, label_el) in zip(br.elements(self.LEGEND_ICON), br.elements(self.LEGEND_TEXT)):
-            label_text = br.text(label_el)
-            match = self.LEGEND_ITEM_REGEX.match(label_text)
-            if match:
-                left_value, left_label, right_label, right_value = match.groups()
-            label = right_label or left_label if match else label_text
-            value = int(right_value or left_value) if match else None
-            _data.append(
-                Legend(
-                    label=label,
-                    value=value,
-                    color=icon.value_of_css_property("fill"),
-                    element=label_el,
-                )
-            )
-        return _data
+        return [leg for leg in self._legends]
 
     @property
     def legend_names(self):
@@ -135,6 +176,7 @@ class BulletChart(View):
 
         for el in self.browser.elements(self.ITEMS):
             self.browser.move_to_element(el)
+            self.browser.click(el)
 
             if self.APPLY_OFFSET:
                 dx, dy = self._offsets(el)
@@ -147,7 +189,6 @@ class BulletChart(View):
                         label=match.groups()[0],
                         value=int(match.groups()[1]),
                         color=el.value_of_css_property("fill"),
-                        element=el,
                     )
                 )
         return _data
