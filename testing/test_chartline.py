@@ -19,8 +19,6 @@ TEST_DATA = {
 @pytest.fixture()
 def chart(browser):
     sleep(3)  # Stabilized graph data on testing page; specially for firefox.
-    # Firefox fails the test if the chart is not fully visible therefore we click here on anchor
-    # in order to properly scroll down
     return LineChart(browser, id="ws-react-c-line-chart-green-with-bottom-aligned-legend")
 
 

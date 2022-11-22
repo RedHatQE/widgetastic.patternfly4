@@ -8,7 +8,7 @@ from widgetastic_patternfly4.bulletchart import Legend
 class LineChart(View):
     """Represents the Patternfly Line Chart.
 
-    https://www.patternfly.org/v4/charts/line-chart
+    https://www.patternfly.org/v4/charts/line-chart/react/green-with-bottom-aligned-legend/
 
     Args:
         id: If you want to look the input up by id, use this parameter, pass the id.
@@ -31,7 +31,7 @@ class LineChart(View):
 
     _legends = View.nested(Legend)
 
-    def __init__(self, parent=None, id=None, locator=None, logger=None, *args, **kwargs):
+    def __init__(self, parent=None, id=None, locator=None, logger=None):
         View.__init__(self, parent=parent, logger=logger)
 
         assert id or locator, "Provide id or locator."
@@ -74,8 +74,12 @@ class LineChart(View):
     def read(self, offset=(0, -100)):
         """Read chart data.
 
+        Note: This method has some limitations as we are reading the tooltip for x-axis labels
+        with some offset. So only applicable for the chart which shows all Legend data in a single
+        tooltip for the respective x-axis label.
+
         Args:
-            offset: offset to move cursor from x-axis label so that tooltip can appear.
+            offset: offset to move the cursor from the x-axis label so that the tooltip can appear.
         """
         _data = {}
 
