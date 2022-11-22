@@ -27,6 +27,7 @@ from .formselect import FormSelect
 from .formselect import FormSelectDisabled
 from .formselect import FormSelectOptionDisabled
 from .formselect import FormSelectOptionNotFound
+from .linechart import LineChart
 from .menu import CheckboxMenu
 from .menu import Menu
 from .menu import MenuItemDisabled
@@ -92,6 +93,7 @@ __all__ = [
     "FormSelectOptionNotFound",
     "GroupDropdown",
     "InputSlider",
+    "LineChart",
     "Menu",
     "MenuItemDisabled",
     "MenuItemNotFound",
