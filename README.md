@@ -31,6 +31,8 @@ Dropdown - <https://www.patternfly.org/v4/components/dropdown>
 
 FormSelect - <https://www.patternfly.org/v4/components/form-select>
 
+LineChart - <https://www.patternfly.org/v4/charts/line-chart>
+
 Menu - <https://www.patternfly.org/v4/components/menu>
 
 Modal - <https://www.patternfly.org/v4/components/modal>
