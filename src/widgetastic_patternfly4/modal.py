@@ -11,7 +11,7 @@ class ModalItemNotFound(Exception):
 class BaseModal:
     """Represents the Patternfly Modal.
 
-    https://www.patternfly.org/v4/documentation/react/components/modal
+    https://www.patternfly.org/v4/components/modal
     """
 
     BODY = ".//div[contains(@class, 'pf-c-modal-box__body')]"

@@ -9,7 +9,7 @@ class Tab(View):
     Selects itself automatically when any child widget gets accessed, ensuring that the widget is
     visible.
 
-    https://www.patternfly.org/v4/documentation/react/components/tabs
+    https://www.patternfly.org/v4/components/tabs
     """
 
     # The text on the tab. Can be omitted if it is the same as the tab class name capitalized

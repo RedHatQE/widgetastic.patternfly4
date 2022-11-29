@@ -40,7 +40,7 @@ class DataPoint(Legend):
 class BulletChart(View):
     """Represents the Patternfly Bullet Chart.
 
-    https://www.patternfly.org/v4/documentation/react/charts/chartbullet
+    https://www.patternfly.org/v4/charts/bullet-chart
 
     Args:
         id: If you want to look the input up by id, use this parameter, pass the id.

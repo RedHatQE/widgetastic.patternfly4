@@ -67,7 +67,7 @@ class DonutCircle(View):
 class DonutChart(View):
     """
     Represents the Donut Chart
-    from Patternfly 4 (https://www.patternfly.org/v4/documentation/react/charts/chartdonut)
+    from Patternfly 4 (https://www.patternfly.org/v4/charts/donut-chart)
     """
 
     ROOT = ParametrizedLocator("{@locator}")

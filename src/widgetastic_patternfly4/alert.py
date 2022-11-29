@@ -5,7 +5,7 @@ from widgetastic.widget import Widget
 class BaseAlert:
     """Represents alert block.
 
-    https://www.patternfly.org/v4/documentation/react/components/alert
+    https://www.patternfly.org/v4/components/alert
     """
 
     TITLE = './/h4[@class="pf-c-alert__title"]'

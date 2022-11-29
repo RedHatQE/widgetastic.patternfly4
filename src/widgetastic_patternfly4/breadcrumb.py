@@ -5,7 +5,7 @@ from widgetastic.widget import Widget
 class BaseBreadCrumb:
     """Represents the Patternfly BreadCrumb.
 
-    https://www.patternfly.org/v4/documentation/react/components/breadcrumb
+    https://www.patternfly.org/v4/components/breadcrumb
     """
 
     ELEMENTS = ".//li"

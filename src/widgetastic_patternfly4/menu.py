@@ -32,7 +32,7 @@ class BaseMenu:
             BUTTON_LOCATOR = ".//button[contains(@class, 'pf-c-menu-toggle')]"
             ROOT = f"{BUTTON_LOCATOR}/.."
 
-    https://www.patternfly.org/v4/documentation/react/components/menu
+    https://www.patternfly.org/v4/components/menu
     """
 
     # most menus are always open

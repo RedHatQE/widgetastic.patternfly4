@@ -16,7 +16,7 @@ class SelectItemNotFound(DropdownItemNotFound):
 class BaseSelect:
     """Represents the Patternfly Select.
 
-    https://www.patternfly.org/v4/documentation/react/components/select
+    https://www.patternfly.org/v4/components/select
     """
 
     BUTTON_LOCATOR = "./button"
