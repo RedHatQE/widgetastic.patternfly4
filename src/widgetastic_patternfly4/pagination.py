@@ -18,7 +18,7 @@ class PaginationNavDisabled(Exception):
 class BasePagination:
     """Represents the Patternfly pagination.
 
-    https://www.patternfly.org/v4/documentation/react/components/pagination
+    https://www.patternfly.org/v4/components/pagination
     """
 
     DEFAULT_LOCATOR = (

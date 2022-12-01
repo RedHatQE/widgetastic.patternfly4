@@ -24,7 +24,7 @@ class DropdownItemNotFound(Exception):
 class BaseDropdown:
     """Represents the Patternfly dropdown.
 
-    https://www.patternfly.org/v4/documentation/react/components/dropdown
+    https://www.patternfly.org/v4/components/dropdown
 
     Args:
         text: Text of the button, can be the inner text or the title attribute.

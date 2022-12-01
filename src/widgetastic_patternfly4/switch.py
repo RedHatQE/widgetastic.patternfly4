@@ -9,7 +9,7 @@ class SwitchDisabled(Exception):
 class BaseSwitch:
     """Represents the Patternfly Switch.
 
-    https://www.patternfly.org/v4/documentation/react/components/switch
+    https://www.patternfly.org/v4/components/switch
     """
 
     CHECKBOX_LOCATOR = "./input"

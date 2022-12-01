@@ -24,7 +24,7 @@ class FormSelectOptionNotFound(Exception):
 class BaseFormSelect:
     """Represents the Patternfly FormSelect.
 
-    https://www.patternfly.org/v4/documentation/react/components/formselect
+    https://www.patternfly.org/v4/components/form-select
     """
 
     ALL_OPTIONS_LOCATOR = ".//option"

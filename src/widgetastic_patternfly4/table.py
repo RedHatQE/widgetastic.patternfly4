@@ -101,7 +101,7 @@ class PatternflyTableRow(TableRow):
 class BasePatternflyTable:
     """Represents the Patternfly table.
 
-    https://www.patternfly.org/v4/documentation/react/components/table
+    https://www.patternfly.org/v4/components/table
     """
 
     ROWS = "./tbody/tr[./td]"

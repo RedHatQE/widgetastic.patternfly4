@@ -22,7 +22,7 @@ class NavSelectionNotFound(Exception):
 class BaseNavigation:
     """The Patternfly navigation.
 
-    https://www.patternfly.org/v4/documentation/react/components/nav
+    https://www.patternfly.org/v4/components/navigation
     """
 
     CURRENTLY_SELECTED = (
