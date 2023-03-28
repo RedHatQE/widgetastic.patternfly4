@@ -2,7 +2,6 @@ from .alert import Alert
 from .breadcrumb import BreadCrumb
 from .bulletchart import BulletChart
 from .button import Button
-from .calendarmonth import CalendarMonth
 from .card import Card
 from .card import CardCheckBox
 from .card import CardForCardGroup
@@ -65,7 +64,6 @@ __all__ = [
     "BreadCrumb",
     "Button",
     "BulletChart",
-    "CalendarMonth",
     "CheckboxMenu",
     "CheckboxSelect",
     "Chip",
