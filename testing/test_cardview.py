@@ -4,7 +4,7 @@ from widgetastic.widget import ParametrizedView, Text
 
 from widgetastic_patternfly4 import CardCheckBox, CardForCardGroup, CardGroup, Dropdown
 
-TESTING_PAGE_URL = "https://patternfly-react.surge.sh/demos/card-view/react-demos/card-view/"
+TESTING_PAGE_URL = "https://patternfly-react-main.surge.sh/demos/card-view/react-demos/card-view/"
 
 
 class PageCard(CardForCardGroup):

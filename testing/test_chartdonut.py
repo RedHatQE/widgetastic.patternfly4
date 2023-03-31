@@ -3,7 +3,7 @@ from widgetastic.widget import View
 
 from widgetastic_patternfly4 import DonutChart
 
-TESTING_PAGE_URL = "https://patternfly-react.surge.sh/charts/donut-chart"
+TESTING_PAGE_URL = "https://patternfly-react-main.surge.sh/charts/donut-chart"
 
 
 @pytest.fixture

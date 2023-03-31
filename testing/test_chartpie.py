@@ -6,7 +6,7 @@ import pytest
 from widgetastic_patternfly4 import PieChart
 from widgetastic_patternfly4.bulletchart import DataPoint
 
-TESTING_PAGE_URL = "https://patternfly-react.surge.sh/charts/pie-chart"
+TESTING_PAGE_URL = "https://patternfly-react-main.surge.sh/charts/pie-chart"
 
 Legend = namedtuple("Legend", ["label", "value"])
 DATA = {"Cats": 35, "Dogs": 55, "Birds": 10}
