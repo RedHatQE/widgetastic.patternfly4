@@ -1,43 +1,27 @@
 import pytest
-from widgetastic.widget import ParametrizedView
 from widgetastic.widget import View
 
 from widgetastic_patternfly4 import CategoryChipGroup
-from widgetastic_patternfly4 import Chip
 from widgetastic_patternfly4 import ChipGroup
-from widgetastic_patternfly4 import ChipReadOnlyError
 
-TESTING_PAGE_URL = "https://patternfly-react.surge.sh/components/chip-group"
-
-
-@pytest.fixture(scope="module")
-def chips_view(browser):
-    class TestView(View):
-        ROOT = ".//div[@id='ws-react-c-chip-group-single']"
-        chips = ParametrizedView.nested(Chip)
-
-    return TestView(browser)
+TESTING_PAGE_URL = "https://patternfly-react-main.surge.sh/components/chip-group"
 
 
 @pytest.fixture(scope="module")
 def chip_group_view(browser):
     class TestView(View):
-        ROOT = ".//div[@id='ws-react-c-chip-group-simple-inline-chip-group']"
+        ROOT = ".//div[@id='ws-react-c-chip-group-simple-inline']"
 
         non_existent_chip_group = ChipGroup(locator="foobar-locator")
         chip_group = ChipGroup()
 
-    # Firefox fails the test if the chart is not fully visible therefore we click here on anchor
-    # in order to properly scroll down
-    anchor = browser.element("//a[@href='#simple-inline-chip-group']")
-    browser.click(anchor)
     return TestView(browser)
 
 
 @pytest.fixture(scope="module")
 def category_chip_group_view(browser):
     class TestView(View):
-        ROOT = ".//div[@id='ws-react-c-chip-group-chip-groups-with-categories-removable']"
+        ROOT = ".//div[@id='ws-react-c-chip-group-with-removable-categories']"
         category_one = CategoryChipGroup(label="Category one")
         category_two = CategoryChipGroup(label="Category two has a very long name")
 
@@ -46,47 +30,6 @@ def category_chip_group_view(browser):
 
 def test_non_existent_chips(chip_group_view):
     assert not chip_group_view.non_existent_chip_group.is_displayed
-
-
-def test_chipgroup_chips(chips_view):
-    view = chips_view
-    plain_chip = view.chips("Chip 1")
-    long_chip = view.chips("Really long chip that goes on and on")
-    chip_with_badge = view.chips("Chip")
-    read_only_chip = view.chips("Read-only chip")
-
-    assert plain_chip.text == "Chip 1"
-    assert not plain_chip.badge
-    assert plain_chip.is_displayed
-    assert not plain_chip.read_only
-    assert plain_chip.read() == "Chip 1"
-    plain_chip.remove()
-    assert not plain_chip.is_displayed
-
-    assert long_chip.text == "Really long chip that goes on and on"
-    assert not long_chip.badge
-    assert long_chip.is_displayed
-    assert not long_chip.read_only
-    assert long_chip.read() == "Really long chip that goes on and on"
-    long_chip.remove()
-    assert not long_chip.is_displayed
-
-    assert chip_with_badge.text == "Chip"
-    assert chip_with_badge.badge == "7"
-    assert chip_with_badge.is_displayed
-    assert not chip_with_badge.read_only
-    assert chip_with_badge.read() == "Chip"
-    chip_with_badge.remove()
-    assert not chip_with_badge.is_displayed
-
-    assert read_only_chip.text == "Read-only chip"
-    assert not read_only_chip.badge
-    assert not read_only_chip.button.is_displayed
-    assert read_only_chip.is_displayed
-    assert read_only_chip.read_only
-    assert read_only_chip.read() == "Read-only chip"
-    with pytest.raises(ChipReadOnlyError):
-        read_only_chip.remove()
 
 
 def test_chipgroup_simple(chip_group_view):

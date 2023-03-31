@@ -5,7 +5,7 @@ from widgetastic.widget import View
 from widgetastic_patternfly4 import InputSlider
 from widgetastic_patternfly4 import Slider
 
-TESTING_PAGE_URL = "https://patternfly-react.surge.sh/components/slider/"
+TESTING_PAGE_URL = "https://patternfly-react-main.surge.sh/components/slider/"
 TEST_DATA = {
     "discrete": {"steps": [-25, -15, -5, 5, 15, 25, 35, 45, 55, 65, 75], "labels": [-25, 75]},
     "value": {"steps": [0, 25, 50, 75, 100], "labels": ["0%", "50%", "100%"]},

@@ -4,7 +4,7 @@ from widgetastic.widget import View
 from widgetastic_patternfly4 import ContextSelector
 from widgetastic_patternfly4 import SelectItemNotFound
 
-TESTING_PAGE_URL = "https://patternfly-react.surge.sh/components/context-selector"
+TESTING_PAGE_URL = "https://patternfly-react-main.surge.sh/components/context-selector"
 
 
 @pytest.fixture
@@ -24,12 +24,17 @@ def test_contextselector_is_displayed(view):
 
 def test_contextselector_items(view):
     assert set(view.contextselector.items) == {
+        "Link",
+        "Action",
+        "Disabled link",
+        "Disabled action",
         "My project",
         "OpenShift cluster",
         "Production Ansible",
         "AWS",
         "Azure",
         "My project 2",
+        "OpenShift cluster",
         "Production Ansible 2",
         "AWS 2",
         "Azure 2",
