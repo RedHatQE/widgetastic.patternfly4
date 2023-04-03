@@ -308,7 +308,6 @@ class ExpandableColumn(TableColumn):
         logger=None,
         use_index_as_parent=False,
     ):
-
         super().__init__(parent, position, absolute_position, logger=logger)
 
         # Sometimes expandable content's 'tr' index is dictated by the position of the column

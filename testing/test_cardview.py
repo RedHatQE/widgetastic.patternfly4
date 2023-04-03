@@ -32,7 +32,6 @@ class Cards(CardGroup):
 
 @pytest.fixture
 def cards(browser):
-
     cards = Cards(browser)
     wait_for(lambda: cards.is_displayed, timeout="15s")
     return cards
