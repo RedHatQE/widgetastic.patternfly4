@@ -2,7 +2,6 @@ from .select import Select
 
 
 class BaseContextSelector:
-
     ITEMS_LOCATOR = ".//ul[@class='pf-c-context-selector__menu-list']/li"
     ITEM_LOCATOR = (
         ".//*[contains(@class, 'pf-c-context-selector__menu-list-item')"

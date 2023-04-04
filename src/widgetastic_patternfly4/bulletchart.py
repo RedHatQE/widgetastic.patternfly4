@@ -30,7 +30,7 @@ class Legend(ParametrizedView):
     def _legend_color_map(self):
         _data = {}
 
-        for (icon, label_el) in zip(
+        for icon, label_el in zip(
             self.browser.elements(self.LEGEND_ICON_ITEMS),
             self.browser.elements(self.LEGEND_LABEL_ITEMS),
         ):
