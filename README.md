@@ -17,6 +17,8 @@ Button - <https://www.patternfly.org/v4/components/button>
 
 Bullet Chart - <https://www.patternfly.org/v4/charts/bullet-chart>
 
+Calendar month - <https://www.patternfly.org/v4/components/calendar-month>
+
 Card - <https://www.patternfly.org/v4/components/card>
 
 Chip Group - <https://www.patternfly.org/v4/components/chip-group>
