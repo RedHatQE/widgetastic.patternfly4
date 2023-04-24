@@ -5,6 +5,8 @@ from widgetastic_patternfly4.ouia import PatternflyTable
 
 TESTING_PAGE_URL = "https://patternfly-docs-ouia.netlify.app/documentation/react/components/table"
 
+pytestmark = pytest.mark.skip("No OUIA IDs provided on Patternfly testing page")
+
 SORT = [
     ("Repositories", "ascending", ["a", "one", "p"]),
     ("Repositories", "descending", ["p", "one", "a"]),

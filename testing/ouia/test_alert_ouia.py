@@ -7,6 +7,8 @@ TESTING_PAGE_URL = "https://patternfly-docs-ouia.netlify.app/documentation/react
 
 ALERT_TYPES = ["success", "danger", "warning", "info"]
 
+pytestmark = pytest.mark.skip("No OUIA IDs provided on Patternfly testing page")
+
 
 @pytest.fixture(params=ALERT_TYPES)
 def alert(browser, request):

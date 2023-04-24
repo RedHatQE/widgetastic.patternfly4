@@ -5,6 +5,8 @@ from widgetastic_patternfly4.ouia import Card
 
 TESTING_PAGE_URL = "https://patternfly-docs-ouia.netlify.app/documentation/react/components/card"
 
+pytestmark = pytest.mark.skip("No OUIA IDs provided on Patternfly testing page")
+
 
 @pytest.fixture
 def view(browser):

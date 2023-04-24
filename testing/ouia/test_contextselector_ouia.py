@@ -6,6 +6,8 @@ from widgetastic_patternfly4.ouia import ContextSelector
 
 TESTING_PAGE_URL = "https://patternfly-docs-ouia.netlify.app/documentation/react/components/contextselector"  # noqa
 
+pytestmark = pytest.mark.skip("No OUIA IDs provided on Patternfly testing page")
+
 
 @pytest.fixture
 def view(browser):
