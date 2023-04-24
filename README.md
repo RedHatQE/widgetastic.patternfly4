@@ -29,6 +29,8 @@ Donut Chart - <https://www.patternfly.org/v4/charts/donut-chart>
 
 Dual list selector - <https://www.patternfly.org/v4/components/dual-list-selector>
 
+Drawer - <https://www.patternfly.org/v4/components/drawer>
+
 Dropdown - <https://www.patternfly.org/v4/components/dropdown>
 
 FormSelect - <https://www.patternfly.org/v4/components/form-select>
