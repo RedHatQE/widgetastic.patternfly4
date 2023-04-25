@@ -15,6 +15,7 @@ from .chipgroup import ChipGroupToolbarCategory
 from .chipgroup import ChipReadOnlyError
 from .chipgroup import StandAloneChipGroup
 from .contextselector import ContextSelector
+from .descriptionlist import DescriptionList
 from .donutchart import DonutChart
 from .drawer import Drawer
 from .dropdown import Dropdown
@@ -83,6 +84,7 @@ __all__ = [
     "CompactPagination",
     "CompoundExpandableTable",
     "ContextSelector",
+    "DescriptionList",
     "DonutChart",
     "Drawer",
     "Dropdown",
