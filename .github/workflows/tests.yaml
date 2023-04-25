@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-22.04
     strategy:
       matrix:
-        browser: [chrome]
+        browser: [chrome, firefox]
         python-version: ["3.8", "3.9", "3.10"]
     steps:
       - uses: actions/checkout@v3
@@ -25,7 +25,7 @@ jobs:
           pip install -U pip wheel
           pip install .[dev]
       - name: Fetch selenium image
-        run: podman pull quay.io/redhatqe/selenium-standalone:latest
+        run: podman pull selenium/standalone-${{ matrix.browser }}:4.9.0-20230421
       - name: Test with pytest
         env:
           BROWSER: ${{ matrix.browser }}
