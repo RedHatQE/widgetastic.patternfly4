@@ -89,7 +89,9 @@ pre-commit install
 
 The library has selenium tests that are performed against [Patternfly React docs](https://patternfly-react.surge.sh).
 It's also configured to run the tests every time when a new version of that page is released.
-Tests spawn a container from official selenium image - `selenium/standalone-{chrome/firefox}`.
+
+Tests spawn a container from official selenium image - [selenium/standalone-{chrome/firefox}](https://hub.docker.com/u/selenium).
+We can check local runs via vnc `http://localhost:7900`
 
 **Note:** Tests use `podman` to manage containers. Please install it before running.
 
