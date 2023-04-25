@@ -79,6 +79,7 @@ class BaseSlider:
         source_el = el_map[self.text] if self.text in el_map else self.browser.element(self.THUMB)
         self.browser.move_to_element(source_el)
         self.browser.drag_and_drop(source_el, target_el)
+        self.browser.click(target_el)
         return True
 
     def read(self):

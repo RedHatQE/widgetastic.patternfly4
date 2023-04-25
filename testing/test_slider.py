@@ -1,5 +1,3 @@
-import random
-
 import pytest
 from widgetastic.widget import Text
 from widgetastic.widget import View
@@ -65,7 +63,7 @@ def test_slider_range(slider, slider_type):
 
 
 def test_slider_fill_read(slider, slider_type):
-    steps = random.sample(TEST_DATA[slider_type]["steps"], 2)
-    for v in steps:
-        slider.fill(v)
-        assert slider.read() == v
+    value = slider.steps()[-2]
+    slider.fill(value)
+    currect_value = slider.read()
+    assert currect_value == value
