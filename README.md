@@ -87,14 +87,15 @@ pre-commit install
 
 ## Testing
 
-The library has selenium tests that are performed against [Patternfly React docs](https://patternfly-react.surge.sh/patternfly-4/).
+The library has selenium tests that are performed against [Patternfly React docs](https://patternfly-react.surge.sh).
 It's also configured to run the tests every time when a new version of that page is released.
-Tests spawn a container from `quay.io/redhatqe/selenium-standalone` image. It has configured
-Selenium standalone server and the browsers (Chrome and Firefox).
+Tests spawn a container from official selenium image - `selenium/standalone-{chrome/firefox}`.
 
 **Note:** Tests use `podman` to manage containers. Please install it before running.
 
-It's possible to run tests in parallel to speed up the execution. Use `-n` key tp specify a number
+It's possible to run tests in parallel to speed up the execution. Make sure that you have **xdist** python plugin installed.
+
+Use `-n` key to specify a number
 of workers:
 
 ```bash
