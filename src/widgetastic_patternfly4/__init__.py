@@ -16,6 +16,7 @@ from .chipgroup import ChipReadOnlyError
 from .chipgroup import StandAloneChipGroup
 from .contextselector import ContextSelector
 from .donutchart import DonutChart
+from .drawer import Drawer
 from .dropdown import Dropdown
 from .dropdown import DropdownDisabled
 from .dropdown import DropdownItemDisabled
@@ -83,6 +84,7 @@ __all__ = [
     "CompoundExpandableTable",
     "ContextSelector",
     "DonutChart",
+    "Drawer",
     "Dropdown",
     "DropdownDisabled",
     "DropdownItemDisabled",
