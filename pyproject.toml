@@ -11,9 +11,13 @@ classifiers = [
 ]
 description = "Patternfly4 widget library for Widgetastic."
 dynamic = ["version"]
-keywords = ["widgetastic", "patternfly"]
+keywords = ["widgetastic", "patternfly", "patternfly4"]
 license = {file = "LICENSE"}
-maintainers = [{name = "Dmitrii Misharov", email = "misharov@redhat.com"}]
+maintainers = [
+  {name = "Raoul Snyman", email = "rsnyman@redhat.com"},
+  {name = "Nikhil Dhandre", email = "ndhandre@redhat.com"},
+  {name = "Egor Shamardin", email = "eshamard@redhat.com"},
+  ]
 name = "widgetastic.patternfly4"
 readme = "README.md"
 requires-python = ">=3.8"
