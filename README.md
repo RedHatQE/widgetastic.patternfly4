@@ -25,6 +25,8 @@ Chip Group - <https://www.patternfly.org/v4/components/chip-group>
 
 Context Selector - <https://www.patternfly.org/v4/components/context-selector>
 
+Description list - <https://www.patternfly.org/v4/components/description-list>
+
 Donut Chart - <https://www.patternfly.org/v4/charts/donut-chart>
 
 Dual list selector - <https://www.patternfly.org/v4/components/dual-list-selector>
