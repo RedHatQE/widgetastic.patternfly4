@@ -9,6 +9,7 @@ from widgetastic_patternfly4.alert import BaseAlert
 from widgetastic_patternfly4.breadcrumb import BaseBreadCrumb
 from widgetastic_patternfly4.button import BaseButton
 from widgetastic_patternfly4.card import BaseCard
+from widgetastic_patternfly4.clipboardcopy import BaseClipboardCopy
 from widgetastic_patternfly4.contextselector import BaseContextSelector
 from widgetastic_patternfly4.dropdown import BaseDropdown
 from widgetastic_patternfly4.dropdown import BaseGroupDropdown
@@ -150,3 +151,7 @@ class Text(BaseOuiaText):
 
 class TextInput(BaseOuiaTextInput):
     OUIA_COMPONENT_TYPE = "PF4/TextInput"
+
+
+class clipboardcopy(BaseClipboardCopy, OUIAGenericWidget):
+    OUIA_COMPONENT_TYPE = "PF4/ClipboardCopy"
