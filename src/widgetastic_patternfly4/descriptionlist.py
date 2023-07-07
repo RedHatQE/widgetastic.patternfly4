@@ -20,7 +20,7 @@ class BaseDescriptionList:
 
 class DescriptionList(BaseDescriptionList, Widget):
     ROOT = ParametrizedLocator("{@locator}")
-    DEFAULT_LOCATOR = ".//dl[contains(@class, 'pf-c-description-list')]"
+    DEFAULT_LOCATOR = ".//dl[contains(@class, 'c-description-list')]"
 
     def __init__(self, parent, locator=None, logger=None):
         """Initialize the widget with the given locator."""
