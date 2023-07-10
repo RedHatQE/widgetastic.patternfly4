@@ -14,6 +14,7 @@ from .chipgroup import ChipGroupToolbar
 from .chipgroup import ChipGroupToolbarCategory
 from .chipgroup import ChipReadOnlyError
 from .chipgroup import StandAloneChipGroup
+from .clipboardcopy import ClipboardCopy
 from .contextselector import ContextSelector
 from .descriptionlist import DescriptionList
 from .donutchart import DonutChart
@@ -80,6 +81,7 @@ __all__ = [
     "CardForCardGroup",
     "CardCheckBox",
     "CategoryChipGroup",
+    "ClipboardCopy",
     "ColumnNotExpandable",
     "CompactPagination",
     "CompoundExpandableTable",
