@@ -153,5 +153,5 @@ class TextInput(BaseOuiaTextInput):
     OUIA_COMPONENT_TYPE = "PF4/TextInput"
 
 
-class clipboardcopy(BaseClipboardCopy, OUIAGenericWidget):
+class ClipboardCopy(BaseClipboardCopy, OUIAGenericWidget):
     OUIA_COMPONENT_TYPE = "PF4/ClipboardCopy"
