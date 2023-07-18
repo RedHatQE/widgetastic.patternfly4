@@ -23,6 +23,8 @@ Card - <https://www.patternfly.org/v4/components/card>
 
 Chip Group - <https://www.patternfly.org/v4/components/chip-group>
 
+Clipboard copy - <https://www.patternfly.org/v4/components/clipboard-copy>
+
 Context Selector - <https://www.patternfly.org/v4/components/context-selector>
 
 Description list - <https://www.patternfly.org/v4/components/description-list>
