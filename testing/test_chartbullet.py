@@ -6,7 +6,7 @@ import pytest
 from widgetastic_patternfly4 import BulletChart
 from widgetastic_patternfly4.bulletchart import DataPoint
 
-TESTING_PAGE_URL = "https://patternfly-react.surge.sh/charts/bullet-chart"
+TESTING_PAGE_URL = "https://patternfly-react-main.surge.sh/charts/bullet-chart"
 
 Legend = namedtuple("Legend", ["label", "value"])
 

@@ -1,12 +1,9 @@
-from time import sleep
-
 import pytest
+from widgetastic.widget import View
 
 from widgetastic_patternfly4 import LineChart
 
-TESTING_PAGE_URL = (
-    "https://www.patternfly.org/v4/charts/line-chart/react/green-with-bottom-aligned-legend/"
-)
+TESTING_PAGE_URL = "https://patternfly-react-main.surge.sh/charts/line-chart"
 
 TEST_DATA = {
     "2015": {"Cats": "1", "Dogs": "2", "Birds": "3", "Mice": "3"},
@@ -16,27 +13,32 @@ TEST_DATA = {
 }
 
 
-@pytest.fixture()
-def chart(browser):
-    sleep(3)  # Stabilized graph data on testing page; specially for firefox.
-    return LineChart(browser, id="ws-react-c-line-chart-green-with-bottom-aligned-legend")
+@pytest.fixture
+def view(browser):
+    class TestView(View):
+        ROOT = ".//div[@id='ws-react-c-line-chart-green-with-bottom-aligned-legend']"
+        chart = LineChart(locator=".//div[@class='pf-c-chart']")
+
+    return TestView(browser)
 
 
-def test_line_chart(chart):
+def test_line_chart(view):
     """Test LineChart widget."""
 
-    assert chart.is_displayed
+    legend_names = view.chart.legend_names
+    assert view.chart.is_displayed
+
     expected_legends = list(TEST_DATA.values())[0].keys()
 
-    for leg, expected_leg in zip(chart.legends, expected_legends):
+    for leg, expected_leg in zip(view.chart.legends, expected_legends):
         assert leg.label == expected_leg
 
-    assert set(chart.legend_names) == set(expected_legends)
+    assert set(legend_names) == set(expected_legends)
 
     # get data point and check values
-    birds_legend = chart.get_legend("Birds")
+    birds_legend = view.chart.get_legend("Birds")
     assert birds_legend.label == "Birds"
     assert birds_legend.color == "rgb(35, 81, 30)"
 
     # read graph
-    assert chart.read() == TEST_DATA
+    assert view.chart.read() == TEST_DATA

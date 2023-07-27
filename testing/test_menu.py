@@ -4,13 +4,13 @@ from widgetastic.widget import View
 from widgetastic_patternfly4 import Menu
 from widgetastic_patternfly4 import MenuItemNotFound
 
-TESTING_PAGE_URL = "https://patternfly-react.surge.sh/components/menu"
+TESTING_PAGE_URL = "https://patternfly-react-main.surge.sh/components/menu"
 
 
 @pytest.fixture
 def menu(browser):
     class TestView(View):
-        ROOT = ".//div[@id='ws-react-c-menu-option-single-select']"
+        ROOT = ".//div[@id='ws-react-c-menu-option-single-select-menu']"
         menu = Menu(locator=".//div[contains(@class, 'pf-c-menu')]")
 
     return TestView(browser).menu
@@ -19,7 +19,7 @@ def menu(browser):
 @pytest.fixture
 def multi_select_menu(browser):
     class TestView(View):
-        ROOT = ".//div[@id='ws-react-c-menu-option-multi-select']"
+        ROOT = ".//div[@id='ws-react-c-menu-option-multi-select-menu']"
         menu = Menu(locator=".//div[contains(@class, 'pf-c-menu')]")
 
     return TestView(browser).menu

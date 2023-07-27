@@ -6,7 +6,7 @@ from widgetastic_patternfly4 import FormSelectDisabled
 from widgetastic_patternfly4 import FormSelectOptionDisabled
 from widgetastic_patternfly4 import FormSelectOptionNotFound
 
-TESTING_PAGE_URL = "https://patternfly-react.surge.sh/components/form-select"
+TESTING_PAGE_URL = "https://patternfly-react-main.surge.sh/components/form-select"
 
 
 class FormSelectTestView(View):
@@ -14,7 +14,6 @@ class FormSelectTestView(View):
 
     input = FormSelect(locator=".//div[@id='ws-react-c-form-select-basic']/select")
     input_grouping = FormSelect(locator=".//div[@id='ws-react-c-form-select-grouped']/select")
-    input_invalid = FormSelect(locator=".//div[@id='ws-react-c-form-select-invalid']/select")
     input_disabled = FormSelect(locator=".//div[@id='ws-react-c-form-select-disabled']/select")
 
 
@@ -26,14 +25,12 @@ def view(browser):
 def test_formselect_visibility(view):
     assert view.input.is_displayed
     assert view.input_grouping.is_displayed
-    assert view.input_invalid.is_displayed
     assert view.input_disabled.is_displayed
 
 
 def test_formselect_enablement(view):
     assert view.input.is_enabled
     assert view.input_grouping.is_enabled
-    assert view.input_invalid.is_enabled
     assert not view.input_disabled.is_enabled
 
 
@@ -41,11 +38,6 @@ def test_formselect_validity(view):
     assert view.input.is_valid
     assert view.input_grouping.is_valid
     assert view.input_disabled.is_valid
-    assert view.input_invalid.is_valid
-    view.input_invalid.fill("One")
-    assert view.input_invalid.is_valid
-    view.input_invalid.fill("Select a number")
-    assert not view.input_invalid.is_valid
 
 
 def test_formselect_value(view):

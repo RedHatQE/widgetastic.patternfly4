@@ -4,7 +4,7 @@ from widgetastic.widget import View
 from widgetastic_patternfly4 import DropdownItemNotFound
 from widgetastic_patternfly4 import OptionsMenu
 
-TESTING_PAGE_URL = "https://patternfly-react.surge.sh/components/options-menu"
+TESTING_PAGE_URL = "https://patternfly-react-main.surge.sh/components/options-menu"
 
 
 @pytest.fixture

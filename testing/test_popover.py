@@ -4,7 +4,7 @@ from widgetastic.widget import View
 from widgetastic_patternfly4 import Popover
 from widgetastic_patternfly4.button import Button
 
-TESTING_PAGE_URL = "https://patternfly-react.surge.sh/components/popover"
+TESTING_PAGE_URL = "https://patternfly-react-main.surge.sh/components/popover"
 PF4_EXAMPLE_POPOVER_TEXT_TITLE = "Popover header"
 PF4_EXAMPLE_POPOVER_TEXT_BODY = "Popovers are triggered by click rather than hover."
 PF4_EXAMPLE_POPOVER_TEXT_FOOTER = "Popover footer"

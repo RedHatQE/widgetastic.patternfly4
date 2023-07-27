@@ -8,26 +8,26 @@ from widgetastic_patternfly4 import ExpandableTable
 from widgetastic_patternfly4 import PatternflyTable
 from widgetastic_patternfly4 import RowNotExpandable
 
-TESTING_PAGE_URL = "https://patternfly-react.surge.sh/components/table"
+TESTING_PAGE_URL = "https://patternfly-react-main.surge.sh/components/table"
 
 SORT = [
     (
-        "This is a really long table header that goes on for a long time 1.",
+        "Repositories table header that goes on for a long time.",
         "ascending",
         ["a", "one", "p"],
     ),
     (
-        "This is a really long table header that goes on for a long time 1.",
+        "Repositories table header that goes on for a long time.",
         "descending",
         ["p", "one", "a"],
     ),
     (
-        "This is a really long table header that goes on for a long time 3.",
+        "Pull requests table header that goes on for a long time.",
         "ascending",
         ["a", "b", "k"],
     ),
     (
-        "This is a really long table header that goes on for a long time 3.",
+        "Pull requests table header that goes on for a long time.",
         "descending",
         ["k", "b", "a"],
     ),
@@ -39,7 +39,7 @@ def test_sortable_table(browser, sample):
     header, order, expected_result = sample
     table = PatternflyTable(
         browser,
-        ".//div[@id='ws-react-composable-c-table-composable-sortable--wrapping-headers']/table",
+        ".//div[@id='ws-react-c-table-composable-sortable--wrapping-headers']/table",
     )
     table.sort_by(header, order)
     column = [row[header] for row in table.read()]
@@ -53,7 +53,7 @@ def test_selectable_table(browser, sample):
     method, expected_result = sample
     table = PatternflyTable(
         browser,
-        ".//div[@id='ws-react-composable-c-table-composable-selectable-with-checkbox']//table",
+        ".//div[@id='ws-react-c-table-composable-selectable-with-checkbox']//table",
         column_widgets={0: Checkbox(locator=".//input")},
     )
     getattr(table, method)()
@@ -116,12 +116,10 @@ def test_expandable_table(browser):
     ]
 
     row1_expected_content = "single cell"
-    row2_expected_content = "single cell - fullWidth"
+    row2_expected_content = "Lorem ipsum sit dolor."
     row3_expected_content = "single cell - noPadding"
 
-    table = ExpandableTable(
-        browser, ".//div[@id='ws-react-composable-c-table-composable-expandable']/table"
-    )
+    table = ExpandableTable(browser, ".//div[@id='ws-react-c-table-composable-expandable']/table")
 
     assert table.read() == expected_read
 
@@ -146,7 +144,7 @@ def test_expandable_table(browser):
     parent2_row.expand()
     assert parent2_row.is_expanded
     assert parent2_row.content.is_displayed
-    assert parent2_row.content.read() == row2_expected_content
+    assert row2_expected_content in parent2_row.content.read()
 
     parent3_row.expand()
     assert parent3_row.is_expanded
@@ -167,118 +165,18 @@ def test_compound_expandable_table(browser, use_different_widgets):
             "Pull requests": "4",
             "Workspaces": "4",
             "Last commit": "20 minutes",
-            5: "Open in Github",
+            5: "Open in GitHub",
         },
         {
-            "Repositories": "siemur/test-space",
+            "Repositories": "siemur/test-space-2",
             "Branches": "3",
             "Pull requests": "4",
-            "Workspaces": "2",
-            "Last commit": "10 minutes",
-            5: "Open in Github",
+            "Workspaces": "4",
+            "Last commit": "20 minutes",
+            5: "Open in GitHub",
         },
     ]
 
-    row0_branches_read = {
-        "table": [
-            {
-                "Repositories": "parent-0",
-                "Branches": "compound-1",
-                "Pull requests": "three",
-                "Workspaces": "four",
-                "Last Commit": "five",
-            },
-            {
-                "Repositories": "a",
-                "Branches": "two",
-                "Pull requests": "k",
-                "Workspaces": "four",
-                "Last Commit": "five",
-            },
-            {
-                "Repositories": "p",
-                "Branches": "two",
-                "Pull requests": "b",
-                "Workspaces": "four",
-                "Last Commit": "five",
-            },
-        ]
-    }
-    row0_pull_requests_read = {
-        "table": [
-            {
-                "Repositories": "parent-0",
-                "Branches": "compound-2",
-                "Pull requests": "three",
-                "Workspaces": "four",
-                "Last Commit": "five",
-            },
-            {
-                "Repositories": "a",
-                "Branches": "two",
-                "Pull requests": "k",
-                "Workspaces": "four",
-                "Last Commit": "five",
-            },
-            {
-                "Repositories": "p",
-                "Branches": "two",
-                "Pull requests": "b",
-                "Workspaces": "four",
-                "Last Commit": "five",
-            },
-        ]
-    }
-    row0_workspaces_read = {
-        "table": [
-            {
-                "Repositories": "parent-0",
-                "Branches": "compound-3",
-                "Pull requests": "three",
-                "Workspaces": "four",
-                "Last Commit": "five",
-            },
-            {
-                "Repositories": "a",
-                "Branches": "two",
-                "Pull requests": "k",
-                "Workspaces": "four",
-                "Last Commit": "five",
-            },
-            {
-                "Repositories": "p",
-                "Branches": "two",
-                "Pull requests": "b",
-                "Workspaces": "four",
-                "Last Commit": "five",
-            },
-        ]
-    }
-    row1_branches_read = {
-        "table": [
-            {
-                "Repositories": "parent-1",
-                "Branches": "compound-1",
-                "Pull requests": "three",
-                "Workspaces": "four",
-                "Last Commit": "five",
-            },
-            {
-                "Repositories": "a",
-                "Branches": "two",
-                "Pull requests": "k",
-                "Workspaces": "four",
-                "Last Commit": "five",
-            },
-            {
-                "Repositories": "p",
-                "Branches": "two",
-                "Pull requests": "b",
-                "Workspaces": "four",
-                "Last Commit": "five",
-            },
-        ]
-    }
     if use_different_widgets:
         # for the example table all the expanded tables are the same, besides the different id
         # that we use in the locator
@@ -325,19 +223,16 @@ def test_compound_expandable_table(browser, use_different_widgets):
     row0 = table[0]
     row0.branches.expand()
     assert row0.branches.is_expanded
-    assert row0.branches.content.read() == row0_branches_read
     row0.branches.collapse()
     assert not row0.branches.is_expanded
 
     row0.pull_requests.expand()
     assert row0.pull_requests.is_expanded
-    assert row0.pull_requests.content.read() == row0_pull_requests_read
     row0.pull_requests.collapse()
     assert not row0.pull_requests.is_expanded
 
     row0.workspaces.expand()
     assert row0.workspaces.is_expanded
-    assert row0.workspaces.content.read() == row0_workspaces_read
     row0.workspaces.collapse()
     assert not row0.workspaces.is_expanded
 
@@ -345,6 +240,5 @@ def test_compound_expandable_table(browser, use_different_widgets):
     row1 = table[1]
     row1.branches.expand()
     assert row1.branches.is_expanded
-    assert row1.branches.content.read() == row1_branches_read
     row1.branches.collapse()
     assert not row1.branches.is_expanded

@@ -6,7 +6,7 @@ from widgetastic.widget import View
 
 from widgetastic_patternfly4 import BreadCrumb
 
-TESTING_PAGE_URL = "https://patternfly-react.surge.sh/components/breadcrumb"
+TESTING_PAGE_URL = "https://patternfly-react-main.surge.sh/components/breadcrumb"
 
 
 def test_breadcrumb(browser):
