@@ -14,7 +14,6 @@ dynamic = ["version"]
 keywords = ["widgetastic", "patternfly", "patternfly4"]
 license = {file = "LICENSE"}
 maintainers = [
-  {name = "Raoul Snyman", email = "rsnyman@redhat.com"},
   {name = "Nikhil Dhandre", email = "ndhandre@redhat.com"},
   {name = "Egor Shamardin", email = "eshamard@redhat.com"},
   ]
