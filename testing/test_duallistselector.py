@@ -4,7 +4,7 @@ from widgetastic.widget import View
 from widgetastic_patternfly4 import DualListSelector
 from widgetastic_patternfly4 import SearchDualListSelector
 
-TESTING_PAGE_URL = "https://patternfly-react.surge.sh/components/dual-list-selector"
+TESTING_PAGE_URL = "https://patternfly-react-main.surge.sh/components/dual-list-selector"
 
 
 @pytest.fixture

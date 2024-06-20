@@ -5,7 +5,7 @@ from widgetastic_patternfly4 import CheckboxSelect
 from widgetastic_patternfly4 import Select
 from widgetastic_patternfly4 import SelectItemNotFound
 
-TESTING_PAGE_URL = "https://patternfly-react.surge.sh/components/select"
+TESTING_PAGE_URL = "https://patternfly-react-main.surge.sh/components/select"
 
 
 @pytest.fixture

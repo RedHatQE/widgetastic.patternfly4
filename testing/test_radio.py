@@ -4,7 +4,7 @@ from widgetastic.widget import View
 from widgetastic_patternfly4 import Radio
 
 
-TESTING_PAGE_URL = "https://patternfly-react.surge.sh/components/radio"
+TESTING_PAGE_URL = "https://patternfly-react-main.surge.sh/components/radio"
 
 
 class RadioTestView(View):
@@ -18,7 +18,7 @@ class RadioTestView(View):
 @pytest.mark.parametrize(
     "test_widget",
     [
-        ("controlled_id", dict(radio=False, label="Controlled radio")),
+        ("controlled_id", dict(radio=False, label="Controlled Radio")),
         ("uncontrolled_label", dict(radio=False, label="Uncontrolled radio example")),
         (
             "description_body",

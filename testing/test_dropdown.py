@@ -7,13 +7,13 @@ from widgetastic_patternfly4 import DropdownItemNotFound
 from widgetastic_patternfly4 import GroupDropdown
 from widgetastic_patternfly4 import SplitButtonDropdown
 
-TESTING_PAGE_URL = "https://patternfly-react.surge.sh/components/dropdown"
+TESTING_PAGE_URL = "https://patternfly-react-main.surge.sh/components/dropdown"
 
 
 @pytest.fixture
 def view(browser):
     class TestView(View):
-        ROOT = "(.//div[@id='ws-react-c-dropdown-basic'])[1]"
+        ROOT = ".//div[@id='ws-react-c-dropdown-basic-dropdowns']"
         dropdown_txt_locator = Dropdown("Dropdown")
         dropdown_custom_locator = Dropdown(locator=".//div[contains(@class, 'pf-c-dropdown')]")
         dropdown_default_locator = Dropdown()
@@ -33,14 +33,17 @@ def group_dropdown(browser):
     return GroupDropdown(
         browser,
         locator=(
-            ".//div[@id='ws-react-c-dropdown-with-groups']"
+            ".//div[@id='ws-react-c-dropdown-with-groups-of-items']"
             "/div[contains(@class, 'pf-c-dropdown')]"
         ),
     )
 
 
 @pytest.fixture(
-    params=["ws-react-c-dropdown-split-button", "ws-react-c-dropdown-split-button-with-text"],
+    params=[
+        "ws-react-c-dropdown-split-button-checkbox",
+        "ws-react-c-dropdown-split-button-checkbox-with-toggle-text",
+    ],
     ids=["without_text", "with_text"],
 )
 def split_button_dropdown(request, browser):
@@ -107,10 +110,10 @@ def test_group_dropdown(group_dropdown):
     assert group_dropdown.has_item("Group 2 link")
     assert group_dropdown.item_enabled("Group 3 action")
     assert group_dropdown.groups == ["Group 2", "Group 3"]
-    group_dropdown.item_select("Link")
-    group_dropdown.item_select("Group 3 link", group_name="Group 3")
+    group_dropdown.item_select("Group 3 action", group_name="Group 3")
     with pytest.raises(DropdownItemNotFound):
-        group_dropdown.item_select("Group 3 link", group_name="Group 2")
+        group_dropdown.item_select("Group 3 action", group_name="Group 2")
+    group_dropdown.item_select("Link")
 
 
 def test_split_button_dropdown(split_button_dropdown):
@@ -121,7 +124,7 @@ def test_split_button_dropdown(split_button_dropdown):
     dropdown.item_select("Action")
     assert dropdown.check()
     assert dropdown.selected
-    expected_text = "10 selected" if "with-text" in dropdown_type else ""
+    expected_text = "10 selected" if "with-toggle-text" in dropdown_type else ""
     assert dropdown.read() == expected_text
 
     assert dropdown.uncheck()
