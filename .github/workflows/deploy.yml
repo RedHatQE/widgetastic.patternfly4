@@ -16,7 +16,7 @@ jobs:
       - name: Build a wheel
         run: pip wheel --no-deps -w dist .
       - name: Deploy to PyPI
-        uses: pypa/gh-action-pypi-publish@v1.4.1
+        uses: pypa/gh-action-pypi-publish@v1.13.0
         with:
           user: __token__
           password: ${{ secrets.PYPI_TOKEN }}
