@@ -20,7 +20,7 @@ def _paginator(browser, request, reset_elements_per_page=True):
         paginator = paginator_cls(locator="./div")
 
     paginator = TestView(browser).paginator
-    wait_for(lambda: paginator.is_displayed, num_sec=10)
+    wait_for(lambda: paginator.is_displayed, timeout=10)
     yield paginator
     try:
         paginator.first_page()
