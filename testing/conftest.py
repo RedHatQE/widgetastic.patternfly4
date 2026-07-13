@@ -7,7 +7,6 @@ from selenium import webdriver
 from wait_for import wait_for
 from widgetastic.browser import Browser
 
-
 OPTIONS = {"firefox": webdriver.FirefoxOptions(), "chrome": webdriver.ChromeOptions()}
 
 
