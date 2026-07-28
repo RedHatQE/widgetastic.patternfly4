@@ -102,7 +102,7 @@ class Chip(ParametrizedView, _BaseChip):
 
         if not self.read_only:
             self.button.click()
-            wait_for(_gone, num_sec=3, message="wait for chip to dissappear", delay=0.1)
+            wait_for(_gone, timeout=3, message="wait for chip to disappear", delay=0.1)
         else:
             raise ChipReadOnlyError(self, "Chip is read-only")
 
@@ -131,7 +131,7 @@ class OverflowChip(_BaseChip):
             self._text.click()
         wait_for(
             func=self._show_less_shown,
-            num_sec=3,
+            timeout=3,
             delay=0.1,
             message="wait for 'show less' button to appear",
         )
@@ -142,7 +142,7 @@ class OverflowChip(_BaseChip):
             self._text.click()
         wait_for(
             self._show_more_shown,
-            num_sec=3,
+            timeout=3,
             delay=0.1,
             message="wait for 'show more' button to appear",
         )

@@ -41,7 +41,7 @@ class BaseNavigation:
             self.logger.info("Navigation not ready yet")
             wait_for(
                 lambda: self.browser.element(".").get_attribute("data-ouia-safe") == "true",
-                num_sec=10,
+                timeout=10,
             )
         elif not out:
             self.logger.info("Navigation doesn't have 'data-ouia-safe' property")
