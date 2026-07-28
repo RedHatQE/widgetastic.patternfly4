@@ -48,3 +48,24 @@ strict-naming = false
 
 [tool.hatch.version]
 source = "vcs"
+
+[tool.hatch.envs.default]
+features = ["dev"]
+
+[tool.hatch.envs.default.env-vars]
+BROWSER = "firefox"
+
+[tool.hatch.envs.default.scripts]
+test = "pytest {args:testing}"
+test-parallel = "pytest -n auto {args:testing}"
+test-cov = "pytest --no-cov-on-fail --cov=widgetastic_patternfly4 --cov-append {args:testing}"
+cov-combine = "coverage combine"
+cov-report = "coverage report"
+cov-xml = "coverage xml"
+
+[[tool.hatch.envs.test.matrix]]
+python = ["3.8", "3.9", "3.10"]
+browser = ["chrome", "firefox"]
+
+[tool.hatch.envs.test.overrides]
+matrix.browser.env-vars = "BROWSER"

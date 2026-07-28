@@ -109,3 +109,45 @@ of workers:
 ```bash
 BROWSER=firefox pytest -v testing -n 4
 ```
+
+### Running tests with Hatch
+
+Tests can also be run through [Hatch](https://hatch.pypa.io/) managed environments, which take care of
+installing the `dev` extras (`pytest`, `pytest-cov`, `pytest-xdist`) in an isolated virtual environment.
+
+Run the test suite against the default environment (`BROWSER=firefox` by default):
+
+```bash
+hatch run test
+```
+
+Run tests in parallel:
+
+```bash
+hatch run test-parallel
+```
+
+Run tests with coverage:
+
+```bash
+hatch run test-cov
+```
+
+Override the browser or pass extra pytest args:
+
+```bash
+BROWSER=chrome hatch run test testing/test_button.py -v
+```
+
+A `test` matrix environment is also defined, covering the same Python (3.8-3.10) and browser
+(chrome, firefox) combinations exercised in CI. Run a single combination:
+
+```bash
+hatch run test.py3.10-chrome:test-cov
+```
+
+Or run the full matrix:
+
+```bash
+hatch run test:test-cov
+```
