@@ -2,8 +2,7 @@ import pytest
 from widgetastic.widget import Text
 
 from widgetastic_patternfly4.button import Button
-from widgetastic_patternfly4.modal import Modal
-from widgetastic_patternfly4.modal import ModalItemNotFound
+from widgetastic_patternfly4.modal import Modal, ModalItemNotFound
 
 TESTING_PAGE_URL = "https://patternfly-react.surge.sh/components/modal"
 

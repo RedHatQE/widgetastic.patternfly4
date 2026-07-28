@@ -1,5 +1,4 @@
-from widgetastic.widget import Text
-from widgetastic.widget import View
+from widgetastic.widget import Text, View
 
 from widgetastic_patternfly4 import Tab
 

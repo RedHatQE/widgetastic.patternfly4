@@ -11,6 +11,8 @@
 import os
 import sys
 
+from sphinx.ext.apidoc import main as apidoc_main
+
 modules_path = os.path.abspath("../src/widgetastic_patternfly4")
 
 sys.path.insert(0, modules_path)
@@ -53,8 +55,6 @@ html_theme = "default"
 
 
 def run_apidoc(_):
-    from sphinx.ext.apidoc import main as apidoc_main
-
     cur_dir = os.path.abspath(".")
     output_path = os.path.join(cur_dir, "source")
     apidoc_main(["-e", "-f", "-o", output_path, modules_path, "--force"])

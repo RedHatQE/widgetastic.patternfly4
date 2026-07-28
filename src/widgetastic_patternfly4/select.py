@@ -1,8 +1,6 @@
 from widgetastic.exceptions import NoSuchElementException
 
-from .dropdown import Dropdown
-from .dropdown import DropdownItemDisabled
-from .dropdown import DropdownItemNotFound
+from .dropdown import Dropdown, DropdownItemDisabled, DropdownItemNotFound
 
 
 class SelectItemDisabled(DropdownItemDisabled):
@@ -37,9 +35,7 @@ class BaseSelect:
             return super().item_element(item, close)
         except DropdownItemNotFound:
             raise SelectItemNotFound(
-                "Item {!r} not found in {}. Available items: {}".format(
-                    item, repr(self), self.items
-                )
+                f"Item {item!r} not found in {repr(self)}. Available items: {self.items}"
             )
 
     def item_select(self, item):
@@ -55,10 +51,8 @@ class BaseSelect:
             return super().item_select(item)
         except DropdownItemDisabled:
             raise SelectItemDisabled(
-                'Item "{}" of {} is disabled\n'
-                "The following items are available and enabled: {}".format(
-                    item, repr(self), self.enabled_items
-                )
+                f'Item "{item}" of {repr(self)} is disabled\n'
+                f"The following items are available and enabled: {self.enabled_items}"
             )
 
     def fill(self, value):
@@ -81,7 +75,9 @@ class BaseCheckboxSelect(BaseSelect):
     """
 
     ITEMS_LOCATOR = ".//label[contains(@class, 'pf-c-select__menu-item')]"
-    ITEM_LOCATOR = f"{ITEMS_LOCATOR}/span[starts-with(normalize-space(.), {{}})]/preceding-sibling::input"  # noqa
+    ITEM_LOCATOR = (
+        f"{ITEMS_LOCATOR}/span[starts-with(normalize-space(.), {{}})]/preceding-sibling::input"  # noqa
+    )
 
     def item_select(self, items, close=True):
         """Opens the Checkbox and selects the desired item.

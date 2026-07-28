@@ -127,27 +127,36 @@ Run tests in parallel:
 hatch run test-parallel
 ```
 
-Run tests with coverage:
+Run tests with coverage (extra flags, e.g. `-n 5`, are appended after the `testing` target):
 
 ```bash
-hatch run test-cov
+BROWSER=chrome hatch run test-cov -v -n 5
 ```
 
-Override the browser or pass extra pytest args:
+Run a single test file:
 
 ```bash
 BROWSER=chrome hatch run test testing/test_button.py -v
 ```
 
-A `test` matrix environment is also defined, covering the same Python (3.8-3.10) and browser
-(chrome, firefox) combinations exercised in CI. Run a single combination:
+A `test` matrix environment is also defined, covering the same Python (3.10-3.13) and browser
+(chrome, firefox) combinations exercised in CI - this is what `.github/workflows/tests.yaml` uses.
+Run a single combination:
 
 ```bash
-hatch run test.py3.10-chrome:test-cov
+hatch run test.py3.10-chrome:test-cov -v -n 5
 ```
 
 Or run the full matrix:
 
 ```bash
 hatch run test:test-cov
+```
+
+Coverage data from multiple runs can be combined/reported using the detached `coverage` environment
+(also used by the `submit_coverage` CI job):
+
+```bash
+hatch run coverage:combine
+hatch run coverage:xml
 ```

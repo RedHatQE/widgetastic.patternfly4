@@ -126,7 +126,7 @@ class BaseNavigation:
             current_item = self.browser.element(self.SUB_ITEMS_ROOT, parent=li)
 
     def __repr__(self):
-        return "{}({!r})".format(type(self).__name__, self.ROOT)
+        return f"{type(self).__name__}({self.ROOT!r})"
 
 
 class Navigation(BaseNavigation, Widget):
@@ -138,11 +138,11 @@ class Navigation(BaseNavigation, Widget):
 
         quoted_label = quote(label) if label else ""
         if label:
-            label_part = " and @label={} or @aria-label={}".format(quoted_label, quoted_label)
+            label_part = f" and @label={quoted_label} or @aria-label={quoted_label}"
         else:
             label_part = ""
 
-        id_part = " and @id={}".format(quote(id)) if id else ""
+        id_part = f" and @id={quote(id)}" if id else ""
         if locator is not None:
             self.locator = locator
         elif label_part or id_part:

@@ -1,9 +1,7 @@
 import re
 
 from widgetastic.utils import ParametrizedLocator
-from widgetastic.widget import ParametrizedView
-from widgetastic.widget import Text
-from widgetastic.widget import View
+from widgetastic.widget import ParametrizedView, Text, View
 from widgetastic.xpath import quote
 
 
@@ -128,7 +126,7 @@ class BulletChart(View):
     def __init__(self, parent=None, id=None, locator=None, logger=None, *args, **kwargs):
         View.__init__(self, parent=parent, logger=logger)
         if id:
-            self.locator = ".//div[@id={}]".format(quote(id))
+            self.locator = f".//div[@id={quote(id)}]"
         elif locator:
             self.locator = locator
         else:

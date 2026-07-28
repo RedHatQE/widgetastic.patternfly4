@@ -48,12 +48,13 @@ def selenium_url(pytestconfig, browser_name, worker_id):
                 f"selenium/standalone-{browser_name}:4.9.0-20230421",
             ],
             stdout=subprocess.PIPE,
+            check=False,
         )
         print(f"VNC url: http://{host}:7900")
 
         yield f"http://{host}:4444"
         container_id = ps.stdout.decode("utf-8").strip()
-        subprocess.run(["podman", "kill", container_id], stdout=subprocess.DEVNULL)
+        subprocess.run(["podman", "kill", container_id], stdout=subprocess.DEVNULL, check=False)
     else:
         print(f"VNC url: http://{forced_host}:7900")
         yield f"http://{forced_host}:4444"

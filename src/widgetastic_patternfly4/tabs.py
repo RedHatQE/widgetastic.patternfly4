@@ -17,8 +17,7 @@ class Tab(View):
 
     # Locator of the Tab selector
     TAB_LOCATOR = ParametrizedLocator(
-        './/div[contains(@class, "pf-c-tabs")]/ul'
-        "/li[button[normalize-space(.)={@tab_name|quote}]]"
+        './/div[contains(@class, "pf-c-tabs")]/ul/li[button[normalize-space(.)={@tab_name|quote}]]'
     )
 
     ROOT = ParametrizedLocator(
@@ -62,4 +61,4 @@ class Tab(View):
         self.select()
 
     def __repr__(self):
-        return "<Tab {!r}>".format(self.tab_name)
+        return f"<Tab {self.tab_name!r}>"

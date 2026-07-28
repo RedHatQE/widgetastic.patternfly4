@@ -1,5 +1,4 @@
-from widgetastic.widget import ParametrizedLocator
-from widgetastic.widget import Widget
+from widgetastic.widget import ParametrizedLocator, Widget
 
 
 class BaseTitle:

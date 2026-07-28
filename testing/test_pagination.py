@@ -4,9 +4,7 @@ import pytest
 from wait_for import wait_for
 from widgetastic.widget import View
 
-from widgetastic_patternfly4 import CompactPagination
-from widgetastic_patternfly4 import Pagination
-from widgetastic_patternfly4 import PaginationNavDisabled
+from widgetastic_patternfly4 import CompactPagination, Pagination, PaginationNavDisabled
 
 TESTING_PAGE_URL = "https://patternfly-react.surge.sh/components/pagination"
 

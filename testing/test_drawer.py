@@ -1,6 +1,5 @@
 import pytest
-from widgetastic.widget import Text
-from widgetastic.widget import View
+from widgetastic.widget import Text, View
 
 from widgetastic_patternfly4 import Drawer
 from widgetastic_patternfly4.button import Button

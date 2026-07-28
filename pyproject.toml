@@ -2,9 +2,10 @@
 classifiers = [
   "Programming Language :: Python",
   "Programming Language :: Python :: 3",
-  "Programming Language :: Python :: 3.8",
-  "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
   "Topic :: Software Development :: Libraries :: Python Modules",
   "Topic :: Software Development :: Quality Assurance",
   "Topic :: Software Development :: Testing",
@@ -16,13 +17,14 @@ license = {file = "LICENSE"}
 maintainers = [
   {name = "Nikhil Dhandre", email = "ndhandre@redhat.com"},
   {name = "Egor Shamardin", email = "eshamard@redhat.com"},
+  {name = "Mike Shriver", email = "mshriver@redhat.com"},
   ]
 name = "widgetastic.patternfly4"
 readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">=3.10"
 
 dependencies = [
-  "widgetastic.core>=1.0.0",
+  "widgetastic.core>=1.0.0,<2.0.0",
 ]
 
 [project.optional-dependencies]
@@ -32,6 +34,7 @@ dev = [
   "pytest-cov",
   "pytest-xdist",
   "codecov",
+  "selenium",
 ]
 doc = ["sphinx"]
 
@@ -58,14 +61,39 @@ BROWSER = "firefox"
 [tool.hatch.envs.default.scripts]
 test = "pytest {args:testing}"
 test-parallel = "pytest -n auto {args:testing}"
-test-cov = "pytest --no-cov-on-fail --cov=widgetastic_patternfly4 --cov-append {args:testing}"
-cov-combine = "coverage combine"
-cov-report = "coverage report"
-cov-xml = "coverage xml"
+test-cov = "pytest --no-cov-on-fail --cov=widgetastic_patternfly4 --cov-append testing {args}"
 
 [[tool.hatch.envs.test.matrix]]
-python = ["3.8", "3.9", "3.10"]
+python = ["3.10", "3.11", "3.12", "3.13"]
 browser = ["chrome", "firefox"]
 
 [tool.hatch.envs.test.overrides]
 matrix.browser.env-vars = "BROWSER"
+
+[tool.hatch.envs.coverage]
+detached = true
+dependencies = ["coverage[toml]"]
+
+[tool.hatch.envs.coverage.scripts]
+combine = "coverage combine {args}"
+report = "coverage report {args}"
+xml = "coverage xml {args}"
+
+[tool.hatch.envs.lint]
+dependencies = ["pre-commit"]
+
+[tool.hatch.envs.lint.scripts]
+check = "pre-commit run --all-files"
+
+[tool.pytest.ini_options]
+testpaths = ["testing"]
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.lint]
+select = ["F", "I", "PL", "UP"]
+# PLR0913/PLR0917: widgetastic widgets conventionally take several positional
+# constructor args (parent, locator, ...); PLW1641: pre-existing __eq__-without-
+# __hash__ classes kept as-is to avoid changing equality/hashing semantics.
+extend-ignore = ["PLR2004", "PLE0643", "PLR0913", "PLR0917", "PLW1641"]

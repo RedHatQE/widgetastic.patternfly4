@@ -3,10 +3,7 @@ from contextlib import contextmanager
 
 from selenium.webdriver.common.keys import Keys
 from widgetastic.utils import ParametrizedLocator
-from widgetastic.widget import GenericLocatorWidget
-from widgetastic.widget import Text
-from widgetastic.widget import TextInput
-from widgetastic.widget import View
+from widgetastic.widget import GenericLocatorWidget, Text, TextInput, View
 
 from .optionsmenu import OptionsMenu
 
@@ -164,16 +161,14 @@ class BasePagination:
     def set_per_page(self, count):
         """Sets the number of items per page. (Will cast to str)"""
         value = str(count)
-        value_per_page = "{} per page".format(value)
+        value_per_page = f"{value} per page"
         items = self._options.items
         if value_per_page in items:
             self._options.item_select(value_per_page)
         elif value in items:
             self._options.item_select(value)
         else:
-            raise ValueError(
-                "count '{}' is not a valid option in the pagination dropdown".format(count)
-            )
+            raise ValueError(f"count '{count}' is not a valid option in the pagination dropdown")
 
     def go_to_page(self, value):
         """Navigate to custom page number."""

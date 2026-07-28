@@ -1,5 +1,4 @@
-from widgetastic.ouia import OUIAGenericView
-from widgetastic.ouia import OUIAGenericWidget
+from widgetastic.ouia import OUIAGenericView, OUIAGenericWidget
 from widgetastic.ouia.input import TextInput as BaseOuiaTextInput
 from widgetastic.ouia.text import Text as BaseOuiaText
 from widgetastic.widget.table import Table
@@ -11,22 +10,20 @@ from widgetastic_patternfly4.button import BaseButton
 from widgetastic_patternfly4.card import BaseCard
 from widgetastic_patternfly4.clipboardcopy import BaseClipboardCopy
 from widgetastic_patternfly4.contextselector import BaseContextSelector
-from widgetastic_patternfly4.dropdown import BaseDropdown
-from widgetastic_patternfly4.dropdown import BaseGroupDropdown
-from widgetastic_patternfly4.dropdown import BaseSplitButtonDropdown
+from widgetastic_patternfly4.dropdown import (
+    BaseDropdown,
+    BaseGroupDropdown,
+    BaseSplitButtonDropdown,
+)
 from widgetastic_patternfly4.formselect import BaseFormSelect
-from widgetastic_patternfly4.menu import BaseCheckboxMenu
-from widgetastic_patternfly4.menu import BaseMenu
+from widgetastic_patternfly4.menu import BaseCheckboxMenu, BaseMenu
 from widgetastic_patternfly4.modal import BaseModal
 from widgetastic_patternfly4.navigation import BaseNavigation
 from widgetastic_patternfly4.optionsmenu import BaseOptionsMenu
-from widgetastic_patternfly4.pagination import BaseCompactPagination
-from widgetastic_patternfly4.pagination import BasePagination
-from widgetastic_patternfly4.select import BaseCheckboxSelect
-from widgetastic_patternfly4.select import BaseSelect
+from widgetastic_patternfly4.pagination import BaseCompactPagination, BasePagination
+from widgetastic_patternfly4.select import BaseCheckboxSelect, BaseSelect
 from widgetastic_patternfly4.switch import BaseSwitch
-from widgetastic_patternfly4.table import BaseExpandableTable
-from widgetastic_patternfly4.table import BasePatternflyTable
+from widgetastic_patternfly4.table import BaseExpandableTable, BasePatternflyTable
 from widgetastic_patternfly4.title import BaseTitle
 
 

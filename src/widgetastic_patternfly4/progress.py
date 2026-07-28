@@ -32,9 +32,8 @@ class BaseProgress:
         for class_ in self.browser.classes(self):
             if class_ in self.STATUS_TYPE_MAPPING:
                 return self.STATUS_TYPE_MAPPING[class_]
-        else:
-            default_alert_type = "info"
-            return default_alert_type
+        default_alert_type = "info"
+        return default_alert_type
 
 
 class Progress(BaseProgress, Widget):

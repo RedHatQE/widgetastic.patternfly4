@@ -1,8 +1,7 @@
 import pytest
 from widgetastic.widget import View
 
-from widgetastic_patternfly4 import Navigation
-from widgetastic_patternfly4 import NavSelectionNotFound
+from widgetastic_patternfly4 import Navigation, NavSelectionNotFound
 
 TESTING_PAGE_URL = "https://patternfly-react.surge.sh/components/navigation"
 

@@ -1,5 +1,4 @@
-from widgetastic.widget import GenericLocatorWidget
-from widgetastic.widget import TextInput
+from widgetastic.widget import GenericLocatorWidget, TextInput
 
 from .button import Button
 

@@ -1,7 +1,4 @@
-from widgetastic.widget import Checkbox
-from widgetastic.widget import ParametrizedLocator
-from widgetastic.widget import Text
-from widgetastic.widget import View
+from widgetastic.widget import Checkbox, ParametrizedLocator, Text, View
 
 # https://patternfly-react.surge.sh/components/radio
 

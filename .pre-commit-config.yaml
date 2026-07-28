@@ -1,37 +1,14 @@
 repos:
-  - repo: https://github.com/asottile/reorder-python-imports
-    rev: v3.17.0
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.16.0
     hooks:
-      - id: reorder-python-imports
-        language_version: python3
+      - id: ruff
         args:
-          - --application-directories=.:src
-  - repo: https://github.com/psf/black
-    rev: 26.5.1
-    hooks:
-      - id: black
-        args: [--safe, --quiet, --line-length, "100"]
-        language_version: python3
-        require_serial: true
-  - repo: https://github.com/PyCQA/flake8
-    rev: 7.3.0
-    hooks:
-      - id: flake8
-        language_version: python3
-        args:
-          - --max-line-length=100
-          - --ignore=W503,E203
+          - '--fix'
+      - id: ruff-format
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v6.0.0
     hooks:
       - id: trailing-whitespace
-        language_version: python3
       - id: end-of-file-fixer
-        language_version: python3
       - id: debug-statements
-        language_version: python3
-  - repo: https://github.com/asottile/pyupgrade
-    rev: v3.21.2
-    hooks:
-      - id: pyupgrade
-        language_version: python3

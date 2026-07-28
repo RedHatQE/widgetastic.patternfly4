@@ -1,12 +1,8 @@
 import pytest
 from wait_for import wait_for
-from widgetastic.widget import ParametrizedView
-from widgetastic.widget import Text
+from widgetastic.widget import ParametrizedView, Text
 
-from widgetastic_patternfly4 import CardCheckBox
-from widgetastic_patternfly4 import CardForCardGroup
-from widgetastic_patternfly4 import CardGroup
-from widgetastic_patternfly4 import Dropdown
+from widgetastic_patternfly4 import CardCheckBox, CardForCardGroup, CardGroup, Dropdown
 
 TESTING_PAGE_URL = "https://patternfly-react.surge.sh/demos/card-view/react-demos/card-view/"
 
