@@ -1,7 +1,5 @@
 from widgetastic.utils import ParametrizedLocator
-from widgetastic.widget import GenericLocatorWidget
-from widgetastic.widget import Text
-from widgetastic.widget import TextInput
+from widgetastic.widget import GenericLocatorWidget, Text, TextInput
 
 from widgetastic_patternfly4.button import Button
 

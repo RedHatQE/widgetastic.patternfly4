@@ -1,8 +1,6 @@
 from widgetastic.exceptions import NoSuchElementException
 
-from .dropdown import Dropdown
-from .dropdown import DropdownItemDisabled
-from .dropdown import DropdownItemNotFound
+from .dropdown import Dropdown, DropdownItemDisabled, DropdownItemNotFound
 
 
 class MenuItemDisabled(DropdownItemDisabled):
@@ -95,9 +93,7 @@ class BaseMenu:
             return super().item_element(item, close)
         except DropdownItemNotFound:
             raise MenuItemNotFound(
-                "Item {!r} not found in {}. Available items: {}".format(
-                    item, repr(self), self.items
-                )
+                f"Item {item!r} not found in {repr(self)}. Available items: {self.items}"
             )
 
     def item_select(self, item):
@@ -113,10 +109,8 @@ class BaseMenu:
             return super().item_select(item)
         except DropdownItemDisabled:
             raise MenuItemDisabled(
-                'Item "{}" of {} is disabled\n'
-                "The following items are available and enabled: {}".format(
-                    item, repr(self), self.enabled_items
-                )
+                f'Item "{item}" of {repr(self)} is disabled\n'
+                f"The following items are available and enabled: {self.enabled_items}"
             )
 
     def fill(self, value):

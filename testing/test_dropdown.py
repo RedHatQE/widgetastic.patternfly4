@@ -1,11 +1,13 @@
 import pytest
 from widgetastic.widget import View
 
-from widgetastic_patternfly4 import Dropdown
-from widgetastic_patternfly4 import DropdownItemDisabled
-from widgetastic_patternfly4 import DropdownItemNotFound
-from widgetastic_patternfly4 import GroupDropdown
-from widgetastic_patternfly4 import SplitButtonDropdown
+from widgetastic_patternfly4 import (
+    Dropdown,
+    DropdownItemDisabled,
+    DropdownItemNotFound,
+    GroupDropdown,
+    SplitButtonDropdown,
+)
 
 TESTING_PAGE_URL = "https://patternfly-react.surge.sh/components/dropdown"
 
@@ -33,8 +35,7 @@ def group_dropdown(browser):
     return GroupDropdown(
         browser,
         locator=(
-            ".//div[@id='ws-react-c-dropdown-with-groups']"
-            "/div[contains(@class, 'pf-c-dropdown')]"
+            ".//div[@id='ws-react-c-dropdown-with-groups']/div[contains(@class, 'pf-c-dropdown')]"
         ),
     )
 

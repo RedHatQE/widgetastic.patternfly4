@@ -57,12 +57,11 @@ class BaseAlert:
         for class_ in self.browser.classes(self):
             if class_ in self.TYPE_MAPPING:
                 return self.TYPE_MAPPING[class_]
-        else:
-            raise ValueError(
-                "Could not find a proper alert type."
-                f"\nAvailable classes: {self.TYPE_MAPPING!r} "
-                f"\nAlert has: {self.browser.classes(self)!r}"
-            )
+        raise ValueError(
+            "Could not find a proper alert type."
+            f"\nAvailable classes: {self.TYPE_MAPPING!r} "
+            f"\nAlert has: {self.browser.classes(self)!r}"
+        )
 
     def assert_no_error(self):
         """Asserts that the warning is not of the error type."""

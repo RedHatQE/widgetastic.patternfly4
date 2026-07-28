@@ -1,10 +1,6 @@
 from selenium.common.exceptions import NoSuchElementException
 from widgetastic.log import create_item_logger
-from widgetastic.widget import Table
-from widgetastic.widget import TableColumn
-from widgetastic.widget import TableRow
-from widgetastic.widget import Text
-from widgetastic.widget import Widget
+from widgetastic.widget import Table, TableColumn, TableRow, Text, Widget
 from widgetastic.widget.table import resolve_table_widget
 
 
@@ -12,7 +8,7 @@ class HeaderColumn(TableColumn):
     """Represents a cell in the header row."""
 
     def __locator__(self):
-        return "(./td|./th)[{}]".format(self.position + 1)
+        return f"(./td|./th)[{self.position + 1}]"
 
     @property
     def is_sortable(self):
@@ -46,7 +42,7 @@ class HeaderRow(TableRow):
         return "./thead/tr"
 
     def __repr__(self):
-        return "{}({!r})".format(type(self).__name__, self.parent)
+        return f"{type(self).__name__}({self.parent!r})"
 
     def __getitem__(self, item):
         if isinstance(item, str):
@@ -149,7 +145,7 @@ class ExpandableTableHeaderColumn(TableColumn):
 
     def __locator__(self):
         """Override the locator to look inside the first 'tr' within the tbody"""
-        return "./tr[1]/th[{}]".format(self.position + 1)
+        return f"./tr[1]/th[{self.position + 1}]"
 
 
 class RowNotExpandable(Exception):
@@ -157,7 +153,7 @@ class RowNotExpandable(Exception):
         self.row = row
 
     def __str__(self):
-        return "Row is not expandable: {}".format(repr(self.row))
+        return f"Row is not expandable: {repr(self.row)}"
 
 
 class ColumnNotExpandable(Exception):
@@ -165,7 +161,7 @@ class ColumnNotExpandable(Exception):
         self.column = column
 
     def __str__(self):
-        return "Column is not expandable: {}".format(repr(self.column))
+        return f"Column is not expandable: {repr(self.column)}"
 
 
 class ExpandableTableRow(PatternflyTableRow):
@@ -329,9 +325,9 @@ class ExpandableColumn(TableColumn):
         """Override the locator to look inside the first 'tr' within the tbody"""
         if self.position == 0:
             # we assume the th column is in the first position
-            return "./tr[1]/th[{}]".format(self.position + 1)
+            return f"./tr[1]/th[{self.position + 1}]"
         else:
-            return "./tr[1]/td[{}]".format(self.position)
+            return f"./tr[1]/td[{self.position}]"
 
     @property
     def is_expandable(self):

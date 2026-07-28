@@ -1,8 +1,7 @@
 import pytest
 from widgetastic.widget import View
 
-from widgetastic_patternfly4 import Menu
-from widgetastic_patternfly4 import MenuItemNotFound
+from widgetastic_patternfly4 import Menu, MenuItemNotFound
 
 TESTING_PAGE_URL = "https://patternfly-react.surge.sh/components/menu"
 

@@ -1,8 +1,7 @@
 import pytest
 from widgetastic.widget import View
 
-from widgetastic_patternfly4 import DualListSelector
-from widgetastic_patternfly4 import SearchDualListSelector
+from widgetastic_patternfly4 import DualListSelector, SearchDualListSelector
 
 TESTING_PAGE_URL = "https://patternfly-react.surge.sh/components/dual-list-selector"
 

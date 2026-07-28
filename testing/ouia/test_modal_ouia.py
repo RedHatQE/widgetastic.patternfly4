@@ -1,10 +1,8 @@
 import pytest
-from widgetastic.widget import Text
-from widgetastic.widget import View
+from widgetastic.widget import Text, View
 
 from widgetastic_patternfly4.modal import ModalItemNotFound
-from widgetastic_patternfly4.ouia import Button
-from widgetastic_patternfly4.ouia import Modal
+from widgetastic_patternfly4.ouia import Button, Modal
 
 TESTING_PAGE_URL = "https://patternfly-docs-ouia.netlify.app/documentation/react/components/modal"
 

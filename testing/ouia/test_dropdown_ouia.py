@@ -1,8 +1,7 @@
 import pytest
 from widgetastic.widget import View
 
-from widgetastic_patternfly4 import DropdownItemDisabled
-from widgetastic_patternfly4 import DropdownItemNotFound
+from widgetastic_patternfly4 import DropdownItemDisabled, DropdownItemNotFound
 from widgetastic_patternfly4.ouia import Dropdown
 
 TESTING_PAGE_URL = (

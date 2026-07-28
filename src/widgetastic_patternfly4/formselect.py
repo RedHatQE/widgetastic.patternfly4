@@ -81,18 +81,14 @@ class BaseFormSelect:
             FormSelectOptionNotFound: if option not found
         """
         if not self.is_enabled:
-            raise FormSelectDisabled("{} is not enabled".format(repr(self)))
+            raise FormSelectDisabled(f"{repr(self)} is not enabled")
         if value not in self.all_options:
             raise FormSelectOptionNotFound(
-                'Option "{}" not found in {}. Available options: {}'.format(
-                    value, repr(self), self.all_options
-                )
+                f'Option "{value}" not found in {repr(self)}. Available options: {self.all_options}'
             )
         elif value not in self.all_enabled_options:
             raise FormSelectOptionDisabled(
-                'Option "{}" is disabled in {}. Enabled options are: {}'.format(
-                    value, repr(self), self.all_enabled_options
-                )
+                f'Option "{value}" is disabled in {repr(self)}. Enabled options are: {self.all_enabled_options}'
             )
         self._select_element.select_by_visible_text(value)
 
@@ -101,7 +97,7 @@ class BaseFormSelect:
         return self.browser.text(self._select_element.first_selected_option)
 
     def __repr__(self):
-        return "{}({!r})".format(type(self).__name__, self.locator)
+        return f"{type(self).__name__}({self.locator!r})"
 
 
 class FormSelect(BaseFormSelect, GenericLocatorWidget):

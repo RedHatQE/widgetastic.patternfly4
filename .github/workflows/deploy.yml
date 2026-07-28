@@ -7,25 +7,22 @@ on:
 
 jobs:
   deploy:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
+    environment:
+      name: pypi
+      url: https://pypi.org/p/widgetastic.patternfly4
+    permissions:
+      id-token: write  # For trusted publishing
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
       - name: Install dependencies
-        run: pip install twine
+        run: pip install pip twine -U
       - name: Build a wheel
         run: pip wheel --no-deps -w dist .
+      - name: Test package
+        run: twine check dist/*
       - name: Deploy to PyPI
-        uses: pypa/gh-action-pypi-publish@v1.4.1
-        with:
-          user: __token__
-          password: ${{ secrets.PYPI_TOKEN }}
-      - name: Create a release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          draft: false
-          prerelease: false
+        uses: pypa/gh-action-pypi-publish@release/v1

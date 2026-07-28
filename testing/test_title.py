@@ -2,7 +2,6 @@ from widgetastic.widget import View
 
 from widgetastic_patternfly4 import Title
 
-
 TESTING_PAGE_URL = "https://patternfly-react.surge.sh/components/title"
 
 

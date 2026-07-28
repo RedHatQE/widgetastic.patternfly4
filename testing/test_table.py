@@ -1,12 +1,13 @@
 import pytest
-from widgetastic.widget import Checkbox
-from widgetastic.widget import View
+from widgetastic.widget import Checkbox, View
 
-from widgetastic_patternfly4 import ColumnNotExpandable
-from widgetastic_patternfly4 import CompoundExpandableTable
-from widgetastic_patternfly4 import ExpandableTable
-from widgetastic_patternfly4 import PatternflyTable
-from widgetastic_patternfly4 import RowNotExpandable
+from widgetastic_patternfly4 import (
+    ColumnNotExpandable,
+    CompoundExpandableTable,
+    ExpandableTable,
+    PatternflyTable,
+    RowNotExpandable,
+)
 
 TESTING_PAGE_URL = "https://patternfly-react.surge.sh/components/table"
 
@@ -34,7 +35,7 @@ SORT = [
 ]
 
 
-@pytest.mark.parametrize("sample", SORT, ids=lambda sample: "{}-{}".format(sample[0], sample[1]))
+@pytest.mark.parametrize("sample", SORT, ids=lambda sample: f"{sample[0]}-{sample[1]}")
 def test_sortable_table(browser, sample):
     header, order, expected_result = sample
     table = PatternflyTable(

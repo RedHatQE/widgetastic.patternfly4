@@ -1,6 +1,5 @@
 from widgetastic.utils import ParametrizedLocator
-from widgetastic.widget import ClickableMixin
-from widgetastic.widget import Widget
+from widgetastic.widget import ClickableMixin, Widget
 from widgetastic.xpath import quote
 
 
@@ -36,7 +35,7 @@ class BaseButton:
         return check1 or check2 or self.browser.get_attribute("disabled", self) is not None
 
     def __repr__(self):
-        return "{}{}".format(type(self).__name__, self.locator)
+        return f"{type(self).__name__}{self.locator}"
 
     @property
     def title(self):
@@ -69,25 +68,25 @@ class Button(BaseButton, Widget, ClickableMixin):
             if kwargs:  # classes should have been the only kwarg combined with text args
                 raise TypeError("If you pass button text then only pass classes in addition")
             if len(text) == 1:
-                locator_conditions = "normalize-space(.)={}".format(quote(text[0]))
+                locator_conditions = f"normalize-space(.)={quote(text[0])}"
             elif len(text) == 2 and text[0].lower() == "contains":
-                locator_conditions = "contains(normalize-space(.), {})".format(quote(text[1]))
+                locator_conditions = f"contains(normalize-space(.), {quote(text[1])})"
             else:
                 raise TypeError("An illegal combination of args/kwargs")
         else:
             # Join the kwargs, if any
             locator_conditions = " and ".join(
-                "@{}={}".format(attr, quote(value)) for attr, value in kwargs.items()
+                f"@{attr}={quote(value)}" for attr, value in kwargs.items()
             )
 
         if classes:
             if locator_conditions:
                 locator_conditions += " and "
             locator_conditions += " and ".join(
-                "contains(@class, {})".format(quote(klass)) for klass in classes
+                f"contains(@class, {quote(klass)})" for klass in classes
             )
         if locator_conditions:
-            locator_conditions = "and ({})".format(locator_conditions)
+            locator_conditions = f"and ({locator_conditions})"
 
         return (
             ".//*[(self::a or self::button or (self::input and "

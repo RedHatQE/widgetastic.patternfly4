@@ -15,7 +15,7 @@ SORT = [
 ]
 
 
-@pytest.mark.parametrize("sample", SORT, ids=lambda sample: "{}-{}".format(sample[0], sample[1]))
+@pytest.mark.parametrize("sample", SORT, ids=lambda sample: f"{sample[0]}-{sample[1]}")
 def test_sortable_table(browser, sample):
     header, order, expected_result = sample
 

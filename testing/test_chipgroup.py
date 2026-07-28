@@ -1,11 +1,7 @@
 import pytest
-from widgetastic.widget import ParametrizedView
-from widgetastic.widget import View
+from widgetastic.widget import ParametrizedView, View
 
-from widgetastic_patternfly4 import CategoryChipGroup
-from widgetastic_patternfly4 import Chip
-from widgetastic_patternfly4 import ChipGroup
-from widgetastic_patternfly4 import ChipReadOnlyError
+from widgetastic_patternfly4 import CategoryChipGroup, Chip, ChipGroup, ChipReadOnlyError
 
 TESTING_PAGE_URL = "https://patternfly-react.surge.sh/components/chip-group"
 

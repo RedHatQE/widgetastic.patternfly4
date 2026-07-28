@@ -1,5 +1,4 @@
-from widgetastic.widget import ParametrizedLocator
-from widgetastic.widget import View
+from widgetastic.widget import ParametrizedLocator, View
 from widgetastic.xpath import quote
 
 from widgetastic_patternfly4.bulletchart import Legend
@@ -37,7 +36,7 @@ class LineChart(View):
         assert id or locator, "Provide id or locator."
 
         if id:
-            self.locator = ".//div[@id={}]".format(quote(id))
+            self.locator = f".//div[@id={quote(id)}]"
         else:
             self.locator = locator
 

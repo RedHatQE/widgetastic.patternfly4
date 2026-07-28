@@ -1,8 +1,7 @@
 import pytest
 from widgetastic.widget import View
 
-from widgetastic_patternfly4 import ContextSelector
-from widgetastic_patternfly4 import SelectItemNotFound
+from widgetastic_patternfly4 import ContextSelector, SelectItemNotFound
 
 TESTING_PAGE_URL = "https://patternfly-react.surge.sh/components/context-selector"
 

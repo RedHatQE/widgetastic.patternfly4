@@ -1,10 +1,12 @@
 import pytest
 from widgetastic.widget import View
 
-from widgetastic_patternfly4 import FormSelect
-from widgetastic_patternfly4 import FormSelectDisabled
-from widgetastic_patternfly4 import FormSelectOptionDisabled
-from widgetastic_patternfly4 import FormSelectOptionNotFound
+from widgetastic_patternfly4 import (
+    FormSelect,
+    FormSelectDisabled,
+    FormSelectOptionDisabled,
+    FormSelectOptionNotFound,
+)
 
 TESTING_PAGE_URL = "https://patternfly-react.surge.sh/components/form-select"
 
