@@ -3,7 +3,7 @@ from widgetastic.widget import View
 
 from widgetastic_patternfly4 import Progress
 
-TESTING_PAGE_URL = "https://patternfly-react.surge.sh/components/progress"
+TESTING_PAGE_URL = "https://patternfly-react-main.surge.sh/components/progress"
 PROGRESS_STATUS_TYPES_WITH_CURRENT_PROGRESS = {
     "success": "100",
     "danger": "33",

@@ -6,7 +6,7 @@ from widgetastic.widget import View
 
 from widgetastic_patternfly4 import CompactPagination, Pagination, PaginationNavDisabled
 
-TESTING_PAGE_URL = "https://patternfly-react.surge.sh/components/pagination"
+TESTING_PAGE_URL = "https://patternfly-react-main.surge.sh/components/pagination"
 
 
 @contextlib.contextmanager

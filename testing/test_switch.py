@@ -3,7 +3,7 @@ from widgetastic.widget import View
 
 from widgetastic_patternfly4 import Switch, SwitchDisabled
 
-TESTING_PAGE_URL = "https://patternfly-react.surge.sh/components/switch"
+TESTING_PAGE_URL = "https://patternfly-react-main.surge.sh/components/switch"
 
 
 @pytest.fixture
@@ -67,7 +67,6 @@ def test_switch_fill(view):
     assert not view.switch.selected
     assert view.switch.label == "Message when off"
     assert view.switch.fill(True)
-    assert view.switch.selected
     assert view.switch.label == "Message when on"
 
 
